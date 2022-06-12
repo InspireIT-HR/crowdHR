@@ -24,6 +24,9 @@ export function login(email, password) {
         password,
         returnSecureToken: true,
     };
+
+    const tkn = new Buffer.from(`${email}:${password}`, 'base64').toString();
+    console.log(tkn);
     return axios.post(
         `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyD3RPAp3nuETDn9OQimqn_YF6zdzqWITII`,
         postData,

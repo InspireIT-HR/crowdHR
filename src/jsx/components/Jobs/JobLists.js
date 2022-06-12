@@ -1,8 +1,10 @@
-import React,{useState} from 'react';
+import React,{useEffect, useState} from 'react';
 import {Link} from 'react-router-dom';
 import {Modal} from 'react-bootstrap';
 import {nanoid} from 'nanoid';
 import swal from "sweetalert";
+import { useDispatch } from 'react-redux';
+import { getJobOpenings } from '../../../store/actions/JobsActions';
 
 const TableContent = [
 	{ id:1, position:'Network Engineer', type:'Full-Time',pdate:'12-01-2021', ldate:'24-01-2021', cdate:'25-01-2021',status:'Active'},
@@ -17,7 +19,7 @@ const TableContent = [
 
 
 const JobLists = () => {
-	
+	const dispatch = useDispatch();
 	//Modal box
 	const [addCard, setAddCard] = useState(false);
 	
@@ -31,6 +33,11 @@ const JobLists = () => {
         setContacts(newContacts);
     }
 	
+
+		useEffect(() => {
+			dispatch(getJobOpenings());
+		}, [dispatch]);
+
 	//Add data 
     const [addFormData, setAddFormData ] = useState({
         position:'',
