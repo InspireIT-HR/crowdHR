@@ -18,7 +18,7 @@ const TableContent = [
 
 
 
-const JobLists = () => {
+const JobLists = (props) => {
 	const dispatch = useDispatch();
 	//Modal box
 	const [addCard, setAddCard] = useState(false);
@@ -35,8 +35,8 @@ const JobLists = () => {
 	
 
 		useEffect(() => {
-			dispatch(getJobOpenings());
-		}, [dispatch]);
+			dispatch(getJobOpenings(props.history));
+		}, []);
 
 	//Add data 
     const [addFormData, setAddFormData ] = useState({
