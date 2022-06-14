@@ -1,7 +1,8 @@
 import {
-    GET_JOBOPENINGS,
 } from '../actions/JobsActions';
-
+import {
+    GET_JOBOPENINGS
+  } from '../actions/JobTypes';
 const initialState = {
     jobOpenings: {
         shortName: '',

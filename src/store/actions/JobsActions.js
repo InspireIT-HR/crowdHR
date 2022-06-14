@@ -1,6 +1,8 @@
 import { getJobOpeningsService } from "../../services/JobService";
+import {
+  GET_JOBOPENINGS
+} from './JobTypes';
 
-export const GET_JOBOPENINGS = 'Get Jobopenings';
 
 
 export function getJobOpenings(history) {

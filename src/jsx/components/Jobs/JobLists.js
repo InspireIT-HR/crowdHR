@@ -3,7 +3,7 @@ import {Link} from 'react-router-dom';
 import {Modal} from 'react-bootstrap';
 import {nanoid} from 'nanoid';
 import swal from "sweetalert";
-import { useDispatch } from 'react-redux';
+import { connect,useDispatch } from 'react-redux';
 import { getJobOpenings } from '../../../store/actions/JobsActions';
 
 const TableContent = [
@@ -450,4 +450,13 @@ const JobLists = (props) => {
 		</>
 	)	
 }
-export default JobLists;
+
+const mapStateToProps = (state) => {
+    return {
+		jobList:state.jobs.jobOpenings,
+        errorMessage: state.jobs.errorMessage,
+        successMessage: state.jobs.successMessage,
+        showLoading: state.jobs.showLoading,
+    };
+};
+export default connect(mapStateToProps)(JobLists);
