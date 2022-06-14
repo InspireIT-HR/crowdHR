@@ -374,7 +374,7 @@ const JobLists = (props) => {
 						<table className="table display mb-4 dataTablesCard job-table table-responsive-xl card-table dataTable no-footer" >
 							<thead>
 								<tr>
-									<th>No</th>
+									<th>Customer</th>
 									<th>Position</th>
 									<th>Type</th>
 									<th>Posted Date</th>
@@ -385,15 +385,15 @@ const JobLists = (props) => {
 								</tr>
 							</thead>
 							<tbody>
-								{contacts.map((contact,index)=>(
+								{props.jobList.map((job,index)=>(
 									<tr key={index}>
-										<td>#12345</td>
-										<td>{contact.position}</td>
-										<td className="wspace-no">{contact.type}</td>
-										<td>{contact.pdate}</td>
-										<td>{contact.ldate}</td>
-										<td>{contact.cdate}</td>
-										<td><span className="badge badge-primary badge-lg light">{contact.status}</span></td>
+										<td><img width="50" height="50" src={`https://77.79.108.34:63748/CustomerLogos/${job.customer.logoPath}`} alt="company_logo"/></td>
+										<td>{job.shortName}</td>
+										 <td className="wspace-no"></td>
+										<td></td>
+										<td></td>
+										<td></td>
+										{/*<td><span className="badge badge-primary badge-lg light"></span></td>
 										<td>
 											<div className="action-buttons d-flex justify-content-end">
 												<Link to={"#"} className="btn btn-success light mr-2">
@@ -422,7 +422,7 @@ const JobLists = (props) => {
 													</svg>
 												</Link>
 											</div>
-										</td>
+										</td> */}
 									</tr>
 								))}
 							</tbody>	
