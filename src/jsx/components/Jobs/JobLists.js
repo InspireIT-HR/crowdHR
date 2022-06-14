@@ -6,31 +6,17 @@ import swal from "sweetalert";
 import { connect,useDispatch } from 'react-redux';
 import { getJobOpenings } from '../../../store/actions/JobsActions';
 
-const TableContent = [
-	{ id:1, position:'Network Engineer', type:'Full-Time',pdate:'12-01-2021', ldate:'24-01-2021', cdate:'25-01-2021',status:'Active'},
-	{ id:2, position:'Entry Level Software Developer', type:'Full-Time',pdate:'12-01-2021', ldate:'24-01-2021',cdate:'25-01-2021',status:'InActive'},
-	{ id:3, position:'Java Developer', type:'Full-Time',pdate:'12-01-2021', ldate:'24-01-2021', cdate:'25-01-2021',status:'Active'},
-	{ id:4, position:'IOS Developer', 	type:'Full-Time',pdate:'12-01-2021', ldate:'24-01-2021', cdate:'25-01-2021',status:'InActive'},
-	{ id:5, position:'Junior Web Developer', type:'Full-Time',pdate:'12-01-2021', ldate:'24-01-2021', cdate:'25-01-2021',status:'Active'},
-	{ id:6, position:'SQL Developer', 	type:'Full-Time',pdate:'12-01-2021', ldate:'24-01-2021', cdate:'25-01-2021',status:'InActive'},
-	{ id:7, position:'Junior Developer', type:'Full-Time',pdate:'12-01-2021', ldate:'24-01-2021', cdate:'25-01-2021',status:'Active'},
-];
-
-
-
 const JobLists = (props) => {
 	const dispatch = useDispatch();
 	//Modal box
 	const [addCard, setAddCard] = useState(false);
 	
-	const [contacts, setContacts] = useState(TableContent);
-	
 	// delete data  
     const handleDeleteClick = (contactId) => {
-        const newContacts = [...contacts];    
-        const index = contacts.findIndex((contact)=> contact.id === contactId);
-        newContacts.splice(index, 1);
-        setContacts(newContacts);
+        // const newContacts = [...contacts];    
+        // const index = contacts.findIndex((contact)=> contact.id === contactId);
+        // newContacts.splice(index, 1);
+        // setContacts(newContacts);
     }
 	
 
@@ -60,47 +46,47 @@ const JobLists = (props) => {
     
      //Add Submit data
     const handleAddFormSubmit = (event)=> {
-        event.preventDefault();
-        var error = false;
-		var errorMsg = '';
-        if(addFormData.position === ""){
-            error = true;
-			errorMsg = 'Please fill position';
-        }else if(addFormData.type === ""){
-            error = true;
-			errorMsg = 'Please fill type';
-        }
-        else if(addFormData.pdate === ""){
-            error = true;
-			errorMsg = 'Please fill position date';
-        } 
-		else if(addFormData.ldate === ""){
-            error = true;
-			errorMsg = 'Please fill Last date';
-        }
-		else if(addFormData.status === ""){
-            error = true;
-			errorMsg = 'Please write status';
-        }
-        if(!error){
-            const newContact = {
-                id: nanoid(),
-                position: addFormData.position,
-                type:  addFormData.type,
-				pdate: addFormData.pdate,
-				ldate: addFormData.ldate,
-				cdate: addFormData.cdate,
-				status: addFormData.status,
-			};
-            const newContacts = [...contacts, newContact];
-            setContacts(newContacts);
-            setAddCard(false);
-            swal('Good job!', 'Successfully Added', "success");
-            addFormData.position  = addFormData.type = addFormData.pdate = addFormData.ldate = addFormData.cdate = addFormData.status = '';         
+        // event.preventDefault();
+        // var error = false;
+		// var errorMsg = '';
+        // if(addFormData.position === ""){
+        //     error = true;
+		// 	errorMsg = 'Please fill position';
+        // }else if(addFormData.type === ""){
+        //     error = true;
+		// 	errorMsg = 'Please fill type';
+        // }
+        // else if(addFormData.pdate === ""){
+        //     error = true;
+		// 	errorMsg = 'Please fill position date';
+        // } 
+		// else if(addFormData.ldate === ""){
+        //     error = true;
+		// 	errorMsg = 'Please fill Last date';
+        // }
+		// else if(addFormData.status === ""){
+        //     error = true;
+		// 	errorMsg = 'Please write status';
+        // }
+        // if(!error){
+        //     const newContact = {
+        //         id: nanoid(),
+        //         position: addFormData.position,
+        //         type:  addFormData.type,
+		// 		pdate: addFormData.pdate,
+		// 		ldate: addFormData.ldate,
+		// 		cdate: addFormData.cdate,
+		// 		status: addFormData.status,
+		// 	};
+        //     const newContacts = [...contacts, newContact];
+        //     setContacts(newContacts);
+        //     setAddCard(false);
+        //     swal('Good job!', 'Successfully Added', "success");
+        //     addFormData.position  = addFormData.type = addFormData.pdate = addFormData.ldate = addFormData.cdate = addFormData.status = '';         
             
-        }else{
-			swal('Oops', errorMsg, "error");
-		}
+        // }else{
+		// 	swal('Oops', errorMsg, "error");
+		// }
     };
 	
 	//Edit start 
@@ -110,18 +96,18 @@ const JobLists = (props) => {
    
     // Edit function button click to edit
     const handleEditClick = ( event, contact) => {
-        event.preventDefault();
-        setEditContactId(contact.id);
-        const formValues = {
-            position: contact.position,
-            type: contact.type,  
-            pdate: contact.pdate,  
-            ldate: contact.ldate,  
-            cdate: contact.cdate,  
-            status: contact.status,  
-        }
-        setEditFormData(formValues);
-        setEditModal(true);
+        // event.preventDefault();
+        // setEditContactId(contact.id);
+        // const formValues = {
+        //     position: contact.position,
+        //     type: contact.type,  
+        //     pdate: contact.pdate,  
+        //     ldate: contact.ldate,  
+        //     cdate: contact.cdate,  
+        //     status: contact.status,  
+        // }
+        // setEditFormData(formValues);
+        // setEditModal(true);
     };
     
     
@@ -137,32 +123,32 @@ const JobLists = (props) => {
     
     //update data function
     const handleEditFormChange = (event) => {
-        event.preventDefault();   
-        const fieldName = event.target.getAttribute('name');
-        const fieldValue = event.target.value;
-        const newFormData = {...editFormData};
-        newFormData[fieldName] = fieldValue;
-        setEditFormData(newFormData);
+        // event.preventDefault();   
+        // const fieldName = event.target.getAttribute('name');
+        // const fieldValue = event.target.value;
+        // const newFormData = {...editFormData};
+        // newFormData[fieldName] = fieldValue;
+        // setEditFormData(newFormData);
     };
     
     // edit form data submit
     const handleEditFormSubmit = (event) => {
-        event.preventDefault();
-        const editedContact = {
-            id: editContactId,	
-			position: editFormData.position,
-            type: 	editFormData.type,  
-            pdate: 	editFormData.pdate,  
-            ldate: 	editFormData.ldate,  
-            cdate: 	editFormData.cdate,  
-            status: editFormData.status,
-        }
-        const newContacts = [...contacts];
-        const index = contacts.findIndex((contact)=> contact.id === editContactId);
-        newContacts[index] = editedContact;
-        setContacts(newContacts);
-        setEditContactId(null);
-        setEditModal(false);
+        // event.preventDefault();
+        // const editedContact = {
+        //     id: editContactId,	
+		// 	position: editFormData.position,
+        //     type: 	editFormData.type,  
+        //     pdate: 	editFormData.pdate,  
+        //     ldate: 	editFormData.ldate,  
+        //     cdate: 	editFormData.cdate,  
+        //     status: editFormData.status,
+        // }
+        // const newContacts = [...contacts];
+        // const index = contacts.findIndex((contact)=> contact.id === editContactId);
+        // newContacts[index] = editedContact;
+        // setContacts(newContacts);
+        // setEditContactId(null);
+        // setEditModal(false);
         
     }
 	return(
@@ -377,30 +363,28 @@ const JobLists = (props) => {
 									<th>Customer</th>
 									<th>Position</th>
 									<th>Type</th>
-									<th>Posted Date</th>
-									<th>Last Date To Apply</th>
-									<th>Close Date</th>
 									<th>Status</th>
+									<th>Location</th>
+									<th>Posted Date</th>							
 									<th>Actions</th>
 								</tr>
 							</thead>
 							<tbody>
 								{props.jobList.map((job,index)=>(
 									<tr key={index}>
-										<td><img width="50" height="50" src={`https://77.79.108.34:63748/CustomerLogos/${job.customer.logoPath}`} alt="company_logo"/></td>
+										<td><img width="70" height="30" src={`https://77.79.108.34:63748/CustomerLogos/${job.customer.logoPath}`} alt="company_logo"/></td>
 										<td>{job.shortName}</td>
-										 <td className="wspace-no"></td>
-										<td></td>
-										<td></td>
-										<td></td>
-										{/*<td><span className="badge badge-primary badge-lg light"></span></td>
+										 <td>{job.jobType.description}</td>
+										<td>{job.status.description}</td>
+										<td>{job.locationCity.description}/{job.locationCountry.description}</td>
+										<td>{new Date(job.createDate).toLocaleDateString('tr-TR', { year: 'numeric', month: 'numeric', day: 'numeric' })}</td>
 										<td>
-											<div className="action-buttons d-flex justify-content-end">
+											<div className="action-buttons d-flex ">
 												<Link to={"#"} className="btn btn-success light mr-2">
 													<svg xmlns="http://www.w3.org/2000/svg" className="svg-main-icon" width="24px" height="24px" viewBox="0 0 32 32" x="0px" y="0px"><g data-name="Layer 21"><path d="M29,14.47A15,15,0,0,0,3,14.47a3.07,3.07,0,0,0,0,3.06,15,15,0,0,0,26,0A3.07,3.07,0,0,0,29,14.47ZM16,21a5,5,0,1,1,5-5A5,5,0,0,1,16,21Z" fill="#000000" fillRule="nonzero"></path><circle cx="16" cy="16" r="3" fill="#000000" fillRule="nonzero"></circle></g></svg>
-												</Link>
+												</Link> 
 												<Link to={"#"} className="btn btn-secondary light mr-2"
-													onClick={(event) => handleEditClick(event, contact)}
+													onClick={(event) => handleEditClick(event)}
 												>
 													<svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" className="svg-main-icon">
 														<g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
@@ -411,7 +395,7 @@ const JobLists = (props) => {
 													</svg>
 												</Link>
 												<Link to={"#"} className="btn btn-danger light"
-													onClick={()=>handleDeleteClick(contact.id)}
+													onClick={()=>handleDeleteClick()}
 												>
 													<svg xmlns="http://www.w3.org/2000/svg"  width="24px" height="24px" viewBox="0 0 24 24" version="1.1" className="svg-main-icon">
 														<g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
@@ -422,7 +406,7 @@ const JobLists = (props) => {
 													</svg>
 												</Link>
 											</div>
-										</td> */}
+										</td>
 									</tr>
 								))}
 							</tbody>	
@@ -431,7 +415,7 @@ const JobLists = (props) => {
 				</div>	
 				<div className="d-flex align-items-center justify-content-between flex-wrap">
 					<div className="sm-mb-0 mb-3">
-						<h5 className="mb-0">Showing 1 to 7 of 7 entries</h5>
+						<h5 className="mb-0">Showing 1 to 10 of {props.jobList.length} jobs</h5>
 					</div>
 					<nav>
 						<ul className="pagination pagination-circle">

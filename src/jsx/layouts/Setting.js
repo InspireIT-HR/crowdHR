@@ -47,12 +47,12 @@ const Setting = () => {
 	<>
 		<div className={`sidebar-right ${settingToggle ? "show" : ""}`}>
 			<div className="bg-overlay" onClick={() => setSettingToggle(!settingToggle)}></div>
-			<Link to="#" className="sidebar-right-trigger wave-effect wave-effect-x" onClick={() => setSettingToggle(!settingToggle)} >
+			{/* <Link to="#" className="sidebar-right-trigger wave-effect wave-effect-x" onClick={() => setSettingToggle(!settingToggle)} >
 				<span><i className="fa fa-cog fa-spin" /></span>
 			</Link>
 			<Link to="#" className="sidebar-close-trigger" onClick={() => setSettingToggle(!settingToggle)} >
 				<span><i className="la-times las"></i></span>
-			</Link>
+			</Link> */}
 			<div className="sidebar-right-inner">
 				<div className="tab-content tab-content-default tabcontent-border">
 					<div className="tab-pane fade active show" id="home8" role="tabpanel">
@@ -240,9 +240,9 @@ const Setting = () => {
 		<div className={`dlab-demo-panel ${demoToggle ? "show" : ""}`}>
 			<div className="bg-overlay" onClick={() => setDemoToggle(!demoToggle)}></div>
 				<div className="bg-close"  onClick={() => setDemoToggle(!demoToggle)} ></div>
-				<Link to="#" className="dlab-demo-trigger" onClick={() => setDemoToggle(!demoToggle)}>
+				{/* <Link to="#" className="dlab-demo-trigger" onClick={() => setDemoToggle(!demoToggle)}>
 					<span><i className="las la-tint"></i></span>
-				</Link>
+				</Link> */}
 			<div className="dlab-demo-inner">
 				<div className="dlab-demo-header">
 					<h4>Select A Demo</h4> 

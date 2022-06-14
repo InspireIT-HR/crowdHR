@@ -4,13 +4,7 @@ import {
     GET_JOBOPENINGS
   } from '../actions/JobTypes';
 const initialState = {
-    jobOpenings: {
-        shortName: '',
-        jobDescription: '',
-        genderId: '',
-        referenceCode: '',
-        createDate: '',
-    },
+    jobOpenings: [],
     errorMessage: '',
     successMessage: '',
     showLoading: false,
