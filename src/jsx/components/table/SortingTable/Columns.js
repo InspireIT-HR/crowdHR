@@ -1,40 +1,79 @@
 export const COLUMNS = [
 	{
-		Header : 'Id',
+		Header : 'Customer',
 		Footer : 'Id',
-		accessor: 'id'
+		accessor: 'shortName'
 	},
 	{
-		Header : 'First Name',
+		Header : 'Position',
 		Footer : 'First Name',
-		accessor: 'first_name'
+		accessor: 'shortName'
 	},
 	{
-		Header : 'Last Name',
-		Footer : 'Last Name',
-		accessor: 'last_name'
+		Header : 'Type',
+		Footer : 'Type',
+		accessor: 'jobType.description'
 	},
 	{
-		Header : 'Date of  Birth',
+		Header : 'Status',
 		Footer : 'Date of  Birth',
-		accessor: 'date_of_birth'
+		accessor: 'status.description'
 	},
 	{
-		Header : 'Country',
+		Header : 'Location',
 		Footer : 'Country',
-		accessor: 'country',
+		accessor: 'locationCity.description}',
 	},
 	{
-		Header : 'Phone',
+		Header : 'Posted Date',
 		Footer : 'Phone',
-		accessor: 'phone'
+		accessor: 'job.createDate'
 	},
 	{
-		Header : 'Age',
-		Footer : 'Phone',
-		accessor: 'age',
+		Header : 'Actions',
+		Footer : '',
+		accessor: '',
 	},
 ]
+
+// export const COLUMNS = [
+// 	{
+// 		Header : 'Id',
+// 		Footer : 'Id',
+// 		accessor: 'id'
+// 	},
+// 	{
+// 		Header : 'First Name',
+// 		Footer : 'First Name',
+// 		accessor: 'first_name'
+// 	},
+// 	{
+// 		Header : 'Last Name',
+// 		Footer : 'Last Name',
+// 		accessor: 'last_name'
+// 	},
+// 	{
+// 		Header : 'Date of  Birth',
+// 		Footer : 'Date of  Birth',
+// 		accessor: 'date_of_birth'
+// 	},
+// 	{
+// 		Header : 'Country',
+// 		Footer : 'Country',
+// 		accessor: 'country',
+// 	},
+// 	{
+// 		Header : 'Phone',
+// 		Footer : 'Phone',
+// 		accessor: 'phone'
+// 	},
+// 	{
+// 		Header : 'Age',
+// 		Footer : 'Phone',
+// 		accessor: 'age',
+// 	},
+// ]
+
 
 export const GROUPED_COLUMNS = [
 	{

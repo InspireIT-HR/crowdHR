@@ -1,13 +1,92 @@
-import React,{useEffect, useState} from 'react';
+import React,{useEffect, useState,useMemo} from 'react';
+import { useTable,useFilters,useGlobalFilter, useSortBy } from 'react-table';
 import {Link} from 'react-router-dom';
 import {Modal} from 'react-bootstrap';
 import {nanoid} from 'nanoid';
 import swal from "sweetalert";
 import { connect,useDispatch } from 'react-redux';
 import { getJobOpenings } from '../../../store/actions/JobsActions';
+import { GlobalFilter } from './GlobalFilter'; 
+import PageTitle from "../../layouts/PageTitle";
 
 const JobLists = (props) => {
 	const dispatch = useDispatch();
+	const columns = useMemo( () => [
+		{
+			Header : 'Customer',
+			Footer : 'Id',
+			accessor: 'customer.logoPath',
+			Cell: props => {
+				return <img width="70" height="30" src={`https://77.79.108.34:63748/CustomerLogos/${props.value}`} alt="company_logo"/>
+			  }
+		},
+		{
+			Header : 'Position',
+			Footer : 'First Name',
+			accessor: 'shortName'
+		},
+		{
+			Header : 'Type',
+			Footer : 'Type',
+			accessor: 'jobType.description'
+		},
+		{
+			Header : 'Status',
+			Footer : 'Date of  Birth',
+			accessor: 'status.description'
+		},
+		{
+			Header : 'Location',
+			Footer : 'Country',
+			accessor: 'locationCity.description',
+		},
+		{
+			Header : 'Posted Date',
+			Footer : 'Phone',
+			accessor: 'createDate',
+			Cell: props => {
+				return new Date(props.value).toLocaleDateString('tr-TR', { year: 'numeric', month: 'numeric', day: 'numeric' })
+			  }
+		},
+		{
+			Header : 'Actions',
+			Footer : '',
+			accessor: '',
+			Cell:props=>{
+				return(
+					<div className="action-buttons d-flex ">
+												<Link to={"#"} className="btn btn-success light mr-2">
+													<svg xmlns="http://www.w3.org/2000/svg" className="svg-main-icon" width="24px" height="24px" viewBox="0 0 32 32" x="0px" y="0px"><g data-name="Layer 21"><path d="M29,14.47A15,15,0,0,0,3,14.47a3.07,3.07,0,0,0,0,3.06,15,15,0,0,0,26,0A3.07,3.07,0,0,0,29,14.47ZM16,21a5,5,0,1,1,5-5A5,5,0,0,1,16,21Z" fill="#000000" fillRule="nonzero"></path><circle cx="16" cy="16" r="3" fill="#000000" fillRule="nonzero"></circle></g></svg>
+												</Link> 
+												<Link to={"#"} className="btn btn-secondary light mr-2"
+													
+												>
+													<svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" className="svg-main-icon">
+														<g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
+															<rect x="0" y="0" width="24" height="24"></rect>
+															<path d="M8,17.9148182 L8,5.96685884 C8,5.56391781 8.16211443,5.17792052 8.44982609,4.89581508 L10.965708,2.42895648 C11.5426798,1.86322723 12.4640974,1.85620921 13.0496196,2.41308426 L15.5337377,4.77566479 C15.8314604,5.0588212 16,5.45170806 16,5.86258077 L16,17.9148182 C16,18.7432453 15.3284271,19.4148182 14.5,19.4148182 L9.5,19.4148182 C8.67157288,19.4148182 8,18.7432453 8,17.9148182 Z" fill="#000000" fillRule="nonzero" transform="translate(12.000000, 10.707409) rotate(-135.000000) translate(-12.000000, -10.707409) "></path>
+															<rect fill="#000000" opacity="0.3" x="5" y="20" width="15" height="2" rx="1"></rect>
+														</g>
+													</svg>
+												</Link>
+												<Link to={"#"} className="btn btn-danger light"
+													
+												>
+													<svg xmlns="http://www.w3.org/2000/svg"  width="24px" height="24px" viewBox="0 0 24 24" version="1.1" className="svg-main-icon">
+														<g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
+															<rect x="0" y="0" width="24" height="24"></rect>
+															<path d="M6,8 L6,20.5 C6,21.3284271 6.67157288,22 7.5,22 L16.5,22 C17.3284271,22 18,21.3284271 18,20.5 L18,8 L6,8 Z" fill="#000000" fillRule="nonzero"></path>
+															<path d="M14,4.5 L14,4 C14,3.44771525 13.5522847,3 13,3 L11,3 C10.4477153,3 10,3.44771525 10,4 L10,4.5 L5.5,4.5 C5.22385763,4.5 5,4.72385763 5,5 L5,5.5 C5,5.77614237 5.22385763,6 5.5,6 L18.5,6 C18.7761424,6 19,5.77614237 19,5.5 L19,5 C19,4.72385763 18.7761424,4.5 18.5,4.5 L14,4.5 Z" fill="#000000" opacity="0.3"></path>
+														</g>
+													</svg>
+												</Link>
+											</div>
+				)
+			}
+		},
+	], [] )
+	
+	
 	//Modal box
 	const [addCard, setAddCard] = useState(false);
 	
@@ -23,7 +102,23 @@ const JobLists = (props) => {
 		useEffect(() => {
 			dispatch(getJobOpenings(props.history));
 		}, []);
-
+		const data = useMemo( () => props.jobList, [] )
+		const tableInstance = useTable({columns,data},
+			useFilters,
+			useGlobalFilter,
+			useSortBy
+		)
+		const { 
+			getTableProps, 
+			getTableBodyProps, 
+			headerGroups,
+			footerGroups,
+			rows, 
+			state,
+			setGlobalFilter,
+			prepareRow,
+		} = tableInstance
+		const {globalFilter} = state;
 	//Add data 
     const [addFormData, setAddFormData ] = useState({
         position:'',
@@ -152,287 +247,333 @@ const JobLists = (props) => {
         
     }
 	return(
-		<>
-			<div className="d-flex align-items-center mb-4 flex-wrap">
-				<h4 className="fs-20 font-w600  me-auto">Job List</h4>
-				<div>
-					<Link to={"#"} className="btn btn-primary me-3 btn-sm" onClick={()=> setAddCard(true)}>
-						<i className="fas fa-plus me-2"></i>Add New Job
-					</Link>
-					<Modal className="modal fade"  show={addCard} onHide={setAddCard} >
-						<div role="document">
-							<div className="">
-								<form >
-									<div className="modal-header">
-										<h4 className="modal-title fs-20">Add Contact</h4>
-										<button type="button" className="btn-close" onClick={()=> setAddCard(false)} data-dismiss="modal"><span></span></button>
-									</div>
-									<div className="modal-body">
-										<i className="flaticon-cancel-12 close" data-dismiss="modal"></i>
-										<div className="add-contact-box">
-											<div className="add-contact-content">
-												<div className="form-group mb-3">
-													<label className="text-black font-w500">Position</label>
-													<div className="contact-name">
-														<input type="text"  className="form-control"  autocomplete="off"
-															name="position" required="required"
-															onChange={handleAddFormChange}
-															placeholder="position"
-														/>
-														<span className="validation-text"></span>
-													</div>
-												</div>
-												<div className="form-group mb-3">
-													<label className="text-black font-w500">Type</label>
-													<div className="contact-name">
-														<input type="text"  className="form-control"  autocomplete="off"
-															name="type" required="required"
-															onChange={handleAddFormChange}
-															placeholder="type"
-														/>
-														<span className="validation-text"></span>
-													</div>
-												</div>
-												<div className="form-group mb-3">
-													<label className="text-black font-w500">Posted Date</label>
-													<div className="contact-name">
-														<input type="text"  className="form-control"  autocomplete="off"
-															name="pdate" required="required"
-															onChange={handleAddFormChange}
-															placeholder="pdate"
-														/>
-														<span className="validation-text"></span>
-													</div>
-												</div>
-												<div className="form-group mb-3">
-													<label className="text-black font-w500">Last Date</label>
-													<div className="contact-name">
-														<input type="text"  className="form-control" autocomplete="off"
-															name="ldate" required="required"
-															onChange={handleAddFormChange}
-															placeholder="ldate"
-														/>
-														<span className="validation-text"></span>
-													</div>
-												</div>
-												<div className="form-group mb-3">
-													<label className="text-black font-w500">Close Date</label>
-													<div className="contact-name">
-														<input type="text"  className="form-control"  autocomplete="off"
-															name="cdate" required="required"
-															onChange={handleAddFormChange}
-															placeholder="cdate"
-														/>
-														<span className="validation-text"></span>
-													</div>
-												</div>											
-												<div className="form-group mb-3">
-													<label className="text-black font-w500">Status</label>
-													<div className="contact-name">
-														<input type="text"  className="form-control" autocomplete="off"
-															name="status" required="required"
-															onChange={handleAddFormChange}
-															placeholder="status"
-														/>
-														<span className="validation-text"></span>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-									<div className="modal-footer">
-										<button type="submit" className="btn btn-success" onClick={handleAddFormSubmit}>Add</button>   
-										<button type="button" onClick={()=> setAddCard(false)} className="btn btn-danger"> <i className="flaticon-delete-1"></i> Discard</button>      
-									</div>
-								</form>
+		<>	
+			<PageTitle activeMenu="Sorting" motherMenu="Table" />
+			<div className="card">
+				<div className="card-body">
+					<div className="table-responsive">
+						<div className="dataTables_wrapper">
+						<GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} />
+							<table {...getTableProps()} className="table dataTable display">
+								<thead>
+								   {headerGroups.map(headerGroup => (
+										<tr {...headerGroup.getHeaderGroupProps()}>
+											{headerGroup.headers.map(column => (
+												<th {...column.getHeaderProps(column.getSortByToggleProps())}>
+													{column.render('Header')}
+											
+													<span className="ml-1">
+														{column.isSorted ? (column.isSortedDesc ?  <i className="fa fa-arrow-down" /> :  <i className="fa fa-arrow-up" /> ) : '' }
+													</span>
+												</th>
+											))}
+										</tr>
+								   ))}
+								</thead> 
+								<tbody {...getTableBodyProps()}>
 								
-							</div>
+									{rows.map((row) => {
+										prepareRow(row)
+										return(
+											<tr {...row.getRowProps()}>
+												{row.cells.map((cell) => {
+													return <td {...cell.getCellProps()}> {cell.render('Cell')} </td>
+												})}
+												
+											</tr>
+										)
+									})}
+								</tbody>
+								{/* This is only for footer if u require */}
+							</table>
 						</div>
-					</Modal>
-					<Modal className="modal fade"  show={editModal} onHide={setEditModal} >
-						<div  role="document">
-							<div>
-								<form >
-									<div className="modal-header">
-										<h4 className="modal-title fs-20">Add Contact</h4>
-										<button type="button" className="btn-close" onClick={()=> setEditModal(false)} data-dismiss="modal"><span></span></button>
-									</div>
-									<div className="modal-body">
-										<i className="flaticon-cancel-12 close" data-dismiss="modal"></i>
-										<div className="add-contact-box">
-											<div className="add-contact-content">
-											  <div className="form-group mb-3">
-													<label className="text-black font-w500">Position</label>
-													<div className="contact-name">
-														<input type="text"  className="form-control"  autocomplete="off"
-															name="position" required="required"
-															value={editFormData.position}
-															onChange={handleEditFormChange}
-															placeholder="position"
-														/>
-														<span className="validation-text"></span>
-													</div>
-												</div>
-												<div className="form-group mb-3">
-													<label className="text-black font-w500">Type</label>
-													<div className="contact-name">
-														<input type="text"  className="form-control"  autocomplete="off"
-															name="type" required="required"
-															value={editFormData.type}
-															onChange={handleEditFormChange}
-															placeholder="type"
-														/>
-														<span className="validation-text"></span>
-													</div>
-												</div>
-												<div className="form-group mb-3">
-													<label className="text-black font-w500">Posted Date</label>
-													<div className="contact-name">
-														<input type="text"  className="form-control"  autocomplete="off"
-															name="pdate" required="required"
-															value={editFormData.pdate}
-															onChange={handleEditFormChange}
-															placeholder="pdate"
-														/>
-														<span className="validation-text"></span>
-													</div>
-												</div>
-												<div className="form-group mb-3">
-													<label className="text-black font-w500">Last Date</label>
-													<div className="contact-name">
-														<input type="text"  className="form-control" autocomplete="off"
-															name="ldate" required="required"
-															value={editFormData.ldate}
-															onChange={handleEditFormChange}
-															placeholder="ldate"
-														/>
-														<span className="validation-text"></span>
-													</div>
-												</div>
-												<div className="form-group mb-3">
-													<label className="text-black font-w500">Close Date</label>
-													<div className="contact-name">
-														<input type="text"  className="form-control"  autocomplete="off"
-															name="cdate" required="required"
-															value={editFormData.cdate}
-															onChange={handleEditFormChange}
-															placeholder="cdate"
-														/>
-														<span className="validation-text"></span>
-													</div>
-												</div>											
-												<div className="form-group mb-3">
-													<label className="text-black font-w500">Status</label>
-													<div className="contact-name">
-														<input type="text"  className="form-control" autocomplete="off"
-															name="status" required="required"
-															value={editFormData.status}
-															onChange={handleEditFormChange}
-															placeholder="status"
-														/>
-														<span className="validation-text"></span>
-													</div>
-												</div>
+					</div>
+				</div>
+			</div>
+		</>
+	)
+	// return(
+	// 	<>
+	// 		<div className="d-flex align-items-center mb-4 flex-wrap">
+	// 			<h4 className="fs-20 font-w600  me-auto">Job List</h4>
+	// 			<div>
+	// 				<Link to={"#"} className="btn btn-primary me-3 btn-sm" onClick={()=> setAddCard(true)}>
+	// 					<i className="fas fa-plus me-2"></i>Add New Job
+	// 				</Link>
+	// 				<Modal className="modal fade"  show={addCard} onHide={setAddCard} >
+	// 					<div role="document">
+	// 						<div className="">
+	// 							<form >
+	// 								<div className="modal-header">
+	// 									<h4 className="modal-title fs-20">Add Contact</h4>
+	// 									<button type="button" className="btn-close" onClick={()=> setAddCard(false)} data-dismiss="modal"><span></span></button>
+	// 								</div>
+	// 								<div className="modal-body">
+	// 									<i className="flaticon-cancel-12 close" data-dismiss="modal"></i>
+	// 									<div className="add-contact-box">
+	// 										<div className="add-contact-content">
+	// 											<div className="form-group mb-3">
+	// 												<label className="text-black font-w500">Position</label>
+	// 												<div className="contact-name">
+	// 													<input type="text"  className="form-control"  autocomplete="off"
+	// 														name="position" required="required"
+	// 														onChange={handleAddFormChange}
+	// 														placeholder="position"
+	// 													/>
+	// 													<span className="validation-text"></span>
+	// 												</div>
+	// 											</div>
+	// 											<div className="form-group mb-3">
+	// 												<label className="text-black font-w500">Type</label>
+	// 												<div className="contact-name">
+	// 													<input type="text"  className="form-control"  autocomplete="off"
+	// 														name="type" required="required"
+	// 														onChange={handleAddFormChange}
+	// 														placeholder="type"
+	// 													/>
+	// 													<span className="validation-text"></span>
+	// 												</div>
+	// 											</div>
+	// 											<div className="form-group mb-3">
+	// 												<label className="text-black font-w500">Posted Date</label>
+	// 												<div className="contact-name">
+	// 													<input type="text"  className="form-control"  autocomplete="off"
+	// 														name="pdate" required="required"
+	// 														onChange={handleAddFormChange}
+	// 														placeholder="pdate"
+	// 													/>
+	// 													<span className="validation-text"></span>
+	// 												</div>
+	// 											</div>
+	// 											<div className="form-group mb-3">
+	// 												<label className="text-black font-w500">Last Date</label>
+	// 												<div className="contact-name">
+	// 													<input type="text"  className="form-control" autocomplete="off"
+	// 														name="ldate" required="required"
+	// 														onChange={handleAddFormChange}
+	// 														placeholder="ldate"
+	// 													/>
+	// 													<span className="validation-text"></span>
+	// 												</div>
+	// 											</div>
+	// 											<div className="form-group mb-3">
+	// 												<label className="text-black font-w500">Close Date</label>
+	// 												<div className="contact-name">
+	// 													<input type="text"  className="form-control"  autocomplete="off"
+	// 														name="cdate" required="required"
+	// 														onChange={handleAddFormChange}
+	// 														placeholder="cdate"
+	// 													/>
+	// 													<span className="validation-text"></span>
+	// 												</div>
+	// 											</div>											
+	// 											<div className="form-group mb-3">
+	// 												<label className="text-black font-w500">Status</label>
+	// 												<div className="contact-name">
+	// 													<input type="text"  className="form-control" autocomplete="off"
+	// 														name="status" required="required"
+	// 														onChange={handleAddFormChange}
+	// 														placeholder="status"
+	// 													/>
+	// 													<span className="validation-text"></span>
+	// 												</div>
+	// 											</div>
+	// 										</div>
+	// 									</div>
+	// 								</div>
+	// 								<div className="modal-footer">
+	// 									<button type="submit" className="btn btn-success" onClick={handleAddFormSubmit}>Add</button>   
+	// 									<button type="button" onClick={()=> setAddCard(false)} className="btn btn-danger"> <i className="flaticon-delete-1"></i> Discard</button>      
+	// 								</div>
+	// 							</form>
+								
+	// 						</div>
+	// 					</div>
+	// 				</Modal>
+	// 				<Modal className="modal fade"  show={editModal} onHide={setEditModal} >
+	// 					<div  role="document">
+	// 						<div>
+	// 							<form >
+	// 								<div className="modal-header">
+	// 									<h4 className="modal-title fs-20">Add Contact</h4>
+	// 									<button type="button" className="btn-close" onClick={()=> setEditModal(false)} data-dismiss="modal"><span></span></button>
+	// 								</div>
+	// 								<div className="modal-body">
+	// 									<i className="flaticon-cancel-12 close" data-dismiss="modal"></i>
+	// 									<div className="add-contact-box">
+	// 										<div className="add-contact-content">
+	// 										  <div className="form-group mb-3">
+	// 												<label className="text-black font-w500">Position</label>
+	// 												<div className="contact-name">
+	// 													<input type="text"  className="form-control"  autocomplete="off"
+	// 														name="position" required="required"
+	// 														value={editFormData.position}
+	// 														onChange={handleEditFormChange}
+	// 														placeholder="position"
+	// 													/>
+	// 													<span className="validation-text"></span>
+	// 												</div>
+	// 											</div>
+	// 											<div className="form-group mb-3">
+	// 												<label className="text-black font-w500">Type</label>
+	// 												<div className="contact-name">
+	// 													<input type="text"  className="form-control"  autocomplete="off"
+	// 														name="type" required="required"
+	// 														value={editFormData.type}
+	// 														onChange={handleEditFormChange}
+	// 														placeholder="type"
+	// 													/>
+	// 													<span className="validation-text"></span>
+	// 												</div>
+	// 											</div>
+	// 											<div className="form-group mb-3">
+	// 												<label className="text-black font-w500">Posted Date</label>
+	// 												<div className="contact-name">
+	// 													<input type="text"  className="form-control"  autocomplete="off"
+	// 														name="pdate" required="required"
+	// 														value={editFormData.pdate}
+	// 														onChange={handleEditFormChange}
+	// 														placeholder="pdate"
+	// 													/>
+	// 													<span className="validation-text"></span>
+	// 												</div>
+	// 											</div>
+	// 											<div className="form-group mb-3">
+	// 												<label className="text-black font-w500">Last Date</label>
+	// 												<div className="contact-name">
+	// 													<input type="text"  className="form-control" autocomplete="off"
+	// 														name="ldate" required="required"
+	// 														value={editFormData.ldate}
+	// 														onChange={handleEditFormChange}
+	// 														placeholder="ldate"
+	// 													/>
+	// 													<span className="validation-text"></span>
+	// 												</div>
+	// 											</div>
+	// 											<div className="form-group mb-3">
+	// 												<label className="text-black font-w500">Close Date</label>
+	// 												<div className="contact-name">
+	// 													<input type="text"  className="form-control"  autocomplete="off"
+	// 														name="cdate" required="required"
+	// 														value={editFormData.cdate}
+	// 														onChange={handleEditFormChange}
+	// 														placeholder="cdate"
+	// 													/>
+	// 													<span className="validation-text"></span>
+	// 												</div>
+	// 											</div>											
+	// 											<div className="form-group mb-3">
+	// 												<label className="text-black font-w500">Status</label>
+	// 												<div className="contact-name">
+	// 													<input type="text"  className="form-control" autocomplete="off"
+	// 														name="status" required="required"
+	// 														value={editFormData.status}
+	// 														onChange={handleEditFormChange}
+	// 														placeholder="status"
+	// 													/>
+	// 													<span className="validation-text"></span>
+	// 												</div>
+	// 											</div>
 												
 												
 												
 																							  
-											</div>
-										</div>
-									</div>
-									<div className="modal-footer">
-										<button type="submit" className="btn btn-primary" onClick={handleEditFormSubmit}>Save</button>  
-										<button type="button" onClick={()=> setEditModal(false)} className="btn btn-danger"> <i className="flaticon-delete-1"></i> Discard</button>      
-									</div>
-								</form>
+	// 										</div>
+	// 									</div>
+	// 								</div>
+	// 								<div className="modal-footer">
+	// 									<button type="submit" className="btn btn-primary" onClick={handleEditFormSubmit}>Save</button>  
+	// 									<button type="button" onClick={()=> setEditModal(false)} className="btn btn-danger"> <i className="flaticon-delete-1"></i> Discard</button>      
+	// 								</div>
+	// 							</form>
 								
-							</div>
-						</div>
-					</Modal>
-					<Link to={"#"} className="btn btn-secondary btn-sm me-3"> <i className="fas fa-envelope"></i></Link>
-					<Link to={"#"} className="btn btn-secondary btn-sm me-3"><i className="fas fa-phone-alt"></i></Link>
-					<Link to={"#"} className="btn btn-secondary btn-sm"><i className="fas fa-info"></i></Link>
-				</div>
-			</div>	
-			<div className="row">
-				<div className="col-xl-12">
-					<div className="table-responsive">
-						<table className="table display mb-4 dataTablesCard job-table table-responsive-xl card-table dataTable no-footer" >
-							<thead>
-								<tr>
-									<th>Customer</th>
-									<th>Position</th>
-									<th>Type</th>
-									<th>Status</th>
-									<th>Location</th>
-									<th>Posted Date</th>							
-									<th>Actions</th>
-								</tr>
-							</thead>
-							<tbody>
-								{props.jobList.map((job,index)=>(
-									<tr key={index}>
-										<td><img width="70" height="30" src={`https://77.79.108.34:63748/CustomerLogos/${job.customer.logoPath}`} alt="company_logo"/></td>
-										<td>{job.shortName}</td>
-										 <td>{job.jobType.description}</td>
-										<td>{job.status.description}</td>
-										<td>{job.locationCity.description}/{job.locationCountry.description}</td>
-										<td>{new Date(job.createDate).toLocaleDateString('tr-TR', { year: 'numeric', month: 'numeric', day: 'numeric' })}</td>
-										<td>
-											<div className="action-buttons d-flex ">
-												<Link to={"#"} className="btn btn-success light mr-2">
-													<svg xmlns="http://www.w3.org/2000/svg" className="svg-main-icon" width="24px" height="24px" viewBox="0 0 32 32" x="0px" y="0px"><g data-name="Layer 21"><path d="M29,14.47A15,15,0,0,0,3,14.47a3.07,3.07,0,0,0,0,3.06,15,15,0,0,0,26,0A3.07,3.07,0,0,0,29,14.47ZM16,21a5,5,0,1,1,5-5A5,5,0,0,1,16,21Z" fill="#000000" fillRule="nonzero"></path><circle cx="16" cy="16" r="3" fill="#000000" fillRule="nonzero"></circle></g></svg>
-												</Link> 
-												<Link to={"#"} className="btn btn-secondary light mr-2"
-													onClick={(event) => handleEditClick(event)}
-												>
-													<svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" className="svg-main-icon">
-														<g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
-															<rect x="0" y="0" width="24" height="24"></rect>
-															<path d="M8,17.9148182 L8,5.96685884 C8,5.56391781 8.16211443,5.17792052 8.44982609,4.89581508 L10.965708,2.42895648 C11.5426798,1.86322723 12.4640974,1.85620921 13.0496196,2.41308426 L15.5337377,4.77566479 C15.8314604,5.0588212 16,5.45170806 16,5.86258077 L16,17.9148182 C16,18.7432453 15.3284271,19.4148182 14.5,19.4148182 L9.5,19.4148182 C8.67157288,19.4148182 8,18.7432453 8,17.9148182 Z" fill="#000000" fillRule="nonzero" transform="translate(12.000000, 10.707409) rotate(-135.000000) translate(-12.000000, -10.707409) "></path>
-															<rect fill="#000000" opacity="0.3" x="5" y="20" width="15" height="2" rx="1"></rect>
-														</g>
-													</svg>
-												</Link>
-												<Link to={"#"} className="btn btn-danger light"
-													onClick={()=>handleDeleteClick()}
-												>
-													<svg xmlns="http://www.w3.org/2000/svg"  width="24px" height="24px" viewBox="0 0 24 24" version="1.1" className="svg-main-icon">
-														<g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
-															<rect x="0" y="0" width="24" height="24"></rect>
-															<path d="M6,8 L6,20.5 C6,21.3284271 6.67157288,22 7.5,22 L16.5,22 C17.3284271,22 18,21.3284271 18,20.5 L18,8 L6,8 Z" fill="#000000" fillRule="nonzero"></path>
-															<path d="M14,4.5 L14,4 C14,3.44771525 13.5522847,3 13,3 L11,3 C10.4477153,3 10,3.44771525 10,4 L10,4.5 L5.5,4.5 C5.22385763,4.5 5,4.72385763 5,5 L5,5.5 C5,5.77614237 5.22385763,6 5.5,6 L18.5,6 C18.7761424,6 19,5.77614237 19,5.5 L19,5 C19,4.72385763 18.7761424,4.5 18.5,4.5 L14,4.5 Z" fill="#000000" opacity="0.3"></path>
-														</g>
-													</svg>
-												</Link>
-											</div>
-										</td>
-									</tr>
-								))}
-							</tbody>	
-						</table>
-					</div>		
-				</div>	
-				<div className="d-flex align-items-center justify-content-between flex-wrap">
-					<div className="sm-mb-0 mb-3">
-						<h5 className="mb-0">Showing 1 to 10 of {props.jobList.length} jobs</h5>
-					</div>
-					<nav>
-						<ul className="pagination pagination-circle">
-							<li className="page-item page-indicator">
-								<Link to={"#"} className="page-link">Prev</Link>
-							</li>
-							<li className="page-item active"><Link to={"#"} className="page-link">1</Link>
-							</li>
-							<li className="page-item page-indicator">
-								<Link to={"#"} className="page-link">Next</Link>
-							</li>
-						</ul>
-					</nav>
-				</div>				
-			</div>		
-		</>
-	)	
+	// 						</div>
+	// 					</div>
+	// 				</Modal>
+	// 				<Link to={"#"} className="btn btn-secondary btn-sm me-3"> <i className="fas fa-envelope"></i></Link>
+	// 				<Link to={"#"} className="btn btn-secondary btn-sm me-3"><i className="fas fa-phone-alt"></i></Link>
+	// 				<Link to={"#"} className="btn btn-secondary btn-sm"><i className="fas fa-info"></i></Link>
+	// 			</div>
+	// 		</div>	
+	// 		<div className="row">
+	// 			<div className="col-xl-12">
+	// 				<div className="table-responsive">
+	// 					<table className="table display mb-4 dataTablesCard job-table table-responsive-xl card-table dataTable no-footer" >
+	// 						<thead>
+	// 							<tr>
+	// 								<th>Customer</th>
+	// 								<th>Position</th>
+	// 								<th>Type</th>
+	// 								<th>Status</th>
+	// 								<th>Location</th>
+	// 								<th>Posted Date</th>							
+	// 								<th>Actions</th>
+	// 							</tr>
+	// 						</thead>
+	// 						<tbody>
+	// 							{props.jobList.map((job,index)=>(
+	// 								<tr key={index}>
+	// 									<td><img width="70" height="30" src={`https://77.79.108.34:63748/CustomerLogos/${job.customer.logoPath}`} alt="company_logo"/></td>
+	// 									<td>{job.shortName}</td>
+	// 									 <td>{job.jobType.description}</td>
+	// 									<td>{job.status.description}</td>
+	// 									<td>{job.locationCity.description}/{job.locationCountry.description}</td>
+	// 									<td>{new Date(job.createDate).toLocaleDateString('tr-TR', { year: 'numeric', month: 'numeric', day: 'numeric' })}</td>
+	// 									<td>
+	// 										<div className="action-buttons d-flex ">
+	// 											<Link to={"#"} className="btn btn-success light mr-2">
+	// 												<svg xmlns="http://www.w3.org/2000/svg" className="svg-main-icon" width="24px" height="24px" viewBox="0 0 32 32" x="0px" y="0px"><g data-name="Layer 21"><path d="M29,14.47A15,15,0,0,0,3,14.47a3.07,3.07,0,0,0,0,3.06,15,15,0,0,0,26,0A3.07,3.07,0,0,0,29,14.47ZM16,21a5,5,0,1,1,5-5A5,5,0,0,1,16,21Z" fill="#000000" fillRule="nonzero"></path><circle cx="16" cy="16" r="3" fill="#000000" fillRule="nonzero"></circle></g></svg>
+	// 											</Link> 
+	// 											<Link to={"#"} className="btn btn-secondary light mr-2"
+													
+	// 											>
+	// 												<svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 24 24" version="1.1" className="svg-main-icon">
+	// 													<g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
+	// 														<rect x="0" y="0" width="24" height="24"></rect>
+	// 														<path d="M8,17.9148182 L8,5.96685884 C8,5.56391781 8.16211443,5.17792052 8.44982609,4.89581508 L10.965708,2.42895648 C11.5426798,1.86322723 12.4640974,1.85620921 13.0496196,2.41308426 L15.5337377,4.77566479 C15.8314604,5.0588212 16,5.45170806 16,5.86258077 L16,17.9148182 C16,18.7432453 15.3284271,19.4148182 14.5,19.4148182 L9.5,19.4148182 C8.67157288,19.4148182 8,18.7432453 8,17.9148182 Z" fill="#000000" fillRule="nonzero" transform="translate(12.000000, 10.707409) rotate(-135.000000) translate(-12.000000, -10.707409) "></path>
+	// 														<rect fill="#000000" opacity="0.3" x="5" y="20" width="15" height="2" rx="1"></rect>
+	// 													</g>
+	// 												</svg>
+	// 											</Link>
+	// 											<Link to={"#"} className="btn btn-danger light"
+													
+	// 											>
+	// 												<svg xmlns="http://www.w3.org/2000/svg"  width="24px" height="24px" viewBox="0 0 24 24" version="1.1" className="svg-main-icon">
+	// 													<g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
+	// 														<rect x="0" y="0" width="24" height="24"></rect>
+	// 														<path d="M6,8 L6,20.5 C6,21.3284271 6.67157288,22 7.5,22 L16.5,22 C17.3284271,22 18,21.3284271 18,20.5 L18,8 L6,8 Z" fill="#000000" fillRule="nonzero"></path>
+	// 														<path d="M14,4.5 L14,4 C14,3.44771525 13.5522847,3 13,3 L11,3 C10.4477153,3 10,3.44771525 10,4 L10,4.5 L5.5,4.5 C5.22385763,4.5 5,4.72385763 5,5 L5,5.5 C5,5.77614237 5.22385763,6 5.5,6 L18.5,6 C18.7761424,6 19,5.77614237 19,5.5 L19,5 C19,4.72385763 18.7761424,4.5 18.5,4.5 L14,4.5 Z" fill="#000000" opacity="0.3"></path>
+	// 													</g>
+	// 												</svg>
+	// 											</Link>
+	// 										</div>
+	// 									</td>
+	// 								</tr>
+	// 							))}
+	// 						</tbody>	
+	// 					</table>
+	// 				</div>		
+	// 			</div>	
+	// 			<div className="d-flex align-items-center justify-content-between flex-wrap">
+	// 				<div className="sm-mb-0 mb-3">
+	// 					<h5 className="mb-0">Showing 1 to 10 of {props.jobList.length} jobs</h5>
+	// 				</div>
+	// 				<nav>
+	// 					<ul className="pagination pagination-circle">
+	// 						<li className="page-item page-indicator">
+	// 							<Link to={"#"} className="page-link">Prev</Link>
+	// 						</li>
+	// 						<li className="page-item active"><Link to={"#"} className="page-link">1</Link>
+	// 						</li>
+	// 						<li className="page-item page-indicator">
+	// 							<Link to={"#"} className="page-link">Next</Link>
+	// 						</li>
+	// 					</ul>
+	// 				</nav>
+	// 			</div>				
+	// 		</div>		
+	// 	</>
+	// )	
 }
 
 const mapStateToProps = (state) => {
