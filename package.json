@@ -1,7 +1,7 @@
 {
   "name": "Jobick",
   "version": "0.1.0",
-  "homepage": "https://jobick.dexignlab.com/react/demo",
+  "homepage": "https://jobick.dexignlab.com/",
   "private": true,
   "dependencies": {
     "@asseinfo/react-kanban": "^2.2.0",

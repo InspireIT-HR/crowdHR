@@ -1,19 +1,36 @@
-import {
-    LOADING_TOGGLE_ACTION,
-    LOGIN_CONFIRMED_ACTION,
-    LOGIN_FAILED_ACTION,
-    LOGOUT_ACTION,
-    SIGNUP_CONFIRMED_ACTION,
-    SIGNUP_FAILED_ACTION,
-} from '../actions/AuthActions';
+// import {
+//     LOADING_TOGGLE_ACTION,
+//     LOGIN_CONFIRMED_ACTION,
+//     LOGIN_FAILED_ACTION,
+//     LOGOUT_ACTION,
+//     SIGNUP_CONFIRMED_ACTION,
+//     SIGNUP_FAILED_ACTION,
+// } from '../actions/AuthActions';
+
+export const SIGNUP_CONFIRMED_ACTION = '[signup action] confirmed signup';
+export const SIGNUP_FAILED_ACTION = '[signup action] failed signup';
+export const LOGIN_CONFIRMED_ACTION = '[login action] confirmed login';
+export const LOGIN_FAILED_ACTION = '[login action] failed login';
+export const LOADING_TOGGLE_ACTION = '[Loading action] toggle loading';
+export const LOGOUT_ACTION = '[Logout action] logout action';
 
 const initialState = {
     auth: {
+        id: '',
+        firstname: '',
+        lastname: '',
+        fullname: '',
+        linkedinPage: '',
         email: '',
-        idToken: '',
-        localId: '',
-        expiresIn: '',
-        refreshToken: '',
+        password: '',
+        emailConfirmed: null,
+        paymentIban: '',
+        roleId: null,
+        gender: null,
+        points: null,
+        phone: '',
+        accountHolderName: null,
+        secondaryEmail: null,
     },
     errorMessage: '',
     successMessage: '',
@@ -45,13 +62,7 @@ export function AuthReducer(state = initialState, action) {
             ...state,
             errorMessage: '',
             successMessage: '',
-            auth: {
-                email: '',
-                idToken: '',
-                localId: '',
-                expiresIn: '',
-                refreshToken: '',
-            },
+            auth: initialState.auth,
         };
     }
 

@@ -5,7 +5,7 @@ import {
     saveTokenInLocalStorage,
     signUp,
 } from '../../services/AuthService';
-
+import swal from 'sweetalert';
 
 export const SIGNUP_CONFIRMED_ACTION = '[signup action] confirmed signup';
 export const SIGNUP_FAILED_ACTION = '[signup action] failed signup';
@@ -35,7 +35,7 @@ export function signupAction(email, password, history) {
 }
 
 export function logout(history) {
-    localStorage.removeItem('userDetails');
+    localStorage.removeItem('token');
     history.push('/login');
     return {
         type: LOGOUT_ACTION,
@@ -46,18 +46,29 @@ export function loginAction(email, password, history) {
     return (dispatch) => {
         login(email, password)
             .then((response) => {
-                saveTokenInLocalStorage(response.data);
-                runLogoutTimer(
-                    dispatch,
-                    response.data.expiresIn * 1000,
-                    history,
-                );
-                dispatch(loginConfirmedAction(response.data));
-				history.push('/dashboard');                
+                if (response.data) {
+                    saveTokenInLocalStorage(generateBasicAuth(email, password));
+                    dispatch(loginConfirmedAction(response.data));
+                    history.push('/dashboard');
+                } else {
+                    swal({
+                        title: 'Login Error',
+                        text: 'Email or password is wrong',
+                        icon: 'error'
+                    });
+                }
+                // saveTokenInLocalStorage(response.data);
+                // runLogoutTimer(
+                //     dispatch,
+                //     response.data.expiresIn * 1000,
+                //     history,
+                // );
+                // dispatch(loginConfirmedAction(response.data));
+				// history.push('/dashboard');                
             })
             .catch((error) => {
-				//console.log(error);
-                const errorMessage = formatError(error.response.data);
+				console.log(error);
+                const errorMessage = formatError(error);
                 dispatch(loginFailedAction(errorMessage));
             });
     };
@@ -96,4 +107,8 @@ export function loadingToggleAction(status) {
         type: LOADING_TOGGLE_ACTION,
         payload: status,
     };
+}
+
+export function generateBasicAuth(email, password) {
+    return btoa(`${email}:${password}`);
 }

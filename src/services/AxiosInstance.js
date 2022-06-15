@@ -6,9 +6,7 @@ const axiosInstance = axios.create({
 });
 
 axiosInstance.interceptors.request.use((config) => {
-    const state = store.getState();
-    // const token = state.auth.auth.idToken;
-    const token = 'VVhUZWFtQG91dGxvb2suY29tOjEyMzQ1';
+    const token = localStorage.getItem('token');
     config.params = config.params || {};
     config.headers['Authorization'] = `Basic ${token}`;
     return config;
