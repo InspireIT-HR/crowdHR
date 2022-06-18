@@ -1,7 +1,32 @@
-{
-    "title": "Merhaba hoşgeldiniz",
-    "description": {
-      "part1": "trtrrrrr.",
-      "part2": "rtrrtrtrt."
+{  
+    "sidebar": {
+      "dashboard": "Ana sayfa",
+      "definitions": {
+        "def":"Tanımlar",
+        "educationLevels":"Eğitim Seviyeleri",
+        "jobTypes":"İş Tanımları",
+        "jobStatuses":"İş Durumları",
+        "jobIndustries":"Endüstriler",
+        "jobLocations":"Lokasyonlar",
+        "jobSalaryTypes":"Maaş Türleri",
+        "candidateStatuses":"Aday Durumları"
+      },
+      "users": {
+        "user":"Kullanıcılar",
+        "userList":"Kullanıcı Listesi"
+      },
+      "customers":{
+        "cus":"Müşteriler",
+        "customerList":"Müşteri Listesi"
+      },
+      "jobs":{
+        "job":"İşler",
+        "jobOpenings":"Açık İşler",
+        "addJob":"İş İlanı Aç"
+      },
+      "candidates":{
+        "cand":"Adaylar",
+        "jobCandidates":"Aday Listesi"
+      }
     }
   }

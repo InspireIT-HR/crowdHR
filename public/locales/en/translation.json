@@ -1,7 +1,32 @@
-{
-    "title": "Welcome to react using react-i18next",
-    "description": {
-      "part1": "To get started, edit <1>src/App.js</1> and save to reload.",
-      "part2": "Switch language between english and german using buttons above."
+{  
+  "sidebar": {
+    "dashboard": "Dashboard",
+    "definitions": {
+      "def":"Definitions",
+      "educationLevels":"Education Levels",
+      "jobTypes":"Job Types",
+      "jobStatuses":"Job Statuses",
+      "jobIndustries":"Job Industries",
+      "jobLocations":"Job Locations",
+      "jobSalaryTypes":"Job Salary Types",
+      "candidateStatuses":"Candidate Statuses"
+    },
+    "users": {
+      "user":"Users",
+      "userList":"User List"
+    },
+    "customers":{
+      "cus":"Customers",
+      "customerList":"Customer List"
+    },
+    "jobs":{
+      "job":"Jobs",
+      "jobOpenings":"Job Openings",
+      "addJob":"Create Job"
+    },
+    "candidates":{
+      "cand":"Candidates",
+      "jobCandidates":"Candidate List"
     }
   }
+}

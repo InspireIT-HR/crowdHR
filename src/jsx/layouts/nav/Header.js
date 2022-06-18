@@ -9,6 +9,7 @@ import { ThemeContext } from "../../../context/ThemeContext";
 import profile from "../../../images/profile/pic1.jpg";
 import avatar from "../../../images/avatar/1.jpg";
 import { Dropdown } from "react-bootstrap";
+
 const { Option } = components;
 const IconOption = props => (
   <Option {...props}>
@@ -96,9 +97,9 @@ const Header = ({ onNote }) => {
 					style={{ textTransform: "capitalize" }}
 				  >
 					{finalName.join(" ").length === 0
-					  ? "Dashboard"
+					  ? t("sidebar.dashboard")
 					  : finalName.join(" ") === "dashboard dark"
-					  ? "Dashboard"
+					  ? t("sidebar.dashboard")
 					  : finalName.join(" ")}
 				</div>
 				<div className="nav-item d-flex align-items-center">
