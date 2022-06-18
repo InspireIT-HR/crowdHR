@@ -7,6 +7,7 @@ import {store} from './store/store';
 import reportWebVitals from "./reportWebVitals";
 import SimpleReactLightbox from "simple-react-lightbox";
 import  ThemeContext  from "./context/ThemeContext"; 
+import './i18n';
 
 ReactDOM.render(
 	<React.StrictMode>

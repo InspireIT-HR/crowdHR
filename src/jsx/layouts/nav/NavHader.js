@@ -7,7 +7,7 @@ import Logo from "../../../images/CrowdHRs Logo.png"
 
 const NavHader = () => {
   const [toggle, setToggle] = useState(false);
-  const { navigationHader, openMenuToggle, background } = useContext(
+  const { navigationHader, openMenuToggle, background,language } = useContext(
     ThemeContext
   );
   return (

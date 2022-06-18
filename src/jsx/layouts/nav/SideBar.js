@@ -11,6 +11,7 @@ import { ThemeContext } from "../../../context/ThemeContext";
 import LogoutPage from './Logout';
 /// Image
 import profile from "../../../images/profile/pic1.jpg";
+import { useTranslation} from 'react-i18next';
 
 class MM extends Component {
 	componentDidMount() {
@@ -36,6 +37,7 @@ const SideBar = () => {
     sidebarposition,
     headerposition,
     sidebarLayout,
+    language
   } = useContext(ThemeContext);
   useEffect(() => {
     var btn = document.querySelector(".nav-control");
@@ -44,7 +46,7 @@ const SideBar = () => {
       return aaa.classList.toggle("menu-toggle");
     }
     btn.addEventListener("click", toggleFunc);
-	
+	console.log(language)
 	//sidebar icon Heart blast
 		var handleheartBlast = document.querySelector('.heart');
         function heartBlast() {
@@ -53,6 +55,7 @@ const SideBar = () => {
         handleheartBlast.addEventListener('click', heartBlast);
 	
   }, []);
+  const { t } = useTranslation();
   //let scrollPosition = useScrollPosition();
   // For scroll
 	const [hideOnScroll, setHideOnScroll] = useState(true)
@@ -262,7 +265,7 @@ const SideBar = () => {
               <span className="nav-text">Dashboard</span>
             </Link>
             <ul >
-              <li><Link className={`${path === "dashboard" ? "mm-active" : ""}`} to="/dashboard"> Dashboard Light</Link></li>
+              <li><Link className={`${path === "dashboard" ? "mm-active" : ""}`} to="/dashboard"> {t('description.part2')}</Link></li>
               <li><Link className={`${path === "dashboard-dark" ? "mm-active" : ""}`} to="/dashboard-dark"> Dashboard Dark</Link></li>
               <li><Link className={`${path === "search-jobs" ? "mm-active" : ""}`} to="/search-jobs"> Jobs</Link></li>
               <li><Link className={`${path === "applications" ? "mm-active" : ""}`} to="/applications"> Applications</Link></li>

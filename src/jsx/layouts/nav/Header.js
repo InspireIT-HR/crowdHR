@@ -1,15 +1,63 @@
-import React,{useState} from "react";
-
+import React,{useState,useContext} from "react";
+import Select,{ components } from "react-select";
 import { Link } from "react-router-dom";
+import { useTranslation} from 'react-i18next';
 /// Scroll
 import PerfectScrollbar from "react-perfect-scrollbar";
-
+import { ThemeContext } from "../../../context/ThemeContext";
 /// Image
 import profile from "../../../images/profile/pic1.jpg";
 import avatar from "../../../images/avatar/1.jpg";
 import { Dropdown } from "react-bootstrap";
-
+const { Option } = components;
+const IconOption = props => (
+  <Option {...props}>
+    <img
+      src={require('../../../icons/flags/' + props.data.icon)}
+      style={{ width: 30 }}
+      alt={props.data.label}
+    />
+    {props.data.label}
+  </Option>
+);
 const Header = ({ onNote }) => {
+  const {
+    body,
+    sideBarOption,
+    layoutOption,
+    backgroundOption,
+    sidebarposition,
+    headerPositions,
+    containerPosition,
+    fontFamily,
+    changePrimaryColor,
+	changeNavigationHader,
+    sideBarStyle,
+    changeSideBarStyle,
+    changeSideBarPostion,
+    sidebarpositions,
+    changeHeaderPostion,
+    headerposition,
+    changeSideBarLayout,
+    sidebarLayout,
+    colors,
+	chnageHaderColor,
+    chnageSidebarColor,
+    changeBackground,
+    background,
+    changeContainerPosition,
+    containerPosition_,
+	setDemoTheme,
+	language,
+	changeLanguage,
+	languageOption
+  } = useContext(ThemeContext);
+  const { t, i18n } = useTranslation();
+	const changeThemeLanguage=(e)=>{
+		changeLanguage(e);
+		i18n.changeLanguage(e.value);
+		console.log('language changedd : '+ e.value)
+	}
   const [searchBut, setSearchBut] = useState(false);	
   var path = window.location.pathname.split("/");
   var name = path[path.length - 1].split("-");
@@ -69,12 +117,13 @@ const Header = ({ onNote }) => {
 				</div>
             </div>
             <ul className="navbar-nav header-right main-notification">
-				{/* <li className="nav-item">
-					<div className="input-group search-area">
-						<input type="text" className="form-control" placeholder="Search here..." />
-						<span className="input-group-text"><Link to={"#"}><i className="flaticon-381-search-2"></i></Link></span>
-					</div>
-				</li> */}
+				<li className="nav-item">
+        <Select defaultValue={language} onChange={(e) => changeThemeLanguage(e)}
+														options={languageOption}
+                            isSearchable={false}
+                            components={{ Option: IconOption }}
+													/>
+				</li>
 				<Dropdown
 					as="li"
 					className="nav-item dropdown notification_dropdown "

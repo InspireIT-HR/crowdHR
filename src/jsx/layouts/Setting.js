@@ -10,9 +10,16 @@ import demo3 from '../../images/demo/pic3.jpg';
 import demo4 from '../../images/demo/pic4.jpg';
 import demo5 from '../../images/demo/pic5.jpg';
 import demo6 from '../../images/demo/pic6.jpg';
+import { useTranslation} from 'react-i18next';
 
 
 const Setting = () => {
+	const { t, i18n } = useTranslation();
+	const changeThemeLanguage=(e)=>{
+		changeLanguage(e);
+		i18n.changeLanguage(e.value);
+		console.log('language changedd : '+ e.value)
+	}
   const [settingToggle, setSettingToggle] = useState(false);
   const [demoToggle, setDemoToggle] = useState(false);
   const {
@@ -41,7 +48,10 @@ const Setting = () => {
     background,
     changeContainerPosition,
     containerPosition_,
-	setDemoTheme
+	setDemoTheme,
+	language,
+	changeLanguage,
+	languageOption
   } = useContext(ThemeContext);
   return (
 	<>
@@ -62,6 +72,9 @@ const Setting = () => {
 								<div className="card-action card-tabs mt-3 mt-sm-0">
 									<Nav as="ul" className="nav nav-tabs" role="tablist">
 										<Nav.Item as="li" className="nav-item">
+											<Nav.Link as="a" className="nav-link c-pointer" data-toggle="tab" eventKey="Language" role="tab"> Language </Nav.Link>
+										</Nav.Item>
+										<Nav.Item as="li" className="nav-item">
 											<Nav.Link as="a" className="nav-link c-pointer" data-toggle="tab" eventKey="Theme" role="tab"> Theme </Nav.Link>
 										</Nav.Item>
 										<Nav.Item as="li" className="nav-item">
@@ -73,6 +86,23 @@ const Setting = () => {
 									</Nav>
 								</div>
 								<Tab.Content className="">
+								<Tab.Pane className="tab-pane fade " eventKey="Language">
+										<div className="admin-settings">
+											<div className="row">
+												<div className="col-sm-12">
+													<p>Background</p>{" "}
+													<Select defaultValue={language} onChange={(e) => changeThemeLanguage(e)}
+														options={languageOption}
+														style={{
+															lineHeight: "40px",
+															color: "#7e7e7e",
+															paddingLeft: " 15px",
+														}}
+													/>
+												</div>
+											</div>
+										</div>
+									</Tab.Pane>
 									<Tab.Pane className="tab-pane fade " eventKey="Theme">
 										<div className="admin-settings">
 											<div className="row">

@@ -20,7 +20,12 @@ const ThemeContextProvider = (props) => {
     const body = document.querySelector("body");
     const [windowWidth, setWindowWidth] = useState(0);
     const [windowHeight, setWindowHeight] = useState(0);
+    const [language,setLanguage]=useState({value:"tr",label:"Türkçe"});
 
+    const languageOption = [
+      { value: "tr", label: "Türkçe",icon:"tr.svg" },
+      { value: "en", label: "English",icon:"us.svg" },
+    ];
   // layout
   const layoutOption = [
     { value: "vertical", label: "Vertical" },
@@ -79,6 +84,9 @@ const ThemeContextProvider = (props) => {
     { value: "opensans", label: "Open Sans" },
     { value: "HelveticaNeue", label: "HelveticaNeue" },
   ];
+  const changeLanguage = (name) => {
+    setLanguage(name);
+  };
   const changePrimaryColor = (name) => {
 	setPrimaryColor(name);
     body.setAttribute("data-primary", name);
@@ -238,6 +246,8 @@ const ThemeContextProvider = (props) => {
   return (
     <ThemeContext.Provider
       value={{
+        language,
+        languageOption,
         body,
         sideBarOption,
         layoutOption,
@@ -273,6 +283,7 @@ const ThemeContextProvider = (props) => {
         menuToggle,
         openMenuToggle,
         changeBackground,
+        changeLanguage,
         background,
         containerPosition_,
 		setDemoTheme,
