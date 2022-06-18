@@ -96,24 +96,17 @@ const Header = ({ onNote }) => {
 					className="dashboard_bar"
 					style={{ textTransform: "capitalize" }}
 				  >
-					{finalName.join(" ").length === 0
-					  ? t("sidebar.dashboard")
-					  : finalName.join(" ") === "dashboard dark"
-					  ? t("sidebar.dashboard")
-					  : finalName.join(" ")}
+            {t("sidebar.dashboard")}
 				</div>
 				<div className="nav-item d-flex align-items-center">
 					<div className="input-group search-area">
 						<input type="text" 
 							className={`form-control ${searchBut ? "active" : ""}`}
-							placeholder="Search here" 
+							placeholder={t("navbar.search")} 
 						/>
 						<span className="input-group-text" onClick={() => setSearchBut(!searchBut)}>
 							<Link to={"#"}><i className="flaticon-381-search-2"></i></Link>
 						</span>
-					</div>
-					<div className="plus-icon">
-						<Link to={"#"}><i className="fas fa-plus"></i></Link>
 					</div>
 				</div>
             </div>
@@ -261,7 +254,7 @@ const Header = ({ onNote }) => {
                   </Link>
                 </Dropdown.Menu>
               </Dropdown>
-			  <Dropdown
+			  {/* <Dropdown
                 as="li"
                 className="nav-item  notification_dropdown "
               >
@@ -379,13 +372,13 @@ const Header = ({ onNote }) => {
                     </div>
                   </PerfectScrollbar>
                 </Dropdown.Menu>
-              </Dropdown>
-				<li className="nav-item header-profile">
-				{/* <Link to={"#"} className="btn btn-primary d-sm-inline-block d-none">Generate Report<i className="las la-signal ms-3 scale5"></i></Link> */}
+              </Dropdown> */}
+				{/* <li className="nav-item header-profile">
+				<Link to={"#"} className="btn btn-primary d-sm-inline-block d-none">Generate Report<i className="las la-signal ms-3 scale5"></i></Link>
 					<Link to={"#"} className="nav-link" role="button" data-bs-toggle="dropdown">
 						<img src={profile} width="20" alt=""/>
 					</Link>
-				</li>
+				</li> */}
             </ul>
           </div>
         </nav>

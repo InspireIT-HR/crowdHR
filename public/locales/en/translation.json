@@ -1,32 +1,63 @@
-{  
+{
+  "login": {
+    "emailOrUsername": "Username or email",
+    "password": "Password",
+    "loginButton": "Login",
+    "rememberMe": "Remember me",
+    "forgetPassword": "Forget password",
+    "introText": "Hello , welcome to application!",
+    "register": "Create account"
+  },
+  "register": {
+    "username": "Username",
+    "name": "Name",
+    "surname": "Surname",
+    "phone": "Mobile",
+    "internalPhone": "Phone",
+    "email": "Email",
+    "address": "Address",
+    "password": "Password",
+    "makeRegister": "Save",
+    "verifyEmail": "Verification mail has been sent your email!"
+  },
+  "forgetPass": {
+    "passReset": "Reset password",
+    "fillEmail": "Please insert registered email",
+    "send": "Send"
+  },
+  "navbar": {
+    "search": "Search in site.."
+  },
   "sidebar": {
+    "profile": "Profile",
+    "logout": "Logout",
     "dashboard": "Dashboard",
     "definitions": {
-      "def":"Definitions",
-      "educationLevels":"Education Levels",
-      "jobTypes":"Job Types",
-      "jobStatuses":"Job Statuses",
-      "jobIndustries":"Job Industries",
-      "jobLocations":"Job Locations",
-      "jobSalaryTypes":"Job Salary Types",
-      "candidateStatuses":"Candidate Statuses"
+      "def": "Definitions",
+      "educationLevels": "Education Levels",
+      "jobTypes": "Job Types",
+      "jobStatuses": "Job Statuses",
+      "jobIndustries": "Job Industries",
+      "jobLocations": "Job Locations",
+      "jobSalaryTypes": "Job Salary Types",
+      "candidateStatuses": "Candidate Statuses"
     },
     "users": {
-      "user":"Users",
-      "userList":"User List"
+      "user": "Users",
+      "userList": "User List"
     },
-    "customers":{
-      "cus":"Customers",
-      "customerList":"Customer List"
+    "customers": {
+      "cus": "Customers",
+      "customerList": "Customer List"
     },
-    "jobs":{
-      "job":"Jobs",
-      "jobOpenings":"Job Openings",
-      "addJob":"Create Job"
+    "jobs": {
+      "job": "Jobs",
+      "jobOpenings": "Job Openings",
+      "addJob": "Create Job"
     },
-    "candidates":{
-      "cand":"Candidates",
-      "jobCandidates":"Candidate List"
+    "candidates": {
+      "cand": "Candidates",
+      "jobCandidates": "Candidate List"
     }
   }
 }

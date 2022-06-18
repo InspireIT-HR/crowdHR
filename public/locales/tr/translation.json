@@ -1,32 +1,63 @@
-{  
-    "sidebar": {
-      "dashboard": "Ana sayfa",
-      "definitions": {
-        "def":"Tanımlar",
-        "educationLevels":"Eğitim Seviyeleri",
-        "jobTypes":"İş Tanımları",
-        "jobStatuses":"İş Durumları",
-        "jobIndustries":"Endüstriler",
-        "jobLocations":"Lokasyonlar",
-        "jobSalaryTypes":"Maaş Türleri",
-        "candidateStatuses":"Aday Durumları"
-      },
-      "users": {
-        "user":"Kullanıcılar",
-        "userList":"Kullanıcı Listesi"
-      },
-      "customers":{
-        "cus":"Müşteriler",
-        "customerList":"Müşteri Listesi"
-      },
-      "jobs":{
-        "job":"İşler",
-        "jobOpenings":"Açık İşler",
-        "addJob":"İş İlanı Aç"
-      },
-      "candidates":{
-        "cand":"Adaylar",
-        "jobCandidates":"Aday Listesi"
-      }
+{
+  "login": {
+    "emailOrUsername": "Kullanıcı adı veya email",
+    "password": "Şifre",
+    "loginButton": "Giriş yap",
+    "rememberMe": "Beni hatırla",
+    "forgetPassword": "Şifremi unuttum",
+    "introText": "Merhaba uygulamaya hoş geldiniz!",
+    "register": "Hesap oluştur"
+  },
+  "register": {
+    "username": "Kullanıcı adı",
+    "name": "Ad",
+    "surname": "Soyad",
+    "phone": "Cep telefonu",
+    "internalPhone": "İş telefonu",
+    "email": "Email",
+    "address": "Adres",
+    "password": "Şifre",
+    "makeRegister": "Kaydet",
+    "verifyEmail": "Eposta doğrulama için eposta adresinize mail gönderildi!"
+  },
+  "forgetPass": {
+    "passReset": "Şifre yenileme",
+    "fillEmail": "Lütfen kayıtlı mail adresinizi girin",
+    "send": "Gönder"
+  },
+  "navbar": {
+    "search": "Sitede arayın.."
+  },
+  "sidebar": {
+    "profile": "Profilim",
+    "logout": "Çıkış yap",
+    "dashboard": "Ana sayfa",
+    "definitions": {
+      "def": "Tanımlar",
+      "educationLevels": "Eğitim Seviyeleri",
+      "jobTypes": "İş Tanımları",
+      "jobStatuses": "İş Durumları",
+      "jobIndustries": "Endüstriler",
+      "jobLocations": "Lokasyonlar",
+      "jobSalaryTypes": "Maaş Türleri",
+      "candidateStatuses": "Aday Durumları"
+    },
+    "users": {
+      "user": "Kullanıcılar",
+      "userList": "Kullanıcı Listesi"
+    },
+    "customers": {
+      "cus": "Müşteriler",
+      "customerList": "Müşteri Listesi"
+    },
+    "jobs": {
+      "job": "İşler",
+      "jobOpenings": "Açık İşler",
+      "addJob": "İş İlanı Aç"
+    },
+    "candidates": {
+      "cand": "Adaylar",
+      "jobCandidates": "Aday Listesi"
     }
   }
+}
