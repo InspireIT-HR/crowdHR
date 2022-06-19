@@ -4,6 +4,7 @@ import thunk from 'redux-thunk';
 import { AuthReducer } from './reducers/AuthReducer';
 import todoReducers from './reducers/Reducers';
 import {JobsReducer} from './reducers/JobsReducer';
+import { CandidateStatusReducer } from './reducers/definitions/CandidateStatusReducer';
 
 //import { reducer as reduxFormReducer } from 'redux-form';
 const middleware = applyMiddleware(thunk);
@@ -16,8 +17,8 @@ const reducers = combineReducers({
     auth: AuthReducer,
 		todoReducers,
 	//form: reduxFormReducer,
-    jobs:JobsReducer	
-	
+    jobs:JobsReducer,
+    candidateStatus: CandidateStatusReducer,
 });
 
 //const store = createStore(rootReducers);

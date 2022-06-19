@@ -23,7 +23,7 @@ import Companies from "./components/Dashboard/Companies";
 import Task from "./components/Dashboard/Task";
 
 //Jobs
-import JobLists from "./components/Jobs/JobLists";
+import JobOpenings from "./components/Jobs/JobOpenings";
 import JobView from "./components/Jobs/JobView";
 import JobApplication from "./components/Jobs/JobApplication";
 import ApplyJob from "./components/Jobs/ApplyJob";
@@ -116,6 +116,9 @@ import Error503 from "./pages/Error503";
 import Setting from "./layouts/Setting";
 import { ThemeContext } from "../context/ThemeContext";
 
+/// Definitions
+import CandidateStatuses from "./pages/definitions/candidateStatuses";
+
 const Markup = () => {
   const { menuToggle } = useContext(ThemeContext);
   const routes = [
@@ -130,14 +133,13 @@ const Markup = () => {
     { url: "companies", component: Companies },
     { url: "task", component: Task },
 	
-	//Jobs
-    { url: "job-list", component: JobLists },
+	  //Jobs
+    { url: "job-openings", component: JobOpenings },
     { url: "job-view", component: JobView },
     { url: "job-application", component: JobApplication },
     { url: "apply-job", component: ApplyJob },
     { url: "new-job", component: NewJob },
     { url: "user-profile", component: UserProfile },
-	
 
     /// Apps
     { url: "app-profile", component: AppProfile },
@@ -182,10 +184,10 @@ const Markup = () => {
     { url: "map-jqvmap", component: JqvMap },
     { url: "uc-lightgallery", component: Lightgallery },
 
-	///Redux
-	{ url: "todo", component: Todo },
-	//{ url: "redux-form", component: ReduxForm },
-   // { url: "redux-wizard", component: WizardForm },
+	  ///Redux
+	  { url: "todo", component: Todo },
+	  //{ url: "redux-form", component: ReduxForm },
+    // { url: "redux-wizard", component: WizardForm },
 	
     /// Widget
     { url: "widget-basic", component: Widget },
@@ -208,7 +210,7 @@ const Markup = () => {
     { url: "form-validation-jquery", component: jQueryValidation },
 
     /// table
-	{ url: 'table-filtering', component: FilteringTable },
+	  { url: 'table-filtering', component: FilteringTable },
     { url: 'table-sorting', component: SortingTable },
     { url: "table-datatable-basic", component: DataTable },
     { url: "table-bootstrap-basic", component: BootstrapTable },
@@ -223,6 +225,10 @@ const Markup = () => {
     { url: "page-error-404", component: Error404 },
     { url: "page-error-500", component: Error500 },
     { url: "page-error-503", component: Error503 },
+
+    /// Definitions
+    { url: 'definitions', component: CandidateStatuses },
+    { url: 'definitions/candidate-statuses', component: CandidateStatuses },
   ];
   let path = window.location.pathname;
   path = path.split("/");

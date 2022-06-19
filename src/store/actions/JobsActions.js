@@ -5,12 +5,11 @@ import {
 
 
 
-export function getJobOpenings(history) {
+export function getJobOpenings() {
   return (dispatch) => {
     getJobOpeningsService()
     .then((response) => {
       dispatch(getJobOpeningsAction(response.data));
-      history.push('/job-list')
     })
     .catch((err) => {
       console.log(err.message);

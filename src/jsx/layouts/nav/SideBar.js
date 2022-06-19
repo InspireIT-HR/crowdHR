@@ -79,8 +79,11 @@ const SideBar = () => {
       "companies",
       "task",
     ],
+    definitions = [
+      "candidate-statuses"
+    ],
     job = [
-      "job-list",
+      // "job-openings",
       "job-view",
       "job-application",
       "apply-job",
@@ -123,23 +126,8 @@ const SideBar = () => {
       "chart-apexchart",
     ],
     bootstrap = [
-      "ui-accordion",
-      "ui-badge",
       "ui-alert",
-      "ui-button",
-      "ui-modal",
-      "ui-button-group",
-      "ui-list-group",
-      "ui-media-object",
-      "ui-card",
-      "ui-carousel",
-      "ui-dropdown",
-      "ui-popover",
-      "ui-progressbar",
-      "ui-tab",
-      "ui-typography",
-      "ui-pagination",
-      "ui-grid",
+      "job-openings",
     ],
     plugins = [
       "uc-select2",
@@ -262,12 +250,20 @@ const SideBar = () => {
               <span className="nav-text">{t("sidebar.dashboard")}</span>
             </Link>
           </li> {/* Dashboard */}
-          <li className={`${job.includes(path) ? "mm-active" : ""}`}>
+          <li className={`${definitions.includes(path) ? "mm-active" : ""}`}>
             <Link className="has-arrow" to="#">
               <i className="flaticon-093-waving"></i>
               <span className="nav-text">{t("sidebar.definitions.def")}</span>
             </Link>
             <ul>
+              <li>
+                <Link
+                  className={`${path === "candidate-statuses" ? "mm-active" : ""}`}
+                  to="/definitions/candidate-statuses"
+                >
+                  {t("sidebar.definitions.candidateStatuses")}
+                </Link>
+              </li>
               <li>
                 <Link
                   className={`${path === "" ? "mm-active" : ""}`}
@@ -316,14 +312,6 @@ const SideBar = () => {
                   {t("sidebar.definitions.jobSalaryTypes")}
                 </Link>
               </li>
-              <li>
-                <Link
-                  className={`${path === "user-profile" ? "mm-active" : ""}`}
-                  to="/user-profile"
-                >
-                  {t("sidebar.definitions.candidateStatuses")}
-                </Link>
-              </li>
             </ul>
           </li>{/* Definitions */}
           <li className={`${app.includes(path) ? "mm-active" : ""}`}>
@@ -366,8 +354,8 @@ const SideBar = () => {
             <ul>
               <li>
                 <Link
-                  className={`${path === "job-list" ? "mm-active" : ""}`}
-                  to="/job-list"
+                  className={`${path === "job-openings" ? "mm-active" : ""}`}
+                  to="/job-openings"
                 >
                   {t("sidebar.jobs.jobOpenings")}
                 </Link>
