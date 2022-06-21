@@ -1,14 +1,14 @@
 import { useEffect, useMemo } from 'react';
 import { connect, useDispatch } from 'react-redux';
 import { useFilters, useGlobalFilter, usePagination, useSortBy, useTable } from 'react-table';
-import { getCandidateStatuses } from '../../../../store/actions/definitions/CandidateStatusActions';
+import { getEducationLevels } from '../../../../store/actions/definitions/EducationLevelActions';
 import { GlobalFilter } from '../../../components/Jobs/GlobalFilter';
 import PageTitle from '../../../layouts/PageTitle';
 
 import EditIconSvg from '../../../../svg/edit-icon';
 import TrashIconSvg from '../../../../svg/trash-icon';
 
-const CandidateStatuses = (props) => {
+const EducationLevels = (props) => {
   const dispatch = useDispatch();
 
   const columns = useMemo(() => [
@@ -42,19 +42,19 @@ const CandidateStatuses = (props) => {
   ], []);
 
   useEffect(() => {
-    dispatch(getCandidateStatuses());
+    dispatch(getEducationLevels());
   }, [dispatch]);
 
   const data = useMemo(() => props.data, [props.data]);
 
   const tableInstance = useTable(
-    { 
-      columns, 
+    {
+      columns,
       data,
       initialState: {
         pageIndex: 0,
       }
-    }, 
+    },
     useFilters,
     useGlobalFilter,
     useSortBy,
@@ -93,10 +93,10 @@ const CandidateStatuses = (props) => {
                   {headerGroups.map((headerGroup) => (
                     <tr {...headerGroup.getHeaderGroupProps()}>
                       {headerGroup.headers.map((column) => (
-                        <th {...(column.sortable ? 
-                            column.getHeaderProps(column.getSortByToggleProps()) :
-                            column.getHeaderProps()
-                          )}>
+                        <th {...(column.sortable ?
+                          column.getHeaderProps(column.getSortByToggleProps()) :
+                          column.getHeaderProps()
+                        )}>
                           {column.render('Header')}
 
                           <span className="ml-1">
@@ -132,11 +132,11 @@ const CandidateStatuses = (props) => {
                 </span>
                 <span className="table-index">
                   Go to page : {' '}
-                  <input 
-                    type="number" 
+                  <input
+                    type="number"
                     className="ml-2"
                     defaultValue={pageIndex + 1}
-                    onChange = {(e) => {
+                    onChange={(e) => {
                       const pageNumber = e.target.value ? Number(e.target.value) - 1 : 0;
                       gotoPage(pageNumber);
                     }}
@@ -173,8 +173,8 @@ const CandidateStatuses = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    data: state.candidateStatus.items
+    data: state.educationLevel.items
   }
 }
 
-export default connect(mapStateToProps)(CandidateStatuses);
+export default connect(mapStateToProps)(EducationLevels);

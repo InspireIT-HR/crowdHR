@@ -13,6 +13,8 @@ import LogoutPage from "./Logout";
 import profile from "../../../images/profile/pic1.jpg";
 import { useTranslation } from "react-i18next";
 
+import { routes } from '../../../jsx/routes';
+
 class MM extends Component {
   componentDidMount() {
     this.$el = this.el;
@@ -45,14 +47,14 @@ const SideBar = () => {
       return aaa.classList.toggle("menu-toggle");
     }
     btn.addEventListener("click", toggleFunc);
-    console.log(language);
+    // console.log(language);
     //sidebar icon Heart blast
     var handleheartBlast = document.querySelector(".heart");
     function heartBlast() {
       return handleheartBlast.classList.toggle("heart-blast");
     }
     handleheartBlast.addEventListener("click", heartBlast);
-  }, []);
+  }, [language]);
   const { t } = useTranslation();
   //let scrollPosition = useScrollPosition();
   // For scroll
@@ -68,102 +70,7 @@ const SideBar = () => {
   let path = window.location.pathname;
   path = path.split("/");
   path = path[path.length - 1];
-  /// Active menu
-  let deshBoard = [
-      "",
-      "dashboard-dark",
-      "search-jobs",
-      "applications",
-      "my-profile",
-      "statistics",
-      "companies",
-      "task",
-    ],
-    definitions = [
-      "candidate-statuses"
-    ],
-    job = [
-      // "job-openings",
-      "job-view",
-      "job-application",
-      "apply-job",
-      "new-job",
-      "user-profile",
-    ],
-    app = [
-      "app-profile",
-      "post-details",
-      "app-calender",
-      "email-compose",
-      "email-inbox",
-      "email-read",
-      "ecom-product-grid",
-      "ecom-product-list",
-      "ecom-product-order",
-      "ecom-checkout",
-      "ecom-invoice",
-      "ecom-customers",
-      "post-details",
-      "ecom-product-detail",
-    ],
-    email = ["email-compose", "email-inbox", "email-read"],
-    shop = [
-      "ecom-product-grid",
-      "ecom-product-list",
-      "ecom-product-list",
-      "ecom-product-order",
-      "ecom-checkout",
-      "ecom-invoice",
-      "ecom-customers",
-      "ecom-product-detail",
-    ],
-    charts = [
-      "chart-rechart",
-      "chart-flot",
-      "chart-chartjs",
-      "chart-chartist",
-      "chart-sparkline",
-      "chart-apexchart",
-    ],
-    bootstrap = [
-      "ui-alert",
-      "job-openings",
-    ],
-    plugins = [
-      "uc-select2",
-      "uc-sweetalert",
-      "uc-toastr",
-      "uc-noui-slider",
-      "map-jqvmap",
-      "uc-lightgallery",
-    ],
-    redux = ["redux-form", "redux-wizard", "todo"],
-    widget = ["widget-basic"],
-    forms = [
-      "form-element",
-      "form-wizard",
-      "form-editor-summernote",
-      "form-pickers",
-      "form-validation-jquery",
-    ],
-    table = ["table-bootstrap-basic", "table-datatable-basic"],
-    pages = [
-      "page-register",
-      "page-login",
-      "page-lock-screen",
-      "page-error-400",
-      "page-error-403",
-      "page-error-404",
-      "page-error-500",
-      "page-error-503",
-    ],
-    error = [
-      "page-error-400",
-      "page-error-403",
-      "page-error-404",
-      "page-error-500",
-      "page-error-503",
-    ];
+  
   return (
     <div
       className={`dlabnav ${iconHover} ${
@@ -244,158 +151,33 @@ const SideBar = () => {
           </Dropdown.Menu>
         </Dropdown>
         <MM className="metismenu" id="menu">
-          <li className={`${deshBoard.includes(path) ? "mm-active" : ""}`}>
-            <Link to="dashboard" className="ai-icon">
-              <i className="flaticon-025-dashboard"></i>
-              <span className="nav-text">{t("sidebar.dashboard")}</span>
-            </Link>
-          </li> {/* Dashboard */}
-          <li className={`${definitions.includes(path) ? "mm-active" : ""}`}>
-            <Link className="has-arrow" to="#">
-              <i className="flaticon-093-waving"></i>
-              <span className="nav-text">{t("sidebar.definitions.def")}</span>
-            </Link>
-            <ul>
-              <li>
-                <Link
-                  className={`${path === "candidate-statuses" ? "mm-active" : ""}`}
-                  to="/definitions/candidate-statuses"
-                >
-                  {t("sidebar.definitions.candidateStatuses")}
+          {routes.map((route, i) => {
+            return (
+              <li key={i} className={path === path.startsWith(route.url) ? 'mm-active' : ''}>
+                <Link className={route.children.length > 0 ? 'has-arrow ai-icon' : 'ai-icon'} to={`/${route.url}`}>
+                  <i className={route.icon}></i>
+                  <span className="nav-text">
+                    {t(route.title)}
+                  </span>
                 </Link>
+                {route.children.length > 0 && (
+                  <ul>
+                    {route.children.map((child, j) => (
+                      <li key={`${i}-${j}`}>
+                        <Link
+                          className={child.url.endsWith(path) ? 'mm-active' : ''}
+                          to={`/${route.url}/${child.url}`}
+                        >
+                          {t(child.title)}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </li>
-              <li>
-                <Link
-                  className={`${path === "" ? "mm-active" : ""}`}
-                  to=""
-                >
-                  {t("sidebar.definitions.educationLevels")}
-                </Link>
-              </li>
-              <li>
-                <Link
-                  className={`${path === "job-view" ? "mm-active" : ""}`}
-                  to="/job-view"
-                >
-                  {t("sidebar.definitions.jobTypes")}
-                </Link>
-              </li>
-              <li>
-                <Link
-                  className={`${path === "job-application" ? "mm-active" : ""}`}
-                  to="/job-application"
-                >
-                  {t("sidebar.definitions.jobStatuses")}
-                </Link>
-              </li>
-              <li>
-                <Link
-                  className={`${path === "apply-job" ? "mm-active" : ""}`}
-                  to="/apply-job"
-                >
-                   {t("sidebar.definitions.jobIndustries")}
-                </Link>
-              </li>
-              <li>
-                <Link
-                  className={`${path === "new-job" ? "mm-active" : ""}`}
-                  to="/new-job"
-                >
-                  {t("sidebar.definitions.jobLocations")}
-                </Link>
-              </li>
-              <li>
-                <Link
-                  className={`${path === "user-profile" ? "mm-active" : ""}`}
-                  to="/user-profile"
-                >
-                  {t("sidebar.definitions.jobSalaryTypes")}
-                </Link>
-              </li>
-            </ul>
-          </li>{/* Definitions */}
-          <li className={`${app.includes(path) ? "mm-active" : ""}`}>
-            <Link className="has-arrow ai-icon" to="#">
-              <i className="flaticon-050-info"></i>
-              <span className="nav-text">{t("sidebar.users.user")}</span>
-            </Link>
-            <ul>
-              <li>
-                <Link
-                  className={`${path === "app-profile" ? "mm-active" : ""}`}
-                  to="/app-profile"
-                >
-                  {t("sidebar.users.userList")}
-                </Link>
-              </li>
-            </ul>
-          </li>{/* Users */}
-          <li className={`${charts.includes(path) ? "mm-active" : ""}`}>
-            <Link className="has-arrow ai-icon" to="#">
-              <i className="flaticon-041-graph"></i>
-              <span className="nav-text">{t("sidebar.customers.cus")}</span>
-            </Link>
-            <ul>
-              <li>
-                <Link
-                  className={`${path === "chart-rechart" ? "mm-active" : ""}`}
-                  to="/chart-rechart"
-                >
-                  {t("sidebar.customers.customerList")}
-                </Link>
-              </li>
-            </ul>
-          </li>{/* Customers */}
-          <li className={`${bootstrap.includes(path) ? "mm-active" : ""}`}>
-            <Link className="has-arrow ai-icon" to="#">
-              <i className="flaticon-086-star"></i>
-              <span className="nav-text">{t("sidebar.jobs.job")}</span>
-            </Link>
-            <ul>
-              <li>
-                <Link
-                  className={`${path === "job-openings" ? "mm-active" : ""}`}
-                  to="/job-openings"
-                >
-                  {t("sidebar.jobs.jobOpenings")}
-                </Link>
-              </li>
-              <li>
-                <Link
-                  className={`${path === "ui-alert" ? "mm-active" : ""}`}
-                  to="/ui-alert"
-                >
-                  {t("sidebar.jobs.addJob")}
-                </Link>
-              </li>
-            </ul>
-          </li>{/* Jobs */}
-          <li className={`${plugins.includes(path) ? "mm-active" : ""}`}>
-            <Link className="has-arrow ai-icon" to="#">
-              <i className="flaticon-045-heart"></i>
-              <span className="nav-text">{t("sidebar.candidates.cand")}</span>
-            </Link>
-            <ul>
-              <li>
-                <Link
-                  className={`${path === "uc-select2" ? "mm-active" : ""}`}
-                  to="/uc-select2"
-                >
-                 {t("sidebar.candidates.jobCandidates")}
-                </Link>
-              </li>
-            </ul>
-          </li>{/* Candidates */}
+            )
+          })}
         </MM>
-        <div className="plus-box">
-          <p className="fs-14 font-w600 mb-2">
-            Let Jobick Managed
-            <br />
-            Your Resume Easily
-            <br />
-          </p>
-          <p>Lorem ipsum dolor sit amet</p>
-        </div>
         <div className="copyright">
           <p>
             <strong>Jobick Job Admin</strong> © 2022 All Rights Reserved

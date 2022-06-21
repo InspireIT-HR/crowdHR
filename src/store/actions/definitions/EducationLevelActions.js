@@ -1,18 +1,18 @@
 import axios from '../../../services/AxiosInstance';
-import types from './CandidateStatusTypes';
+import types from './EducationLevelTypes';
 import swal from 'sweetalert';
 
-export function getCandidateStatuses () {
+export function getEducationLevels () {
   return (dispatch) => {
     dispatch({
-      type: types.GET_CANDIDATE_STATUSES_PENDING,
+      type: types.GET_EDUCATION_LEVELS_PENDING,
     });
 
-    axios.get('/CandidateStatus')
+    axios.get('/EducationLevels')
     .then((response) => {
       dispatch({
-        type: types.GET_CANDIDATE_STATUSES_FULLFILLED,
-        payload: response.data
+        type: types.GET_EDUCATION_LEVELS_FULLFILLED,
+        payload: response.data,
       });
     })
     .catch((err) => {
@@ -21,10 +21,11 @@ export function getCandidateStatuses () {
         text: err.message,
         icon: 'error'
       });
+
       dispatch({
-        type: types.GET_CANDIDATE_STATUSES_REJECTED,
+        type: types.GET_EDUCATION_LEVELS_REJECTED,
         payload: err.message,
-      })
-    });
+      });
+    })
   }
 }
