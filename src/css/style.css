@@ -37842,8 +37842,7 @@ code {
   color-color: #6e6e6e;
 }
 
-.table th,
-.table td {
+.table th {
   border-color: #f5f5f5;
   padding: 0.9375rem 0.625rem;
 }

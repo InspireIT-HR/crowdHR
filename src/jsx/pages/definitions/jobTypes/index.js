@@ -1,16 +1,15 @@
-import { useEffect, useMemo } from 'react';
-import { connect, useDispatch } from 'react-redux';
-import { getCandidateStatuses } from '../../../../store/actions/definitions/CandidateStatusActions';
+import { useEffect, useMemo } from "react";
+import { connect, useDispatch } from "react-redux"
+import { getJobTypes } from "../../../../store/actions/definitions/JobTypeActions";
+import EditIconSvg from "../../../../svg/edit-icon";
+import TrashIconSvg from "../../../../svg/trash-icon";
+import DefaultTable from "../../../components/table/DefaultTable";
 
-import EditIconSvg from '../../../../svg/edit-icon';
-import TrashIconSvg from '../../../../svg/trash-icon';
-import DefaultTable from '../../../components/table/DefaultTable';
-
-const CandidateStatuses = (props) => {
+const JobTypes = (props) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getCandidateStatuses());
+    dispatch(getJobTypes());
   }, [dispatch]);
 
   const columns = useMemo(() => [
@@ -49,14 +48,14 @@ const CandidateStatuses = (props) => {
     data={data}
     columns={columns}
     motherMenu="sidebar.definitions.def"
-    activeMenu="sidebar.definitions.candidateStatuses"
+    activeMenu="sidebar.definitions.jobTypes"
   />
 }
 
 const mapStateToProps = (state) => {
   return {
-    data: state.candidateStatus.items
+    data: state.jobType.items
   }
 }
 
-export default connect(mapStateToProps)(CandidateStatuses);
+export default connect(mapStateToProps)(JobTypes);

@@ -5,6 +5,7 @@ import { AuthReducer } from './reducers/AuthReducer';
 import {JobsReducer} from './reducers/JobsReducer';
 import { CandidateStatusReducer } from './reducers/definitions/CandidateStatusReducer';
 import { EducationLevelReducer } from './reducers/definitions/EducationLevelReducer';
+import { JobTypeReducer } from './reducers/definitions/JobTypesReducer';
 
 //import { reducer as reduxFormReducer } from 'redux-form';
 const middleware = applyMiddleware(thunk);
@@ -19,6 +20,7 @@ const reducers = combineReducers({
     jobs:JobsReducer,
     candidateStatus: CandidateStatusReducer,
     educationLevel: EducationLevelReducer,
+    jobType: JobTypeReducer,
 });
 
 //const store = createStore(rootReducers);

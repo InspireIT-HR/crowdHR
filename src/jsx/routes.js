@@ -12,6 +12,7 @@ import RechartJs from "./components/charts/rechart";
 import JobOpenings from "./components/Jobs/JobOpenings";
 import UiAlert from "./components/bootstrap/Alert";
 import Select2 from "./components/PluginsMenu/Select2/Select2";
+import jobTypes from "./pages/definitions/jobTypes";
 
 export const routes = [
   {
@@ -39,8 +40,8 @@ export const routes = [
       },
       {
         title: 'sidebar.definitions.jobTypes',
-        url: 'job-view',
-        component: JobView,
+        url: 'job-types',
+        component: jobTypes,
       },
       {
         title: 'sidebar.definitions.jobStatuses',

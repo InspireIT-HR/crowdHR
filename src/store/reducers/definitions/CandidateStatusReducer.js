@@ -1,4 +1,4 @@
-import types from '../../actions/definitions/CandidateStatusTypes';
+import types from '../../types/CandidateStatusTypes';
 
 const initialState = {
   items: [],

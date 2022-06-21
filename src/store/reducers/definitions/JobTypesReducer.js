@@ -1,4 +1,4 @@
-import types from '../../types/EducationLevelTypes';
+import types from '../../types/JobTypeTypes';
 
 const initialState = {
   items: [],
@@ -6,23 +6,23 @@ const initialState = {
   error: '',
 };
 
-export function EducationLevelReducer (state = initialState, action) {
+export function JobTypeReducer (state = initialState, action) {
   switch (action.type) {
-    case types.GET_EDUCATION_LEVELS_PENDING:
+    case types.GET_JOB_TYPES_PENDING:
       return {
         ...state,
         items: [],
         loading: true,
         error: '',
       };
-    case types.GET_EDUCATION_LEVELS_FULLFILLED:
+    case types.GET_JOB_TYPES_FULLFILLED:
       return {
         ...state,
         items: action.payload,
         loading: false,
         error: '',
       };
-    case types.GET_EDUCATION_LEVELS_REJECTED:
+    case types.GET_JOB_TYPES_REJECTED:
       return {
         ...state,
         items: [],

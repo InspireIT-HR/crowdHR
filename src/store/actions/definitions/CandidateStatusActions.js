@@ -1,5 +1,5 @@
 import axios from '../../../services/AxiosInstance';
-import types from './CandidateStatusTypes';
+import types from '../../types/CandidateStatusTypes';
 import swal from 'sweetalert';
 
 export function getCandidateStatuses () {

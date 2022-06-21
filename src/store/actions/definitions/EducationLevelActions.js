@@ -1,5 +1,5 @@
 import axios from '../../../services/AxiosInstance';
-import types from './EducationLevelTypes';
+import types from '../../types/EducationLevelTypes';
 import swal from 'sweetalert';
 
 export function getEducationLevels () {
