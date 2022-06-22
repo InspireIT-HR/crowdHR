@@ -2,17 +2,16 @@ import Home from "./components/Dashboard/Home";
 import CandidateStatuses from "./pages/definitions/candidateStatuses";
 import EducationLevels from "./pages/definitions/educationLevels";
 
-import JobView from "./components/Jobs/JobView";
 import JobApplication from "./components/Jobs/JobApplication";
 import ApplyJob from "./components/Jobs/ApplyJob";
 import NewJob from "./components/Jobs/NewJob";
 import UserProfile from "./components/Jobs/UserProfile";
 import AppProfile from "./components/AppsMenu/AppProfile/AppProfile";
 import RechartJs from "./components/charts/rechart";
-import JobOpenings from "./components/Jobs/JobOpenings";
 import UiAlert from "./components/bootstrap/Alert";
 import Select2 from "./components/PluginsMenu/Select2/Select2";
 import jobTypes from "./pages/definitions/jobTypes";
+import JobOpenings from "./pages/jobs/jobOpenings";
 
 export const routes = [
   {

@@ -1,12 +1,11 @@
 import React, { useState } from 'react'
 import { connect, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom'
-import { loadingToggleAction,loginAction,
-} from '../../store/actions/AuthActions';
 
 // image
 import logo from "../../images/CrowdHRs Logo.png";
 import loginbg from "../../images/pic1.png";
+import { login } from '../../store/auth';
 
 function Login (props) {
   const [email, setEmail] = useState('demo@example.com');
@@ -32,8 +31,7 @@ function Login (props) {
         if (error) {
 			return ;
 		}
-		dispatch(loadingToggleAction(true));	
-        dispatch(loginAction(email, password, props.history));
+		dispatch(login({ email, password }, props.history));
     }
 
   return (

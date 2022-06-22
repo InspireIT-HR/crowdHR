@@ -2,7 +2,6 @@ import React,{ useEffect, useMemo } from 'react';
 import { useTable, useFilters, useGlobalFilter, useSortBy } from 'react-table';
 import { Link } from 'react-router-dom';
 import { connect,useDispatch } from 'react-redux';
-import { getJobOpenings } from '../../../store/actions/JobsActions';
 import { GlobalFilter } from './GlobalFilter'; 
 import PageTitle from "../../layouts/PageTitle";
 
@@ -77,7 +76,7 @@ const JobLists = (props) => {
 	], [] )
 
 	useEffect(() => {
-		dispatch(getJobOpenings());
+		// dispatch(getJobOpenings());
 	}, [dispatch]);
 	const data = useMemo( () => props.jobList, [props.jobList] )
 	const tableInstance = useTable({columns,data},

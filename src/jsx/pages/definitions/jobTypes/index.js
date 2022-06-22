@@ -1,12 +1,15 @@
 import { useEffect, useMemo } from "react";
-import { connect, useDispatch } from "react-redux"
-import { getJobTypes } from "../../../../store/actions/definitions/JobTypeActions";
+import { useDispatch, useSelector } from "react-redux"
+import withReducer from "../../../../store/withReducer";
+import reducer from './store';
 import EditIconSvg from "../../../../svg/edit-icon";
 import TrashIconSvg from "../../../../svg/trash-icon";
 import DefaultTable from "../../../components/table/DefaultTable";
+import { getJobTypes, selectJobTypes } from "./store/jobTypeSlice";
 
 const JobTypes = (props) => {
   const dispatch = useDispatch();
+  const data = useSelector(selectJobTypes);
 
   useEffect(() => {
     dispatch(getJobTypes());
@@ -42,8 +45,6 @@ const JobTypes = (props) => {
     }
   ], []);
 
-  const data = useMemo(() => props.data, [props.data]);
-
   return <DefaultTable
     data={data}
     columns={columns}
@@ -52,10 +53,4 @@ const JobTypes = (props) => {
   />
 }
 
-const mapStateToProps = (state) => {
-  return {
-    data: state.jobType.items
-  }
-}
-
-export default connect(mapStateToProps)(JobTypes);
+export default withReducer('jobTypeApp', reducer)(JobTypes);

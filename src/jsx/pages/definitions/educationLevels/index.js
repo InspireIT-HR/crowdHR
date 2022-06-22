@@ -1,13 +1,16 @@
 import { useEffect, useMemo } from 'react';
-import { connect, useDispatch } from 'react-redux';
-import { getEducationLevels } from '../../../../store/actions/definitions/EducationLevelActions';
+import { useDispatch, useSelector } from 'react-redux';
+import withReducer from '../../../../store/withReducer';
+import reducer from './store';
 
 import EditIconSvg from '../../../../svg/edit-icon';
 import TrashIconSvg from '../../../../svg/trash-icon';
 import DefaultTable from '../../../components/table/DefaultTable';
+import { getEducationLevels, selectEducationLevels } from './store/educationLevelSlice';
 
 const EducationLevels = (props) => {
   const dispatch = useDispatch();
+  const data = useSelector(selectEducationLevels);
 
   useEffect(() => {
     dispatch(getEducationLevels());
@@ -44,8 +47,6 @@ const EducationLevels = (props) => {
   ], []);
 
 
-  const data = useMemo(() => props.data, [props.data]);
-
   return <DefaultTable
     data={data}
     columns={columns}
@@ -54,10 +55,4 @@ const EducationLevels = (props) => {
   />
 }
 
-const mapStateToProps = (state) => {
-  return {
-    data: state.educationLevel.items
-  }
-}
-
-export default connect(mapStateToProps)(EducationLevels);
+export default withReducer('educationLevelApp', reducer)(EducationLevels);

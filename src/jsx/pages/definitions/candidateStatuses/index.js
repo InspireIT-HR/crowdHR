@@ -1,13 +1,16 @@
 import { useEffect, useMemo } from 'react';
-import { connect, useDispatch } from 'react-redux';
-import { getCandidateStatuses } from '../../../../store/actions/definitions/CandidateStatusActions';
+import { useDispatch, useSelector } from 'react-redux';
+import withReducer from '../../../../store/withReducer';
+import reducer from './store';
 
 import EditIconSvg from '../../../../svg/edit-icon';
 import TrashIconSvg from '../../../../svg/trash-icon';
 import DefaultTable from '../../../components/table/DefaultTable';
+import { getCandidateStatuses, selectCandidateStatuses } from './store/candidateStatusSlice';
 
 const CandidateStatuses = (props) => {
   const dispatch = useDispatch();
+  const data = useSelector(selectCandidateStatuses);
 
   useEffect(() => {
     dispatch(getCandidateStatuses());
@@ -43,8 +46,6 @@ const CandidateStatuses = (props) => {
     }
   ], []);
 
-  const data = useMemo(() => props.data, [props.data]);
-
   return <DefaultTable
     data={data}
     columns={columns}
@@ -53,10 +54,5 @@ const CandidateStatuses = (props) => {
   />
 }
 
-const mapStateToProps = (state) => {
-  return {
-    data: state.candidateStatus.items
-  }
-}
 
-export default connect(mapStateToProps)(CandidateStatuses);
+export default withReducer('candidateStatusApp', reducer)(CandidateStatuses);
