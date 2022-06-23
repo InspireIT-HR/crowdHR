@@ -1,38 +1,55 @@
 import { createSlice, createEntityAdapter } from '@reduxjs/toolkit';
+import axios from '../../../../../services/axios';
+import { showError } from '../../../../helpers/notificationHelper';
+
+export const getJobStatuses = () => (dispatch, getState) => {
+  dispatch(setJobOpeningsLoading(true));
+  
+  axios.get('/JobStatus')
+  .then((response) => {
+    dispatch(setJobStatuses(response.data));
+    dispatch(setJobOpeningsLoading(false));
+  })
+  .catch((err) => {
+    dispatch(setJobOpeningsLoading(false));
+    showError(err.message);
+  });
+}
 
 const jobStatusesAdapter = createEntityAdapter({});
 
-export const { selectAll: selectJobStatuses, selectById: selectJobStatusesById } = jobStatusesAdapter.getSelectors(
-  (state) => state.jobStatusApp.items
+export const { 
+  selectAll: selectJobStatuses, 
+  selectById: selectJobStatusesById 
+} = jobStatusesAdapter.getSelectors(
+  (state) => state.jobStatusApp.jobStatuses
 );
 
 const initialState = {
-  searchText: '',
-  jobStatusDialog: {
-    type: 'new',
-    open: false,
-    data: null,
-  },
+  loading: false,
 };
 
 const JobStatusSlice = createSlice({
-  name: 'jobStatusApp/items',
+  name: 'jobStatusApp/jobStatuses',
   initialState: jobStatusesAdapter.getInitialState(initialState),
   reducers: {
-    setJobStatusSearchText: {
-      reducer: (state, action) => {
-        state.searchText = action.payload;
-      },
-      prepare: (event) => ({ payload: event.target.value || ''}),
+    setJobStatuses: jobStatusesAdapter.setAll,
+    addJobStatus: jobStatusesAdapter.addOne,
+    updateJobStatus: jobStatusesAdapter.upsertOne,
+    removeJobStatus: jobStatusesAdapter.removeOne,
+    setJobOpeningsLoading: (state, action) => {
+      state.loading = action.payload;
     },
-    setJobStatuses: (state, action) => jobStatusesAdapter.setAll(state, action.payload),
-    addJobStatus: (state, action) => jobStatusesAdapter.addOne(state, action.payload),
-    updateJobStatus: (state, action) => jobStatusesAdapter.upsertOne(state, action.payload),
-    setInitialJobStatuses: (state, action) => jobStatusesAdapter.getInitialState(initialState),
   },
   extraReducers: {}
 });
 
-export const { setJobStatusSearchText, setJobStatuses, addJobStatus, updateJobStatus, setInitialJobStatuses } = JobStatusSlice.actions;
+export const { 
+  setJobStatuses, 
+  addJobStatus, 
+  updateJobStatus, 
+  removeJobStatus,
+  setJobOpeningsLoading, 
+} = JobStatusSlice.actions;
 
 export default JobStatusSlice.reducer;

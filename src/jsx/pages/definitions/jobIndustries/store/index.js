@@ -1,8 +1,8 @@
 import { combineReducers } from '@reduxjs/toolkit';
-import jobStatuses from './jobStatusSlice';
+import jobIndustries from './jobIndustriesSlice';
 
 const reducer = combineReducers({
-  jobStatuses,
+  jobIndustries,
 });
 
 export default reducer;

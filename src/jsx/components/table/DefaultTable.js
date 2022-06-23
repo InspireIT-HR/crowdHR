@@ -46,12 +46,12 @@ const DefaultTable = (props) => {
 
   return (
     <>
-      <PageTitle motherMenu={t(motherMenu)} activeMenu={t(activeMenu)} />
+      {props.usePageTitle && <PageTitle motherMenu={t(motherMenu)} activeMenu={t(activeMenu)} />}
       <div className="card">
         <div className="card-body">
           <div className="table-responsive">
             <div className="dataTables_wrapper">
-              <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} />
+              {props.useFilter && <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} />}
               <table {...getTableProps()} className="table  display">
                 <thead>
                   {headerGroups.map((headerGroup) => (

@@ -1,6 +1,6 @@
 import { createEntityAdapter, createSlice } from '@reduxjs/toolkit';
 import axios from '../../../../../services/axios';
-import swal from 'sweetalert';
+import { showError } from '../../../../helpers/notificationHelper';
 
 export const getCandidateStatuses = () => (dispatch, getState) => {
   dispatch(setCandidateStatusesLoading(true));
@@ -12,12 +12,7 @@ export const getCandidateStatuses = () => (dispatch, getState) => {
   })
   .catch((err) => {
     dispatch(setCandidateStatusesLoading(false));
-    console.log(err.message);
-    swal({
-      title: 'Fetch Error',
-      text: err.message,
-      icon: 'error',
-    });
+    showError(err.message);
   });
 }
 

@@ -1,6 +1,6 @@
 import { createEntityAdapter, createSlice } from '@reduxjs/toolkit';
 import axios from '../../../../../services/axios';
-import swal from 'sweetalert';
+import { showError } from '../../../../helpers/notificationHelper';
 
 export const getEducationLevels = () => (dispatch, getState) => {
   dispatch(setEducationLevelsLoading(true));
@@ -12,12 +12,7 @@ export const getEducationLevels = () => (dispatch, getState) => {
   })
   .catch((err) => {
     dispatch(setEducationLevelsLoading(false));
-    console.log(err.message);
-    swal({
-      title: 'Fetch Error',
-      text: err.message,
-      icon: 'error',
-    });
+    showError(err.message);
   });
 }
 

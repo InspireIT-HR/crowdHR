@@ -2,9 +2,6 @@ import Home from "./components/Dashboard/Home";
 import CandidateStatuses from "./pages/definitions/candidateStatuses";
 import EducationLevels from "./pages/definitions/educationLevels";
 
-import JobApplication from "./components/Jobs/JobApplication";
-import ApplyJob from "./components/Jobs/ApplyJob";
-import NewJob from "./components/Jobs/NewJob";
 import UserProfile from "./components/Jobs/UserProfile";
 import AppProfile from "./components/AppsMenu/AppProfile/AppProfile";
 import RechartJs from "./components/charts/rechart";
@@ -12,6 +9,9 @@ import UiAlert from "./components/bootstrap/Alert";
 import Select2 from "./components/PluginsMenu/Select2/Select2";
 import jobTypes from "./pages/definitions/jobTypes";
 import JobOpenings from "./pages/jobs/jobOpenings";
+import jobStatuses from "./pages/definitions/jobStatuses";
+import jobIndustries from "./pages/definitions/jobIndustries";
+import jobLocations from "./pages/definitions/jobLocations";
 
 export const routes = [
   {
@@ -45,17 +45,17 @@ export const routes = [
       {
         title: 'sidebar.definitions.jobStatuses',
         url: 'job-application',
-        component: JobApplication,
+        component: jobStatuses,
       },
       {
         title: 'sidebar.definitions.jobIndustries',
-        url: 'apply-job',
-        component: ApplyJob,
+        url: 'job-industries',
+        component: jobIndustries,
       },
       {
         title: 'sidebar.definitions.jobLocations',
-        url: 'new-job',
-        component: NewJob,
+        url: 'job-locations',
+        component: jobLocations,
       },
       {
         title: 'sidebar.definitions.jobSalaryTypes',

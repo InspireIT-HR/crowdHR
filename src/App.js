@@ -12,11 +12,11 @@ import "./css/style.css";
 import { checkAutoLogin } from './store/auth';
 
 
-const SignUp = lazy(() => import('./jsx/pages/Registration'));
-const ForgotPassword = lazy(() => import('./jsx/pages/ForgotPassword'));
+const SignUp = lazy(() => import('./jsx/pages/auth/Registration'));
+const ForgotPassword = lazy(() => import('./jsx/pages/auth/ForgotPassword'));
 const Login = lazy(() => {
     return new Promise(resolve => {
-    setTimeout(() => resolve(import('./jsx/pages/Login')), 500);
+    setTimeout(() => resolve(import('./jsx/pages/auth/Login')), 500);
   });
 });
 

@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 // image
-import logo from "../../images/logo-full.png";
+import logo from "../../../images/logo-full.png";
 const ForgotPassword = ({ history }) => {
   const onSubmit = (e) => {
     e.preventDefault();

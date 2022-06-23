@@ -1,18 +1,20 @@
-import { useEffect, useMemo } from "react";
-import { useDispatch, useSelector } from "react-redux"
-import withReducer from "../../../../store/withReducer";
+import { useEffect, useMemo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import withReducer from '../../../../store/withReducer';
 import reducer from './store';
-import EditIconSvg from "../../../../svg/edit-icon";
-import TrashIconSvg from "../../../../svg/trash-icon";
-import DefaultTable from "../../../components/table/DefaultTable";
-import { getJobTypes, selectJobTypes } from "./store/jobTypeSlice";
 
-const JobTypes = (props) => {
+import EditIconSvg from '../../../../svg/edit-icon';
+import TrashIconSvg from '../../../../svg/trash-icon';
+import DefaultTable from '../../../components/table/DefaultTable';
+
+import { getJobIndustries, selectJobIndustries } from './store/jobIndustriesSlice';
+
+const JobIndustries = (props) => {
   const dispatch = useDispatch();
-  const data = useSelector(selectJobTypes);
+  const data = useSelector(selectJobIndustries);
 
   useEffect(() => {
-    dispatch(getJobTypes());
+    dispatch(getJobIndustries());
   }, [dispatch]);
 
   const columns = useMemo(() => [
@@ -49,10 +51,10 @@ const JobTypes = (props) => {
     data={data}
     columns={columns}
     motherMenu="sidebar.definitions.def"
-    activeMenu="sidebar.definitions.jobTypes"
+    activeMenu="sidebar.definitions.jobIndustries"
     usePageTitle
     useFilter
   />
 }
 
-export default withReducer('jobTypeApp', reducer)(JobTypes);
+export default withReducer('jobIndustryApp', reducer)(JobIndustries);

@@ -51,6 +51,8 @@ const CandidateStatuses = (props) => {
     columns={columns}
     motherMenu="sidebar.definitions.def"
     activeMenu="sidebar.definitions.candidateStatuses"
+    usePageTitle
+    useFilter
   />
 }
 

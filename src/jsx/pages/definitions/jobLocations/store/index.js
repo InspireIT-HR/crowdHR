@@ -1,8 +1,10 @@
 import { combineReducers } from '@reduxjs/toolkit';
-import jobStatuses from './jobStatusSlice';
+import cities from './citiesSlice';
+import countries from './countriesSlice';
 
 const reducer = combineReducers({
-  jobStatuses,
+  countries,
+  cities,
 });
 
 export default reducer;

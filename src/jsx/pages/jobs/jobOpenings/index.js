@@ -86,6 +86,8 @@ const JobOpenings = (props) => {
     columns={columns}
     motherMenu="sidebar.jobs.job"
     activeMenu="sidebar.jobs.jobOpenings"
+    usePageTitle
+    useFilter
   />
 }
 

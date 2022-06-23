@@ -1,20 +1,20 @@
-import { useEffect, useMemo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import withReducer from '../../../../store/withReducer';
-import reducer from './store';
+import { useEffect, useMemo, useState } from 'react';
+import { useSelector } from 'react-redux';
 
 import EditIconSvg from '../../../../svg/edit-icon';
 import TrashIconSvg from '../../../../svg/trash-icon';
+import { selectCities } from './store/citiesSlice';
 import DefaultTable from '../../../components/table/DefaultTable';
-import { getEducationLevels, selectEducationLevels } from './store/educationLevelSlice';
 
-const EducationLevels = (props) => {
-  const dispatch = useDispatch();
-  const data = useSelector(selectEducationLevels);
+const CitiesTable = (props) => {
+  const allCities = useSelector(selectCities);
+  const [filteredCities, setFilteredCities] = useState([]);
 
   useEffect(() => {
-    dispatch(getEducationLevels());
-  }, [dispatch]);
+    if (props.country.id) {
+      setFilteredCities(allCities.filter((c) => c.countryId === props.country.id));
+    }
+  }, [allCities, props.country.id]);
 
   const columns = useMemo(() => [
     {
@@ -46,15 +46,10 @@ const EducationLevels = (props) => {
     }
   ], []);
 
-
   return <DefaultTable
-    data={data}
+    data={filteredCities}
     columns={columns}
-    motherMenu="sidebar.definitions.def"
-    activeMenu="sidebar.definitions.educationLevels"
-    usePageTitle
-    useFilter
   />
 }
 
-export default withReducer('educationLevelApp', reducer)(EducationLevels);
+export default CitiesTable;

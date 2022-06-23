@@ -1,6 +1,6 @@
 import { createEntityAdapter, createSlice } from '@reduxjs/toolkit';
 import axios from '../../../../../services/axios';
-import swal from 'sweetalert';
+import { showError } from '../../../../helpers/notificationHelper';
 
 export const getJobTypes = () => (dispatch, getState) => {
   dispatch(setJobTypesLoading(true));
@@ -12,11 +12,7 @@ export const getJobTypes = () => (dispatch, getState) => {
   })
   .catch((err) => {
     setJobTypesLoading(false);
-    swal({
-      title: 'Fetch Error',
-      text: err.message,
-      icon: 'error',
-    });
+    showError(err.message);
   });
 }
 

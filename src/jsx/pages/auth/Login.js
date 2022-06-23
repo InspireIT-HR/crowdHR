@@ -3,9 +3,9 @@ import { connect, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom'
 
 // image
-import logo from "../../images/CrowdHRs Logo.png";
-import loginbg from "../../images/pic1.png";
-import { login } from '../../store/auth';
+import logo from "../../../images/CrowdHRs Logo.png";
+import loginbg from "../../../images/pic1.png";
+import { login } from '../../../store/auth';
 
 function Login (props) {
   const [email, setEmail] = useState('demo@example.com');

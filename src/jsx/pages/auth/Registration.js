@@ -6,7 +6,7 @@ import { connect, useDispatch } from 'react-redux';
 //     signupAction,
 // } from '../../store/actions/AuthActions';
 // image
-import logo from "../../images/logo-full.png";
+import logo from "../../../images/logo-full.png";
 
 function Register(props) {
     const [email, setEmail] = useState('');
