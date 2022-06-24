@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { Fragment, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import withReducer from '../../../../store/withReducer';
 import reducer from './store';
@@ -21,7 +21,7 @@ import {
 } from 'react-table';
 import { GlobalFilter } from '../../../components/Jobs/GlobalFilter';
 import CitiesTable from './citiesTable';
-import { Accordion, Card } from 'react-bootstrap';
+import { Accordion, useAccordionToggle } from 'react-bootstrap';
 
 const JobLocations = (props) => {
   const dispatch = useDispatch();
@@ -98,6 +98,18 @@ const JobLocations = (props) => {
 
   const { globalFilter, pageIndex } = state;
 
+  function CustomToggle({ children, eventKey }) {
+    const decoratedOnClick = useAccordionToggle(eventKey, () =>
+      setActiveAccordion(activeAccordion === eventKey ? -1 : eventKey),
+    );
+
+    return (
+      <tr className={`accordion-header rounded-lg ${activeAccordion === eventKey ? '' : 'collapsed'}`} onClick={decoratedOnClick}>
+        {children}
+      </tr>
+    );
+  }
+
   return (
     <>
       <PageTitle 
@@ -109,73 +121,96 @@ const JobLocations = (props) => {
           <div className="table-responsive">
             <div className="dataTables_wrapper">
               <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} />
-              <table {...getTableProps()} className="table display">
-                <thead>
-                  {headerGroups.map((headerGroup) => (
-                    <tr {...headerGroup.getHeaderGroupProps()}>
-                      {headerGroup.headers.map((column) => (
-                        <th {...(column.sortable ?
-                          column.getHeaderProps(column.getSortByToggleProps()) :
-                          column.getHeaderProps()
-                        )}>
-                          {column.render('Header')}
+              <Accordion className="accordion accordion-primary">
+                <table {...getTableProps()} className="table display">
+                  <thead>
+                    {headerGroups.map((headerGroup) => (
+                      <tr {...headerGroup.getHeaderGroupProps()}>
+                        {headerGroup.headers.map((column) => (
+                          <th {...(column.sortable ?
+                            column.getHeaderProps(column.getSortByToggleProps()) :
+                            column.getHeaderProps()
+                          )}>
+                            {column.render('Header')}
 
-                          <span className="ml-1">
-                            {column.isSorted ? (column.isSortedDesc ? <i className="fa fa-arrow-down" /> : <i className="fa fa-arrow-up" />) : ''}
-                          </span>
-                        </th>
-                      ))}
-                    </tr>
-                  ))}
-                </thead>
-                <tbody {...getTableBodyProps()}>
-                  {page.map((row, i) => {
-                    prepareRow(row);
-
-                    return (
-                      <tr 
-                        {...row.getRowProps()} 
-                        className={`accordion-header rounded-lg ${
-                            activeAccordion === i ? '' : 'collapsed'
-                          }`
-                        }
-                        eventKey={`${i}`}
-                        onClick={() => setActiveAccordion(activeAccordion === i ? -1 : i)}
-                      >
-                        <td colSpan={3}>
-                          <Accordion className="accordion accordion-primary">
-                            <Accordion.Toggle
-                              as={Card.Body}
-                              eventKey={`${i}`}
-                              className={`accordion-header rounded-lg ${
-                                activeAccordion === i ? '' : 'collapsed'
-                              }`}
-                              onClick={() => setActiveAccordion(activeAccordion === i ? -1 : i)}
-                            >
-                              <table style={{ width: '100%' }}>
-                                <tbody>
-                                  <tr>
-                                    {row.cells.map((cell, j) => {
-                                      return (
-                                        <td {...cell.getCellProps()}>
-                                          {cell.render('Cell')}
-                                        </td>
-                                      )
-                                    })}
-                                  </tr>
-                                </tbody>
-                              </table>
-                            </Accordion.Toggle>
-                            <Accordion.Collapse eventKey={`${i}`}>
-                              <CitiesTable country={row.original}/>
-                            </Accordion.Collapse>
-                          </Accordion>
-                        </td>
+                            <span className="ml-1">
+                              {column.isSorted ? (column.isSortedDesc ? <i className="fa fa-arrow-down" /> : <i className="fa fa-arrow-up" />) : ''}
+                            </span>
+                          </th>
+                        ))}
                       </tr>
-                    )
-                  })}
-                </tbody>
-              </table>
+                    ))}
+                  </thead>
+                  <tbody {...getTableBodyProps()}>
+                    {page.map((row, i) => {
+                      prepareRow(row);
+
+                      return (
+                        <Fragment key={i}>
+                          {/* Appearantly eventKey param must be a string, otherwise it just dont want to work :/ */}
+                          <CustomToggle eventKey={'' + i}>
+                            {row.cells.map((cell, j) => {
+                              return (
+                                <td {...cell.getCellProps()}>
+                                  {cell.render('Cell')}
+                                </td>
+                              )
+                            })}
+                          </CustomToggle>
+                          <tr 
+                            {...row.getRowProps()}
+                          >
+                            <td colSpan={3}>
+                              <Accordion.Collapse eventKey={`${i}`}>
+                                <CitiesTable country={row.original}/>
+                              </Accordion.Collapse>
+                            </td>
+                          </tr>
+                        </Fragment>
+                      )
+                    })}
+                  </tbody>
+                </table>
+                <div className="d-flex justify-content-between">
+                  <span>
+                    Page{' '}
+                    <strong>
+                      {pageIndex + 1} of {pageOptions.length}
+                    </strong>{''}
+                  </span>
+                  <span className="table-index">
+                    Go to page : {' '}
+                    <input
+                      type="number"
+                      className="ml-2"
+                      defaultValue={pageIndex + 1}
+                      onChange={(e) => {
+                        const pageNumber = e.target.value ? Number(e.target.value) - 1 : 0;
+                        gotoPage(pageNumber);
+                      }}
+                    />
+                  </span>
+                </div>
+                <div className="text-center">
+                  <div className="filter-pagination mt-3">
+                    <button className="previous-button" onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
+                      {'<<'}
+                    </button>
+
+                    <button className="previous-button" onClick={() => previousPage()} disabled={!canPreviousPage}>
+                      Previous
+                    </button>
+
+                    <button className="previous-button" onClick={() => nextPage()} disabled={!canNextPage}>
+                      Next
+                    </button>
+
+                    <button className="previous-button" onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
+                      {'>>'}
+                    </button>
+                  </div>
+                </div>
+              </Accordion>
             </div>
           </div>
         </div>
