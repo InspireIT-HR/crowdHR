@@ -3,6 +3,10 @@ import axios from '../../../../../services/axios';
 import { showError } from '../../../../helpers/notificationHelper';
 
 export const getJobOpenings = () => (dispatch, getState) => {
+  if (getState().jobOpeningApp.jobOpenings.loading) {
+    return;
+  }
+  
   dispatch(setJobOpeningsLoading(true));
 
   axios.get('/JobOpenings')

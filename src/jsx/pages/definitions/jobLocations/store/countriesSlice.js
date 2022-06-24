@@ -3,6 +3,10 @@ import axios from '../../../../../services/axios';
 import { showError } from '../../../../helpers/notificationHelper';
 
 export const getCountries = () => (dispatch, getState) => {
+  if (getState().jobLocationApp.countries.loading) {
+    return;
+  }
+
   dispatch(setCountriesLoading(true));
 
   axios.get('/Countries')

@@ -2,9 +2,6 @@ import Home from "./components/Dashboard/Home";
 import CandidateStatuses from "./pages/definitions/candidateStatuses";
 import EducationLevels from "./pages/definitions/educationLevels";
 
-import UserProfile from "./components/Jobs/UserProfile";
-import AppProfile from "./components/AppsMenu/AppProfile/AppProfile";
-import RechartJs from "./components/charts/rechart";
 import UiAlert from "./components/bootstrap/Alert";
 import Select2 from "./components/PluginsMenu/Select2/Select2";
 import jobTypes from "./pages/definitions/jobTypes";
@@ -12,6 +9,9 @@ import JobOpenings from "./pages/jobs/jobOpenings";
 import jobStatuses from "./pages/definitions/jobStatuses";
 import jobIndustries from "./pages/definitions/jobIndustries";
 import jobLocations from "./pages/definitions/jobLocations";
+import jobSalaryTypes from "./pages/definitions/jobSalaryTypes";
+import customers from "./pages/customers/customers";
+import users from "./pages/users/users";
 
 export const routes = [
   {
@@ -59,34 +59,34 @@ export const routes = [
       },
       {
         title: 'sidebar.definitions.jobSalaryTypes',
-        url: 'user-profile',
-        component: UserProfile,
+        url: 'job-salary-types',
+        component: jobSalaryTypes,
       },
     ]
   },
   {
     title: 'sidebar.users.user',
-    url: '#',
+    url: 'users',
     icon: 'flaticon-050-info',
-    component: AppProfile,
+    component: users,
     children: [
       {
         title: 'sidebar.users.userList',
-        url: 'app-profile',
-        component: AppProfile,
+        url: 'users',
+        component: users,
       }
     ]
   },
   {
     title: 'sidebar.customers.cus',
-    url: '#',
+    url: 'customers',
     icon: 'flaticon-041-graph',
-    component: RechartJs,
+    component: customers,
     children: [
       {
         title: 'sidebar.customers.customerList',
-        url: 'chart-rechart',
-        component: RechartJs,
+        url: 'customers',
+        component: customers,
       },
     ]
   },

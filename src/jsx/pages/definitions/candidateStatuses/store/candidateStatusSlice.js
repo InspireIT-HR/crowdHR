@@ -3,6 +3,10 @@ import axios from '../../../../../services/axios';
 import { showError } from '../../../../helpers/notificationHelper';
 
 export const getCandidateStatuses = () => (dispatch, getState) => {
+  if (getState().candidateStatusApp.candidateStatuses.loading) {
+    return;
+  }
+
   dispatch(setCandidateStatusesLoading(true));
 
   axios.get('/CandidateStatus')

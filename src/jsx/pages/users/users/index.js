@@ -5,38 +5,47 @@ import reducer from './store';
 
 import EditIconSvg from '../../../../svg/edit-icon';
 import TrashIconSvg from '../../../../svg/trash-icon';
-import { 
-  getCountries, 
-  selectCountries, 
-} from './store/countriesSlice';
-import { getCities } from './store/citiesSlice';
-import CitiesTable from './citiesTable';
-import AccordionTable from '../../../components/table/AccordionTable';
+import DefaultTable from '../../../components/table/DefaultTable';
+import { getUsers, selectUsers } from './store/usersSlice';
 
-const JobLocations = (props) => {
+const Users = (props) => {
   const dispatch = useDispatch();
-  const data = useSelector(selectCountries);
+  const data = useSelector(selectUsers);
 
   useEffect(() => {
-    dispatch(getCountries());
-    dispatch(getCities());
+    dispatch(getUsers());
   }, [dispatch]);
 
   const columns = useMemo(() => [
     {
-      Header: 'Id',
-      accessor: 'id',
+      Header: 'First Name',
+      accessor: 'firstname',
       sortable: true,
     },
     {
-      Header: 'Description',
-      accessor: 'description',
+      Header: 'Last Name',
+      accessor: 'lastname',
+      sortable: true,
+    },
+    {
+      Header: 'Email',
+      accessor: 'email',
+      sortable: true,
+    },
+    {
+      Header: 'Linkedin Page',
+      accessor: 'linkedinPage',
+      sortable: true,
+    },
+    {
+      Header: 'Role',
+      accessor: 'role.description',
       sortable: true,
     },
     {
       Header: 'Actions',
       accessor: '',
-      sortable: false,
+      sortable: true,
       Cell: (props) => {
         return (
           <>
@@ -52,15 +61,14 @@ const JobLocations = (props) => {
     }
   ], []);
 
-  return <AccordionTable
+  return <DefaultTable
     data={data}
     columns={columns}
-    motherMenu="sidebar.customers.cus"
-    activeMenu="sidebar.customers.customerList"
+    motherMenu="sidebar.users.user"
+    activeMenu="sidebar.users.userList"
     usePageTitle
     useFilter
-    accordionBody={CitiesTable}
   />
 }
 
-export default withReducer('jobLocationApp', reducer)(JobLocations);
+export default withReducer('userApp', reducer)(Users);

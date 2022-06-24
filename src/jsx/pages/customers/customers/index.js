@@ -5,32 +5,45 @@ import reducer from './store';
 
 import EditIconSvg from '../../../../svg/edit-icon';
 import TrashIconSvg from '../../../../svg/trash-icon';
-import { 
-  getCountries, 
-  selectCountries, 
-} from './store/countriesSlice';
-import { getCities } from './store/citiesSlice';
-import CitiesTable from './citiesTable';
+import { getCustomers, selectCustomers } from './store/customersSlice';
 import AccordionTable from '../../../components/table/AccordionTable';
+import CustomerResponsiblesTable from './customerResponsiblesTable';
 
-const JobLocations = (props) => {
+const Customers = (props) => {
   const dispatch = useDispatch();
-  const data = useSelector(selectCountries);
+  const data = useSelector(selectCustomers);
 
   useEffect(() => {
-    dispatch(getCountries());
-    dispatch(getCities());
+    dispatch(getCustomers());
   }, [dispatch]);
 
   const columns = useMemo(() => [
     {
-      Header: 'Id',
-      accessor: 'id',
+      Header: 'Logo',
+      accessor: 'logoPath',
+      sortable: false,
+      Cell: props => {
+        return <img width="70" height="30" src={`https://77.79.108.34:63748/CustomerLogos/${props.value}`} alt="company_logo" />
+      }
+    },
+    {
+      Header: 'Name',
+      accessor: 'name',
       sortable: true,
     },
     {
-      Header: 'Description',
-      accessor: 'description',
+      Header: 'Industry',
+      accessor: 'industry.description',
+      sortable: true,
+    },
+    {
+      Header: 'Website',
+      accessor: 'website',
+      sortable: true,
+    },
+    {
+      Header: 'Primary Internal Recruiter',
+      accessor: 'primaryInternalRecruiter.fullname',
       sortable: true,
     },
     {
@@ -59,8 +72,8 @@ const JobLocations = (props) => {
     activeMenu="sidebar.customers.customerList"
     usePageTitle
     useFilter
-    accordionBody={CitiesTable}
+    accordionBody={CustomerResponsiblesTable}
   />
 }
 
-export default withReducer('jobLocationApp', reducer)(JobLocations);
+export default withReducer('customerApp', reducer)(Customers);

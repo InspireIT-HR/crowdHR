@@ -57,7 +57,7 @@ const Header = ({ onNote }) => {
 	const changeThemeLanguage=(e)=>{
 		changeLanguage(e);
 		i18n.changeLanguage(e.value);
-		console.log('language changedd : '+ e.value)
+		// console.log('language changedd : '+ e.value)
 	}
   const [searchBut, setSearchBut] = useState(false);	
   var path = window.location.pathname.split("/");

@@ -11,10 +11,10 @@ const CitiesTable = (props) => {
   const [filteredCities, setFilteredCities] = useState([]);
 
   useEffect(() => {
-    if (props.country.id) {
-      setFilteredCities(allCities.filter((c) => c.countryId === props.country.id));
+    if (props.row.id) {
+      setFilteredCities(allCities.filter((c) => c.countryId === props.row.id));
     }
-  }, [allCities, props.country.id]);
+  }, [allCities, props.row.id]);
 
   const columns = useMemo(() => [
     {

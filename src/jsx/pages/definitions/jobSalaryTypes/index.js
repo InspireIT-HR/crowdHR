@@ -5,21 +5,15 @@ import reducer from './store';
 
 import EditIconSvg from '../../../../svg/edit-icon';
 import TrashIconSvg from '../../../../svg/trash-icon';
-import { 
-  getCountries, 
-  selectCountries, 
-} from './store/countriesSlice';
-import { getCities } from './store/citiesSlice';
-import CitiesTable from './citiesTable';
-import AccordionTable from '../../../components/table/AccordionTable';
+import DefaultTable from '../../../components/table/DefaultTable';
+import { getJobSalaryTypes, selectJobSalaryTypes } from './store/jobSalaryTypeSlice';
 
-const JobLocations = (props) => {
+const JobSalaryTypes = (props) => {
   const dispatch = useDispatch();
-  const data = useSelector(selectCountries);
+  const data = useSelector(selectJobSalaryTypes);
 
   useEffect(() => {
-    dispatch(getCountries());
-    dispatch(getCities());
+    dispatch(getJobSalaryTypes());
   }, [dispatch]);
 
   const columns = useMemo(() => [
@@ -52,15 +46,14 @@ const JobLocations = (props) => {
     }
   ], []);
 
-  return <AccordionTable
+  return <DefaultTable
     data={data}
     columns={columns}
-    motherMenu="sidebar.customers.cus"
-    activeMenu="sidebar.customers.customerList"
+    motherMenu="sidebar.definitions.def"
+    activeMenu="sidebar.definitions.jobSalaryTypes"
     usePageTitle
     useFilter
-    accordionBody={CitiesTable}
   />
 }
 
-export default withReducer('jobLocationApp', reducer)(JobLocations);
+export default withReducer('jobSalaryTypeApp', reducer)(JobSalaryTypes);
