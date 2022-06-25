@@ -92,12 +92,7 @@ const Header = ({ onNote }) => {
         <nav className="navbar navbar-expand">
           <div className="collapse navbar-collapse justify-content-between">
             <div className="header-left">
-				<div
-					className="dashboard_bar"
-					style={{ textTransform: "capitalize" }}
-				  >
-            {t("sidebar.dashboard")}
-				</div>
+			
 				<div className="nav-item d-flex align-items-center">
 					<div className="input-group search-area">
 						<input type="text" 

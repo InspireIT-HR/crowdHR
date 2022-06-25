@@ -13589,9 +13589,9 @@ svg.pulse-svg .third-circle {
 }
 
 .header-left .search-area {
-  width: 18.875rem;
+  width: 15rem;
   border-radius: 2.375rem;
-  margin-left: 7rem;
+  margin-left: 57rem;
 }
 
 @media only screen and (max-width: 100rem) {
@@ -38397,6 +38397,7 @@ td.text-ov {
   border-radius: 2.8125rem;
   color: var(--primary) !important;
   background: var(--rgba-primary-1);
+  border:none;
 }
 
 @media only screen and (max-width: 35.9375rem) {

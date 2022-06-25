@@ -34,11 +34,11 @@ const CitiesTable = (props) => {
       Cell: (props) => {
         return (
           <>
-            <button className="btn btn-secondary btn-icon light mr-2 p-2">
-              <EditIconSvg />
+           <button className="btn btn-primary shadow btn-xs sharp me-1">
+            <i className="fas fa-pencil-alt"></i>
             </button>
-            <button className="btn btn-danger btn-icon light mr-2 p-2">
-              <TrashIconSvg />
+            <button className="btn btn-danger shadow btn-xs sharp">
+            <i className="fa fa-trash"></i>
             </button>
           </>
         )

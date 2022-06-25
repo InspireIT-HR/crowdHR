@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo,useRef } from "react";
 import { useFilters, useGlobalFilter, usePagination, useSortBy, useTable } from "react-table";
 import PageTitle from "../../layouts/PageTitle";
 import { GlobalFilter } from "../Jobs/GlobalFilter";
@@ -9,7 +9,11 @@ const DefaultTable = (props) => {
   const data = useMemo(() => props.data, [props.data]);
   const motherMenu = useMemo(() => props.motherMenu, [props.motherMenu]);
   const activeMenu = useMemo(() => props.activeMenu, [props.activeMenu]);
-
+  const activePag = useRef(0);   
+  const paggination = Array(Math.ceil(data.length / 10))
+    .fill()
+    .map((_, i) => i + 1);
+     
   const { t } = useTranslation();
 
   const tableInstance = useTable({
@@ -51,7 +55,8 @@ const DefaultTable = (props) => {
         <div className="card-body">
           <div className="table-responsive">
             <div className="dataTables_wrapper">
-              {props.useFilter && <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} />}
+              {props.useFilter && <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} openModal={props.openModal} display={props.display}/>}
+
               <table {...getTableProps()} className="table  display">
                 <thead>
                   {headerGroups.map((headerGroup) => (
@@ -87,7 +92,48 @@ const DefaultTable = (props) => {
                   })}
                 </tbody>
               </table>
-              <div className="d-flex justify-content-between">
+              {/* new pagination */}
+              <div className="d-sm-flex text-center justify-content-between align-items-center mt-3">
+                <div className="dataTables_info">
+                  Showing 10 data
+                  of {data.length} entries
+                </div>
+                <div
+                  className="dataTables_paginate paging_simple_numbers"
+                  id="example5_paginate"
+                >
+                  <button
+                    className="paginate_button previous disabled"
+                    onClick={() => previousPage()} disabled={!canPreviousPage}
+                  >
+                    <i className="fa fa-angle-double-left" aria-hidden="true"></i>
+                  </button>
+                  <span>
+                    {paggination.map((number, i) => (
+                      <button
+                        
+                        className={`paginate_button  ${
+                          activePag.current === i ? "current" : ""
+                        } `}
+                        onClick={() => gotoPage(i)}
+                      >
+                        {number}
+                      </button>
+                    ))}
+                  </span>
+                  <button
+                    className="paginate_button next"
+
+                    onClick={() => nextPage()} disabled={!canNextPage}
+                  >
+                    <i className="fa fa-angle-double-right" aria-hidden="true"></i>
+                  </button>
+                </div>
+              </div>
+              {/* new pagination end*/}
+
+              {/* default paginaton */}
+              {/* <div className="d-flex justify-content-between">
                 <span>
                   Page{' '}
                   <strong>
@@ -125,7 +171,8 @@ const DefaultTable = (props) => {
                     {'>>'}
                   </button>
                 </div>
-              </div>
+              </div> */}
+              {/* default pagination end */}
             </div>
           </div>
         </div>
