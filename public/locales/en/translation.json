@@ -59,5 +59,32 @@
       "cand": "Candidates",
       "jobCandidates": "Candidate List"
     }
+  },
+  "newJob":"Add a new job",
+  "newJobForm":{
+    "referenceCode":"Reference Code",
+    "shortName":"Short Name",
+    "targetDate":"Target Date",
+    "status":"Status",
+    "numberOfPosition":"Number Of Position",
+    "customerVisibilty":"Customer Visibility",
+    "customerName":"Customer Name",
+    "customerReponsibles":"Customer Responsibles",
+    "isRemote":"Working Remote",
+    "jobType":"Job Type",
+    "country":"Country",
+    "city":"City",
+    "gender":"Gender",
+    "minEduLevel":"Minimum Education Level",
+    "experienceYear":"Experience Between",
+    "salaryType":"Salary Type",
+    "salaryBetween":"Salary Between",
+    "commissionFee":"Commission Fee",
+    "internalRecruiter":"Internal Recruiter",
+    "qualifications":"Qualifications",
+    "description":"Description",
+    "required":"This field must be filled.",
+    "add":"Add",
+    "clear":"Clear"
   }
 }

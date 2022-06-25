@@ -59,5 +59,32 @@
       "cand": "Adaylar",
       "jobCandidates": "Aday Listesi"
     }
+  },
+  "newJob":"İş ilanı ekle",
+  "newJobForm":{
+    "referenceCode":"Referans Kodu",
+    "shortName":"Kısa İsim",
+    "targetDate":"Hedef Tarih",
+    "status":"Durum",
+    "numberOfPosition":"Pozisyon Sayısı",
+    "customerVisibilty":"Müşteri Görünürlüğü",
+    "customerName":"Müşteri Adı",
+    "customerReponsibles":"Müşteri Sorumluları",
+    "isRemote":"Uzaktan Çalışma",
+    "jobType":"İş Türü",
+    "country":"Ülke",
+    "city":"Şehir",
+    "gender":"Cinsiyet",
+    "minEduLevel":"Minimum Eğitim Seviyesi",
+    "experienceYear":"Tücrübe Yılı Aralığı",
+    "salaryType":"Maaş Tipi",
+    "salaryBetween":"Maaş Aralığı",
+    "commissionFee":"Komisyon Miktarı",
+    "internalRecruiter":"Dahili İşe Alımcı",
+    "qualifications":"Özellikler",
+    "description":"Açıklama",
+    "required":"Bu alanın doldurulması zorunludur.",
+    "add":"Ekle",
+    "clear":"Temizle"
   }
 }
