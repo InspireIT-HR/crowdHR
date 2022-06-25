@@ -20,6 +20,63 @@ export const getCandidateStatuses = () => (dispatch, getState) => {
   });
 }
 
+export const addCandidateStatusRequest = (data) => (dispatch, getState) => {
+  if (getState().candidateStatusApp.candidateStatuses.isSubmitting) {
+    return;
+  }
+
+  dispatch(setIsCandidateStatusSubmitting(true));
+
+  axios.post('/CandidateStatus', data)
+  .then((response) => {
+    dispatch(addCandidateStatus(response.data));
+    dispatch(setIsCandidateStatusSubmitting(false));
+    dispatch(closeCandidateStatusModal());
+  })
+  .catch((err) => {
+    dispatch(setIsCandidateStatusSubmitting(false));
+    showError(err.message);
+  });
+}
+
+export const updateCandidateStatusRequest = (data) => (dispatch, getState) => {
+  if (getState().candidateStatusApp.candidateStatuses.isSubmitting) {
+    return;
+  }
+
+  dispatch(setIsCandidateStatusSubmitting(true));
+
+  axios.put('/CandidateStatus', data)
+  .then((response) => {
+    dispatch(updateCandidateStatus(response.data));
+    dispatch(setIsCandidateStatusSubmitting(false));
+    dispatch(closeCandidateStatusModal());
+  })
+  .catch((err) => {
+    dispatch(setIsCandidateStatusSubmitting(false));
+    showError(err.message);
+  });
+}
+
+export const removeCandidateStatusRequest = (data) => (dispatch, getState) => {
+  if (getState().candidateStatusApp.candidateStatuses.isSubmitting) {
+    return;
+  }
+
+  dispatch(setIsCandidateStatusSubmitting(true));
+
+  axios.delete(`/CandidateStatus/${data}`)
+  .then((response) => {
+    dispatch(removeCandidateStatus(data));
+    dispatch(setIsCandidateStatusSubmitting(false));
+    dispatch(closeCandidateStatusModal());
+  })
+  .catch((err) => {
+    dispatch(setIsCandidateStatusSubmitting(false));
+    showError(err.message);
+  });
+}
+
 const candidateStatusesAdapter = createEntityAdapter({});
 
 export const { 
@@ -31,6 +88,12 @@ export const {
 
 const initialState = {
   loading: false,
+  isSubmitting: false,
+  modal: {
+    type: 'new',
+    open: false,
+    data: null,
+  },
 };
 
 const candidateStatusSlice = createSlice({
@@ -44,6 +107,30 @@ const candidateStatusSlice = createSlice({
     setCandidateStatusesLoading: (state, action) => {
       state.loading = action.payload;
     },
+    openNewCandidateStatusModal: (state, action) => {
+      state.modal = {
+        type: 'new',
+        data: null,
+        open: true,
+      };
+    },
+    openEditCandidateStatusModal: (state, action) => {
+      state.modal = {
+        type: 'edit',
+        open: true,
+        data: action.payload,
+      };
+    },
+    closeCandidateStatusModal: (state, action) => {
+      state.modal = {
+        type: 'new',
+        data: null,
+        open: false,
+      };
+    },
+    setIsCandidateStatusSubmitting: (state, action) => {
+      state.isSubmitting = action.payload;
+    }
   },
   extraReducers: {},
 });
@@ -54,6 +141,10 @@ export const {
   updateCandidateStatus,
   removeCandidateStatus,
   setCandidateStatusesLoading,
+  openNewCandidateStatusModal,
+  openEditCandidateStatusModal,
+  closeCandidateStatusModal,
+  setIsCandidateStatusSubmitting,
 } = candidateStatusSlice.actions;
 
 export default candidateStatusSlice.reducer;

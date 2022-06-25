@@ -55,8 +55,13 @@ const DefaultTable = (props) => {
         <div className="card-body">
           <div className="table-responsive">
             <div className="dataTables_wrapper">
-              {props.useFilter && <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} display={props.display}/>}
-
+              {props.useFilter && 
+                <GlobalFilter 
+                  filter={globalFilter} 
+                  setFilter={setGlobalFilter} 
+                  onCreateButtonClick={props.onCreateButtonClick}
+                />
+              }
               <table {...getTableProps()} className="table  display">
                 <thead>
                   {headerGroups.map((headerGroup) => (
