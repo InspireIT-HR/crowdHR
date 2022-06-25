@@ -14,6 +14,7 @@ import profile from "../../../images/profile/pic1.jpg";
 import { useTranslation } from "react-i18next";
 
 import { routes } from '../../../jsx/routes';
+import { useSelector } from "react-redux";
 
 class MM extends Component {
   componentDidMount() {
@@ -33,6 +34,9 @@ class MM extends Component {
 }
 
 const SideBar = () => {
+  const isAuthenticated = useSelector(({ auth }) => auth.isAuthenticated);
+  const user = useSelector(({ auth }) => auth.user);
+
   const {
     iconHover,
     sidebarposition,
@@ -40,12 +44,15 @@ const SideBar = () => {
     sidebarLayout,
     language,
   } = useContext(ThemeContext);
+
   useEffect(() => {
     var btn = document.querySelector(".nav-control");
     var aaa = document.querySelector("#main-wrapper");
+
     function toggleFunc() {
       return aaa.classList.toggle("menu-toggle");
     }
+
     btn.addEventListener("click", toggleFunc);
     // console.log(language);
     //sidebar icon Heart blast
@@ -56,9 +63,12 @@ const SideBar = () => {
     handleheartBlast.addEventListener("click", heartBlast);
   }, [language]);
   const { t } = useTranslation();
+
   //let scrollPosition = useScrollPosition();
   // For scroll
+
   const [hideOnScroll, setHideOnScroll] = useState(true);
+
   useScrollPosition(
     ({ prevPos, currPos }) => {
       const isShow = currPos.y > prevPos.y;
@@ -66,6 +76,7 @@ const SideBar = () => {
     },
     [hideOnScroll]
   );
+
   /// Path
   let path = window.location.pathname;
   path = path.split("/");
@@ -97,7 +108,9 @@ const SideBar = () => {
               <img src={profile} width={20} alt="" />
               <div className="d-flex align-items-center sidebar-info">
                 <div>
-                  <span className="font-w400 d-block">Franklin Jr</span>
+                  <span className="font-w400 d-block">
+                    {isAuthenticated ? user.fullname : ''}
+                  </span>
                   <small className="text-end font-w400">Superadmin</small>
                 </div>
                 <i className="fas fa-chevron-down"></i>

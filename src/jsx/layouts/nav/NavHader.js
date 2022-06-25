@@ -5,11 +5,9 @@ import { ThemeContext } from "../../../context/ThemeContext";
 import Logo from "../../../images/logo.png"
 import iconLogo from "../../../images/iconLogo.png"
 
-
-
 const NavHader = () => {
   const [toggle, setToggle] = useState(false);
-  const { navigationHader, openMenuToggle, background,language } = useContext(
+  const { openMenuToggle } = useContext(
     ThemeContext
   );
   return (
@@ -17,7 +15,7 @@ const NavHader = () => {
       <Link to="/dashboard" className="brand-logo">
         {!toggle ? (
 			<Fragment>
-        <img src={Logo} width="260" alt="logo"/>
+        <img src={Logo} width="200" alt="logo"/>
 			</Fragment>
         ) : (
 			<Fragment>
