@@ -55,7 +55,7 @@ const DefaultTable = (props) => {
         <div className="card-body">
           <div className="table-responsive">
             <div className="dataTables_wrapper">
-              {props.useFilter && <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} openModal={props.openModal} display={props.display}/>}
+              {props.useFilter && <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} display={props.display}/>}
 
               <table {...getTableProps()} className="table  display">
                 <thead>

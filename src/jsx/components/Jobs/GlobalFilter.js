@@ -13,7 +13,7 @@ export const GlobalFilter = ( {filter, setFilter,openModal,display} ) =>{
             />
 			</div>
 			<div style={{"float":"right"}} className="mt-3">
-			<Button className="me-2" variant="warning" onClick={openModal} style={{"display":{display}}}>
+			<Button className="me-2" variant="warning" style={{"display":{display}}}>
                   Add new
             </Button>
 			</div>
