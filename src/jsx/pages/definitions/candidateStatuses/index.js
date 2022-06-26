@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-import { useEffect, useMemo} from 'react';
-=======
 import { Fragment, useEffect, useMemo, useState } from 'react';
->>>>>>> 68458e0 (added question modal and add/update modals for candidate status with functions)
 import { useDispatch, useSelector } from 'react-redux';
 import withReducer from '../../../../store/withReducer';
 import reducer from './store';
@@ -52,28 +48,14 @@ const CandidateStatuses = (props) => {
       Cell: (props) => {
         return (
           <>
-<<<<<<< HEAD
-            <button className="btn btn-primary shadow btn-xs sharp me-1">
+          <button className="btn btn-primary shadow btn-xs sharp me-1" onClick={() => dispatch(openEditCandidateStatusModal(props.row.original))}>
             <i className="fas fa-pencil-alt"></i>
             </button>
-            <button className="btn btn-danger shadow btn-xs sharp">
-            <i className="fa fa-trash"></i>
-=======
-            <button 
-              className="btn btn-secondary btn-icon light mr-2 p-2"
-              onClick={() => dispatch(openEditCandidateStatusModal(props.row.original))}
-            >
-              <EditIconSvg />
-            </button>
-            <button 
-              className="btn btn-danger btn-icon light mr-2 p-2"
-              onClick={() => {
+            <button className="btn btn-danger shadow btn-xs sharp" onClick={() => {
                 setQuestionModalData(props.row.original.id);
                 setShowQuestionModal(true);
-              }}
-            >
-              <TrashIconSvg />
->>>>>>> 68458e0 (added question modal and add/update modals for candidate status with functions)
+              }}>
+            <i className="fa fa-trash"></i>
             </button>
           </>
         )
@@ -81,22 +63,6 @@ const CandidateStatuses = (props) => {
     }
   ], [dispatch]);
 
-<<<<<<< HEAD
-  return (
-    <div>
-
-      <DefaultTable
-          data={data}
-          columns={columns}
-          motherMenu="sidebar.definitions.def"
-          activeMenu="sidebar.definitions.candidateStatuses"
-          usePageTitle
-          useFilter
-          display='none'
-        />
-    </div>
-  
-=======
   const onCreateButtonClick = () => {
     dispatch(openNewCandidateStatusModal());
   }
@@ -122,7 +88,6 @@ const CandidateStatuses = (props) => {
         data={questionModalData}
       />
     </Fragment>
->>>>>>> 68458e0 (added question modal and add/update modals for candidate status with functions)
   )
 }
 
