@@ -13018,8 +13018,8 @@ label {
   font-size: 1.125rem;
   color: #fff;
   text-decoration: none;
-  padding-left: 1.875rem;
-  padding-right: 1.875rem;
+  padding-left: 3rem;
+  padding-right: 3rem;
   font-weight: 700;
 }
 
@@ -13527,6 +13527,7 @@ svg.pulse-svg .third-circle {
   height: 100%;
   display: flex;
   align-items: center;
+  margin-right: 1rem;
 }
 
 .header-left .breadcrumb {
@@ -13591,7 +13592,6 @@ svg.pulse-svg .third-circle {
 .header-left .search-area {
   width: 15rem;
   border-radius: 2.375rem;
-  margin-left: 57rem;
 }
 
 @media only screen and (max-width: 100rem) {

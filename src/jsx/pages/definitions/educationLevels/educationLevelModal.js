@@ -1,6 +1,6 @@
 import { Button, Modal } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { addCandidateStatusRequest, closeCandidateStatusModal, updateCandidateStatusRequest } from "./store/candidateStatusSlice";
+import { addEducationLevelRequest, closeEducationLevelModal, updateEducationLevelRequest } from "./store/educationLevelSlice";
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import { useCallback, useEffect, useState } from 'react';
@@ -15,10 +15,10 @@ const schema = yup.object().shape({
     .required('Please enter a description'),
 });
 
-const CandidateStatusModal = (props) => {
+const EducationLevelModal = (props) => {
   const dispatch = useDispatch();
-  const modal = useSelector(({ candidateStatusApp }) => candidateStatusApp.candidateStatuses.modal);
-  const isSubmitting = useSelector(({ candidateStatusApp }) => candidateStatusApp.candidateStatuses.isSubmitting);
+  const modal = useSelector(({ educationLevelApp }) => educationLevelApp.educationLevels.modal);
+  const isSubmitting = useSelector(({ educationLevelApp }) => educationLevelApp.educationLevels.isSubmitting);
   const [initialValues, setInitialValues] = useState({
     description: '',
   });
@@ -41,23 +41,23 @@ const CandidateStatusModal = (props) => {
 
   const handleOnSubmit = (data, { setSubmitting }) => {
     if (modal.type === 'edit') {
-      dispatch(updateCandidateStatusRequest(data));
+      dispatch(updateEducationLevelRequest(data));
     }
 
     if (modal.type === 'new') {
-      dispatch(addCandidateStatusRequest(data));
+      dispatch(addEducationLevelRequest(data));
     }
   }
 
   const handleModalClose = () => {
-    dispatch(closeCandidateStatusModal({}));
+    dispatch(closeEducationLevelModal({}));
   }
 
   return (
     <Modal className="fade" show={modal.open} onHide={handleModalClose}>
       <Modal.Header>
         <Modal.Title>
-          {modal.type === 'new' ? 'New' : 'Edit'} Candidate Status
+          {modal.type === 'new' ? 'New' : 'Edit'} Education Level
         </Modal.Title>
         <Button
           variant=""
@@ -82,13 +82,12 @@ const CandidateStatusModal = (props) => {
           <form onSubmit={handleSubmit}>
             <Modal.Body>
               <div
-                className={`form-group mb-1 ${
-                  values.description
+                className={`form-group mb-1 ${values.description
                     ? errors.description
                       ? 'is-invalid'
                       : 'is-valid'
                     : ''
-                }`}
+                  }`}
               >
                 <label className="text-label">Description</label>
                 <div className="input-group">
@@ -155,4 +154,4 @@ const CandidateStatusModal = (props) => {
   )
 }
 
-export default CandidateStatusModal;
+export default EducationLevelModal;

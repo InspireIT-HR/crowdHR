@@ -70,7 +70,9 @@ const AccordionTable = (props) => {
         <div className="card-body">
           <div className="table-responsive">
             <div className="dataTables_wrapper">
-              <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} />
+              <div className="d-flex" style={{ justifyContent: 'space-between' }}>
+                <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} />
+              </div>
               <Accordion className="accordion accordion-primary">
                 <table {...getTableProps()} className="table display">
                   <thead>

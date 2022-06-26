@@ -2,7 +2,6 @@ import Home from "./components/Dashboard/Home";
 import CandidateStatuses from "./pages/definitions/candidateStatuses";
 import EducationLevels from "./pages/definitions/educationLevels";
 
-import UiAlert from "./components/bootstrap/Alert";
 import Select2 from "./components/PluginsMenu/Select2/Select2";
 import jobTypes from "./pages/definitions/jobTypes";
 import JobOpenings from "./pages/jobs/jobOpenings";

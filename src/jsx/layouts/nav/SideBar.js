@@ -166,7 +166,7 @@ const SideBar = () => {
         <MM className="metismenu" id="menu">
           {routes.map((route, i) => {
             return (
-              <li key={i} className={path === path.startsWith(route.url) ? 'mm-active' : ''}>
+              <li key={i} className={path.startsWith(route.url) ? 'mm-active' : ''}>
                 <Link className={route.children.length > 0 ? 'has-arrow ai-icon' : 'ai-icon'} to={`/${route.url}`}>
                   <i className={route.icon}></i>
                   <span className="nav-text">

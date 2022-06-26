@@ -110,8 +110,8 @@ const candidateStatusSlice = createSlice({
     openNewCandidateStatusModal: (state, action) => {
       state.modal = {
         type: 'new',
-        data: null,
         open: true,
+        data: null,
       };
     },
     openEditCandidateStatusModal: (state, action) => {
@@ -122,11 +122,7 @@ const candidateStatusSlice = createSlice({
       };
     },
     closeCandidateStatusModal: (state, action) => {
-      state.modal = {
-        type: 'new',
-        data: null,
-        open: false,
-      };
+      state.modal = initialState.modal;
     },
     setIsCandidateStatusSubmitting: (state, action) => {
       state.isSubmitting = action.payload;

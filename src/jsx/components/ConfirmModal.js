@@ -1,21 +1,21 @@
 import { Button, Modal } from "react-bootstrap"
 
 const QuestionModal = (props) => {
-  const handleModalClose = () => {
-    if (props.handleCloseModal) {
-      props.handleCloseModal();
+  const handleClose = () => {
+    if (props.onClose) {
+      props.onClose();
     }
   }
 
-  const handleAnswerYes = () => {
-    if (props.handleAnswerYes) {
-      props.handleAnswerYes(props.data);
+  const handleConfirm = () => {
+    if (props.onConfirm) {
+      props.onConfirm(props.data);
     }
-    handleModalClose();
+    handleClose();
   }
 
   return (
-    <Modal className="fade" show={props.showModal} onHide={handleModalClose}>
+    <Modal className="fade" show={props.showModal} onHide={handleClose}>
       <Modal.Header>
         <Modal.Title>
           {props.title}
@@ -23,7 +23,7 @@ const QuestionModal = (props) => {
         <Button
           variant=""
           className="btn-close"
-          onClick={handleModalClose}
+          onClick={handleClose}
         ></Button>
       </Modal.Header>
       <Modal.Body>
@@ -34,13 +34,13 @@ const QuestionModal = (props) => {
       <Modal.Footer>
         <Button
           variant="danger light"
-          onClick={handleModalClose}
+          onClick={handleClose}
         >
           No
         </Button>
         <Button
           variant="primary"
-          onClick={handleAnswerYes}
+          onClick={handleConfirm}
         >
           Yes
         </Button>
