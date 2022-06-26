@@ -20,6 +20,63 @@ export const getJobIndustries = () => (dispatch, getState) => {
   });
 }
 
+export const addJobIndustryRequest = (data) => (dispatch, getState) => {
+  if (getState().jobIndustryApp.jobIndustries.isSubmitting) {
+    return;
+  }
+
+  dispatch(setIsJobIndustrySubmitting(true));
+
+  axios.post('/Industries', data)
+  .then((response) => {
+    dispatch(addJobIndustry(response.data));
+    dispatch(setIsJobIndustrySubmitting(false));
+    dispatch(closeJobIndustryModal());
+  })
+  .catch((err) => {
+    dispatch(setIsJobIndustrySubmitting(false));
+    showError(err.message);
+  });
+}
+
+export const updateJobIndustryRequest = (data) => (dispatch, getState) => {
+  if (getState().jobIndustryApp.jobIndustries.isSubmitting) {
+    return;
+  }
+
+  dispatch(setIsJobIndustrySubmitting(true));
+
+  axios.put('/Industries', data)
+  .then((response) => {
+    dispatch(updateJobIndustry(response.data));
+    dispatch(setIsJobIndustrySubmitting(false));
+    dispatch(closeJobIndustryModal());
+  })
+  .catch((err) => {
+    dispatch(setIsJobIndustrySubmitting(false));
+    showError(err.message);
+  });
+}
+
+export const removeJobIndustryRequest = (data) => (dispatch, getState) => {
+  if (getState().jobIndustryApp.jobIndustries.isSubmitting) {
+    return;
+  }
+
+  dispatch(setIsJobIndustrySubmitting(true));
+
+  axios.delete(`/Industries/${data}`)
+  .then((response) => {
+    dispatch(removeJobIndustry(data));
+    dispatch(setIsJobIndustrySubmitting(false));
+    dispatch(closeJobIndustryModal());
+  })
+  .catch((err) => {
+    dispatch(setIsJobIndustrySubmitting(false));
+    showError(err.message);
+  });
+}
+
 const jobIndustriesAdapter = createEntityAdapter({});
 
 export const {
@@ -31,6 +88,12 @@ export const {
 
 const initialState = {
   loading: false,
+  isSubmitting: false,
+  modal: {
+    type: 'new',
+    open: false,
+    data: null,
+  },
 };
 
 const jobIndustriesSlice = createSlice({
@@ -44,6 +107,26 @@ const jobIndustriesSlice = createSlice({
     setJobIndustriesLoading: (state, action) => {
       state.loading = action.payload;
     },
+    openNewJobIndustryModal: (state, action) => {
+      state.modal = {
+        type: 'new',
+        open: true,
+        data: null,
+      };
+    },
+    openEditJobIndustryModal: (state, action) => {
+      state.modal = {
+        type: 'edit',
+        open: true,
+        data: action.payload,
+      };
+    },
+    closeJobIndustryModal: (state, action) => {
+      state.modal = initialState.modal;
+    },
+    setIsJobIndustrySubmitting: (state, action) => {
+      state.isSubmitting = action.payload;
+    },
   },
   extraReducers: {},
 });
@@ -54,6 +137,10 @@ export const {
   updateJobIndustry,
   removeJobIndustry,
   setJobIndustriesLoading,
+  openNewJobIndustryModal,
+  openEditJobIndustryModal,
+  closeJobIndustryModal,
+  setIsJobIndustrySubmitting,
 } = jobIndustriesSlice.actions;
 
 export default jobIndustriesSlice.reducer;

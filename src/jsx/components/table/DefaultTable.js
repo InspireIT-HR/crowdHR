@@ -100,7 +100,7 @@ const DefaultTable = (props) => {
               </table>
               <div className="d-sm-flex text-center justify-content-between align-items-center mt-3">
                 <div className="dataTables_info">
-                  Showing 10 data of {data.length} entries over {pageCount} pages
+                  Showing {data.length >= 10 ? '10' : data.length} data of {data.length} entries over {pageCount} pages
                 </div>
                 <div
                   className="dataTables_paginate paging_simple_numbers"

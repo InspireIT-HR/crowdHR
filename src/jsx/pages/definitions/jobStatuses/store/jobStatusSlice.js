@@ -20,6 +20,63 @@ export const getJobStatuses = () => (dispatch, getState) => {
   });
 }
 
+export const addJobStatusRequest = (data) => (dispatch, getState) => {
+  if (getState().jobStatusApp.jobStatuses.isSubmitting) {
+    return;
+  }
+
+  dispatch(setIsJobStatusSubmitting(true));
+
+  axios.post('/JobStatus', data)
+  .then((response) => {
+    dispatch(addJobStatus(response.data));
+    dispatch(setIsJobStatusSubmitting(false));
+    dispatch(closeJobStatusModal());
+  })
+  .catch((err) => {
+    dispatch(setIsJobStatusSubmitting(false));
+    showError(err.message);
+  });
+}
+
+export const updateJobStatusRequest = (data) => (dispatch, getState) => {
+  if (getState().jobStatusApp.jobStatuses.isSubmitting) {
+    return;
+  }
+
+  dispatch(setIsJobStatusSubmitting(true));
+
+  axios.put('/JobStatus', data)
+  .then((response) => {
+    dispatch(updateJobStatus(response.data));
+    dispatch(setIsJobStatusSubmitting(false));
+    dispatch(closeJobStatusModal());
+  })
+  .catch((err) => {
+    dispatch(setIsJobStatusSubmitting(false));
+    showError(err.message);
+  });
+}
+
+export const removeJobStatusRequest = (data) => (dispatch, getState) => {
+  if (getState().jobStatusApp.jobStatuses.isSubmitting) {
+    return;
+  }
+
+  dispatch(setIsJobStatusSubmitting(true));
+
+  axios.delete(`/JobStatus/${data}`)
+  .then((response) => {
+    dispatch(removeJobStatus(data));
+    dispatch(setIsJobStatusSubmitting(false));
+    dispatch(closeJobStatusModal());
+  })
+  .catch((err) => {
+    dispatch(setIsJobStatusSubmitting(false));
+    showError(err.message);
+  });
+}
+
 const jobStatusesAdapter = createEntityAdapter({});
 
 export const { 
@@ -31,6 +88,12 @@ export const {
 
 const initialState = {
   loading: false,
+  isSubmitting: false,
+  modal: {
+    type: 'new',
+    open: false,
+    data: null,
+  },
 };
 
 const JobStatusSlice = createSlice({
@@ -44,6 +107,26 @@ const JobStatusSlice = createSlice({
     setJobOpeningsLoading: (state, action) => {
       state.loading = action.payload;
     },
+    openNewJobStatusModal: (state, action) => {
+      state.modal = {
+        type: 'new',
+        open: true,
+        data: null,
+      };
+    },
+    openEditJobStatusModal: (state, action) => {
+      state.modal = {
+        type: 'edit',
+        open: true,
+        data: action.payload,
+      };
+    },
+    closeJobStatusModal: (state, action) => {
+      state.modal = initialState.modal;
+    },
+    setIsJobStatusSubmitting: (state, action) => {
+      state.isSubmitting = action.payload;
+    },
   },
   extraReducers: {}
 });
@@ -54,6 +137,10 @@ export const {
   updateJobStatus, 
   removeJobStatus,
   setJobOpeningsLoading, 
+  openNewJobStatusModal,
+  openEditJobStatusModal,
+  closeJobStatusModal,
+  setIsJobStatusSubmitting,
 } = JobStatusSlice.actions;
 
 export default JobStatusSlice.reducer;

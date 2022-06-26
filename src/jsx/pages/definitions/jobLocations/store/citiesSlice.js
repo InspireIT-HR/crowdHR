@@ -20,6 +20,67 @@ export const getCities = () => (dispatch, getState) => {
   });
 }
 
+// data ->
+//  description: 'string',
+//  countryId: 'string'
+
+export const addCityRequest = (data) => (dispatch, getState) => {
+  if (getState().jobLocationApp.cities.isSubmitting) {
+    return;
+  }
+
+  dispatch(setIsCitySubmitting(true));
+
+  axios.post('/Cities', data)
+  .then((response) => {
+    dispatch(addCity(response.data));
+    dispatch(setIsCitySubmitting(false));
+    dispatch(closeCityModal());
+  })
+  .catch((err) => {
+    dispatch(setIsCitySubmitting(false));
+    showError(err.message);
+  });
+}
+
+export const updateCityRequest = (data) => (dispatch, getState) => {
+  if (getState().jobLocationApp.cities.isSubmitting) {
+    return;
+  }
+
+  dispatch(setIsCitySubmitting(true));
+
+  axios.put('/Cities', data)
+  .then((response) => {
+    dispatch(updateCity(response.data));
+    dispatch(setIsCitySubmitting(false));
+    dispatch(closeCityModal());
+  })
+  .catch((err) => {
+    dispatch(setIsCitySubmitting(false));
+    showError(err.message);
+  });
+}
+
+export const removeCityRequest = (data) => (dispatch, getState) => {
+  if (getState().jobLocationApp.cities.isSubmitting) {
+    return;
+  }
+
+  dispatch(setIsCitySubmitting(true));
+
+  axios.delete(`/Cities/${data}`)
+  .then((response) => {
+    dispatch(removeCity(data));
+    dispatch(setIsCitySubmitting(false));
+    dispatch(closeCityModal());
+  })
+  .catch((err) => {
+    dispatch(setIsCitySubmitting(false));
+    showError(err.message);
+  });
+}
+
 const citiesAdapter = createEntityAdapter({});
 
 export const {
@@ -31,6 +92,12 @@ export const {
 
 const initialState = {
   loading: false,
+  isSubmitting: false,
+  modal: {
+    type: 'new',
+    open: false,
+    data: null,
+  },
 };
 
 const citiesSlice = createSlice({
@@ -44,6 +111,26 @@ const citiesSlice = createSlice({
     setCitiesLoading: (state, action) => {
       state.loading = action.payload;
     },
+    openNewCityModal: (state, action) => {
+      state.modal = {
+        type: 'new',
+        open: true,
+        data: null,
+      };
+    },
+    openEditCityModal: (state, action) => {
+      state.modal = {
+        type: 'edit',
+        open: true,
+        data: action.payload,
+      };
+    },
+    closeCityModal: (state, action) => {
+      state.modal = initialState.modal;
+    },
+    setIsCitySubmitting: (state, action) => {
+      state.isSubmitting = action.payload;
+    },
   },
   extraReducers: {},
 });
@@ -54,6 +141,10 @@ export const {
   updateCity,
   removeCity,
   setCitiesLoading,
+  openNewCityModal,
+  openEditCityModal,
+  closeCityModal,
+  setIsCitySubmitting,
 } = citiesSlice.actions;
 
 export default citiesSlice.reducer;
