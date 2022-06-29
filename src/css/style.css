@@ -30404,12 +30404,15 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 }
 
 .form-control {
-  background: #fff;
-  border: 0.0625rem solid #f5f5f5;
   padding: 0.3125rem 1.25rem;
   color: #6e6e6e;
-  height: 3.5rem;
-  border-radius: 1rem;
+  /* height: 3.5rem; */
+  align-items: center;
+  background-color: hsl(0, 0%, 100%);
+  border-color: hsl(0, 0%, 80%);
+  border-radius: 4px;
+  border-style: solid;
+  border-width: 1px;
 }
 
 @media only screen and (max-width: 87.5rem) {

@@ -2,7 +2,7 @@ import { createEntityAdapter, createSlice } from '@reduxjs/toolkit';
 import axios from '../../../../../services/axios';
 import { showError } from '../../../../helpers/notificationHelper';
 
-export const getJobOpenings = () => (dispatch, getState) => {
+export const addNew = () => (dispatch, getState) => {
   if (getState().jobOpeningApp.jobOpenings.loading) {
     return;
   }
@@ -19,7 +19,6 @@ export const getJobOpenings = () => (dispatch, getState) => {
     showError(err.message);
   });
 }
-
 
 const jobOpeningsAdapter = createEntityAdapter({});
 
@@ -39,7 +38,6 @@ const jobOpeningsSlice = createSlice({
   initialState: jobOpeningsAdapter.getInitialState(initialState),
   reducers: {
     setJobOpenings: jobOpeningsAdapter.setAll,
-
     addJobOpening: jobOpeningsAdapter.addOne,
     updateJobOpening: jobOpeningsAdapter.upsertOne,
     removeJobOpening: jobOpeningsAdapter.removeOne,

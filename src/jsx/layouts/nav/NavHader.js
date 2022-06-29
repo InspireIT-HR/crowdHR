@@ -2,7 +2,7 @@ import React, { Fragment, useContext, useState } from "react";
 /// React router dom
 import { Link } from "react-router-dom";
 import { ThemeContext } from "../../../context/ThemeContext";
-import Logo from "../../../images/logo.png"
+import Logo from "../../../images/logo2.png"
 import iconLogo from "../../../images/iconLogo.png"
 
 const NavHader = () => {

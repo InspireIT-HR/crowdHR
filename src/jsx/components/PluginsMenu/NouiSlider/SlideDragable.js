@@ -11,6 +11,7 @@ class SlideDragable extends React.Component {
                start={[20, 80]}
                behaviour="tap"
                snap
+               tooltips="true"
                range={{
                   min: [0],
                   "10%": 30,
