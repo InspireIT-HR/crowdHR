@@ -1,4 +1,4 @@
-import { useMemo,useRef } from "react";
+import { useMemo } from "react";
 import { useFilters, useGlobalFilter, usePagination, useSortBy, useTable } from "react-table";
 import PageTitle from "../../layouts/PageTitle";
 import { GlobalFilter } from "../Jobs/GlobalFilter";
@@ -9,10 +9,6 @@ const DefaultTable = (props) => {
   const data = useMemo(() => props.data, [props.data]);
   const motherMenu = useMemo(() => props.motherMenu, [props.motherMenu]);
   const activeMenu = useMemo(() => props.activeMenu, [props.activeMenu]);
-  const activePag = useRef(0);   
-  const paggination = Array(Math.ceil(data.length / 10))
-    .fill()
-    .map((_, i) => i + 1);
      
   const { t } = useTranslation();
 
@@ -55,13 +51,18 @@ const DefaultTable = (props) => {
         <div className="card-body">
           <div className="table-responsive">
             <div className="dataTables_wrapper">
-              {props.useFilter && 
-                <GlobalFilter 
-                  filter={globalFilter} 
-                  setFilter={setGlobalFilter} 
-                  onCreateButtonClick={props.onCreateButtonClick}
-                />
-              }
+              <div className="d-flex" style={{ justifyContent: 'space-between' }}>
+                {props.useFilter && 
+                  <GlobalFilter 
+                    filter={globalFilter} 
+                    setFilter={setGlobalFilter} 
+                    onCreateButtonClick={props.onCreateButtonClick}
+                  />
+                }
+                <div style={{ display: 'flex', alignItems: 'flex-end' }}>
+                  {props.rightButtons}
+                </div>
+              </div>
               <table {...getTableProps()} className="table  display">
                 <thead>
                   {headerGroups.map((headerGroup) => (
@@ -97,87 +98,43 @@ const DefaultTable = (props) => {
                   })}
                 </tbody>
               </table>
-              {/* new pagination */}
               <div className="d-sm-flex text-center justify-content-between align-items-center mt-3">
                 <div className="dataTables_info">
-                  Showing 10 data
-                  of {data.length} entries
+                  Showing 10 data of {data.length} entries over {pageCount} pages
                 </div>
                 <div
                   className="dataTables_paginate paging_simple_numbers"
                   id="example5_paginate"
                 >
                   <button
-                    className="paginate_button previous disabled"
+                    className={`paginate_button previous ${!canPreviousPage ? 'disabled' : ''}`}
                     onClick={() => previousPage()} disabled={!canPreviousPage}
                   >
                     <i className="fa fa-angle-double-left" aria-hidden="true"></i>
                   </button>
                   <span>
-                    {paggination.map((number, i) => (
+                    {pageOptions.map((number) => (
                       <button
-                        
                         className={`paginate_button  ${
-                          activePag.current === i ? "current" : ""
+                          // eslint-disable-next-line no-sequences
+                          pageIndex === number ? "current" : "",
+                          pageCount <= 1 ? 'disabled' : ''
                         } `}
-                        onClick={() => gotoPage(i)}
+                        key={number}
+                        onClick={() => gotoPage(number)}
                       >
-                        {number}
+                        { number + 1 }
                       </button>
                     ))}
                   </span>
                   <button
-                    className="paginate_button next"
-
+                    className={`paginate_button next ${!canNextPage ? 'disabled' : ''}`}
                     onClick={() => nextPage()} disabled={!canNextPage}
                   >
                     <i className="fa fa-angle-double-right" aria-hidden="true"></i>
                   </button>
                 </div>
               </div>
-              {/* new pagination end*/}
-
-              {/* default paginaton */}
-              {/* <div className="d-flex justify-content-between">
-                <span>
-                  Page{' '}
-                  <strong>
-                    {pageIndex + 1} of {pageOptions.length}
-                  </strong>{''}
-                </span>
-                <span className="table-index">
-                  Go to page : {' '}
-                  <input
-                    type="number"
-                    className="ml-2"
-                    defaultValue={pageIndex + 1}
-                    onChange={(e) => {
-                      const pageNumber = e.target.value ? Number(e.target.value) - 1 : 0;
-                      gotoPage(pageNumber);
-                    }}
-                  />
-                </span>
-              </div>
-              <div className="text-center">
-                <div className="filter-pagination mt-3">
-                  <button className="previous-button" onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
-                    {'<<'}
-                  </button>
-
-                  <button className="previous-button" onClick={() => previousPage()} disabled={!canPreviousPage}>
-                    Previous
-                  </button>
-
-                  <button className="previous-button" onClick={() => nextPage()} disabled={!canNextPage}>
-                    Next
-                  </button>
-
-                  <button className="previous-button" onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
-                    {'>>'}
-                  </button>
-                </div>
-              </div> */}
-              {/* default pagination end */}
             </div>
           </div>
         </div>

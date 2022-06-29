@@ -12,23 +12,18 @@ import {
   selectCandidateStatuses 
 } from './store/candidateStatusSlice';
 import CandidateStatusModal from './candidateStatusModal';
-import QuestionModal from '../../../components/QuestionModal';
-
+import ConfirmModal from '../../../components/ConfirmModal';
+import { Button } from 'react-bootstrap';
 
 const CandidateStatuses = (props) => {
   const dispatch = useDispatch();
   const data = useSelector(selectCandidateStatuses);
-  const [showQuestionModal, setShowQuestionModal] = useState(false);
-  const [questionModalData, setQuestionModalData] = useState('');
-
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [confirmModalData, setConfirmModalData] = useState('');
 
   useEffect(() => {
     dispatch(getCandidateStatuses());
   }, [dispatch]);
-
-  const handleRemove = (data) => {
-    dispatch(removeCandidateStatusRequest(data));
-  }
 
   const columns = useMemo(() => [
     {
@@ -48,14 +43,20 @@ const CandidateStatuses = (props) => {
       Cell: (props) => {
         return (
           <>
-          <button className="btn btn-primary shadow btn-xs sharp me-1" onClick={() => dispatch(openEditCandidateStatusModal(props.row.original))}>
-            <i className="fas fa-pencil-alt"></i>
+            <button 
+              className="btn btn-primary shadow btn-xs sharp me-1"
+              onClick={() => dispatch(openEditCandidateStatusModal(props.row.original))}
+            >
+              <i className="fas fa-pencil-alt"></i>
             </button>
-            <button className="btn btn-danger shadow btn-xs sharp" onClick={() => {
-                setQuestionModalData(props.row.original.id);
-                setShowQuestionModal(true);
-              }}>
-            <i className="fa fa-trash"></i>
+            <button 
+              className="btn btn-danger shadow btn-xs sharp"
+              onClick={() => {
+                setConfirmModalData(props.row.original.id);
+                setShowConfirmModal(true);
+              }}
+            >
+              <i className="fa fa-trash"></i>
             </button>
           </>
         )
@@ -63,9 +64,22 @@ const CandidateStatuses = (props) => {
     }
   ], [dispatch]);
 
-  const onCreateButtonClick = () => {
+  const handleRemove = (data) => {
+    dispatch(removeCandidateStatusRequest(data));
+  }
+
+  const handleCreate = () => {
     dispatch(openNewCandidateStatusModal());
   }
+
+  const rightButtons = (
+    <Button
+      variant="primary"
+      onClick={handleCreate}
+    >
+      Add New Candidate Status
+    </Button>
+  );
 
   return (
     <Fragment>
@@ -76,20 +90,19 @@ const CandidateStatuses = (props) => {
         activeMenu="sidebar.definitions.candidateStatuses"
         usePageTitle
         useFilter
-        onCreateButtonClick={onCreateButtonClick}
+        rightButtons={rightButtons}
       />
       <CandidateStatusModal />
-      <QuestionModal 
-        title="Deleting Candidate Statuse"
+      <ConfirmModal 
+        title="Deleting Candidate Status"
         content="Are you sure about deleting?"
-        handleAnswerYes={handleRemove}
-        showModal={showQuestionModal}
-        handleCloseModal={() => setShowQuestionModal(false)}
-        data={questionModalData}
+        onConfirm={handleRemove}
+        onClose={() => setShowConfirmModal(false)}
+        showModal={showConfirmModal}
+        data={confirmModalData}
       />
     </Fragment>
   )
 }
-
 
 export default withReducer('candidateStatusApp', reducer)(CandidateStatuses);

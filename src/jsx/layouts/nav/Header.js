@@ -90,7 +90,7 @@ const Header = ({ onNote }) => {
     <div className="header">
       <div className="header-content">
         <nav className="navbar navbar-expand">
-          <div className="collapse navbar-collapse justify-content-between">
+          <div className="collapse navbar-collapse justify-content-end">
             <div className="header-left">
 			
 				<div className="nav-item d-flex align-items-center">
