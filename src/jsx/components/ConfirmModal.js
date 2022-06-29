@@ -1,6 +1,6 @@
 import { Button, Modal } from "react-bootstrap"
 
-const QuestionModal = (props) => {
+const ConfirmModal = (props) => {
   const handleClose = () => {
     if (props.onClose) {
       props.onClose();
@@ -49,4 +49,4 @@ const QuestionModal = (props) => {
   )
 }
 
-export default QuestionModal;
+export default ConfirmModal;

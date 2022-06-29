@@ -5,19 +5,24 @@ import reducer from './store';
 
 import DefaultTable from '../../../components/table/DefaultTable';
 import { 
-  getEducationLevels, 
-  openEditEducationLevelModal, 
-  openNewEducationLevelModal, 
-  removeEducationLevelRequest, 
-  selectEducationLevels 
+  addEducationLevelRequest,
+  closeEducationLevelModal,
+  getEducationLevels,
+  openEditEducationLevelModal,
+  openNewEducationLevelModal,
+  removeEducationLevelRequest,
+  selectEducationLevels,
+  updateEducationLevelRequest
 } from './store/educationLevelSlice';
 import { Button } from 'react-bootstrap';
-import EducationLevelModal from './educationLevelModal';
 import ConfirmModal from '../../../components/ConfirmModal';
+import OnlyDescriptionModal from '../../../components/OnlyDescriptionModal';
 
 const EducationLevels = (props) => {
   const dispatch = useDispatch();
   const data = useSelector(selectEducationLevels);
+  const modal = useSelector(({ educationLevelApp }) => educationLevelApp.educationLevels.modal);
+  const isSubmitting = useSelector(({ educationLevelApp }) => educationLevelApp.educationLevels.isSubmitting);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [confirmModalData, setConfirmModalData] = useState('');
 
@@ -77,7 +82,7 @@ const EducationLevels = (props) => {
       variant="primary"
       onClick={handleCreate}
     >
-      Add New Education Level
+      New Education Level
     </Button>
   )
 
@@ -92,7 +97,14 @@ const EducationLevels = (props) => {
         useFilter
         rightButtons={rightButtons}
       />
-      <EducationLevelModal />
+      <OnlyDescriptionModal
+        header="Education Level"
+        modal={modal}
+        isSubmitting={isSubmitting}
+        add={(data) => dispatch(addEducationLevelRequest(data))}
+        update={(data) => dispatch(updateEducationLevelRequest(data))}
+        closeModal={() => dispatch(closeEducationLevelModal())}
+      />
       <ConfirmModal
         title="Deleting Education Level"
         content="Are you sure about deleting?"

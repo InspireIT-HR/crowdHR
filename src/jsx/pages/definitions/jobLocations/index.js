@@ -3,8 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import withReducer from '../../../../store/withReducer';
 import reducer from './store';
 
-import EditIconSvg from '../../../../svg/edit-icon';
-import TrashIconSvg from '../../../../svg/trash-icon';
 import { 
   getCountries, 
   selectCountries, 
@@ -40,11 +38,11 @@ const JobLocations = (props) => {
       Cell: (props) => {
         return (
           <>
-           <button className="btn btn-primary shadow btn-xs sharp me-1">
-            <i className="fas fa-pencil-alt"></i>
+            <button className="btn btn-primary shadow btn-xs sharp me-1">
+              <i className="fas fa-pencil-alt"></i>
             </button>
             <button className="btn btn-danger shadow btn-xs sharp">
-            <i className="fa fa-trash"></i>
+              <i className="fa fa-trash"></i>
             </button>
           </>
         )
@@ -55,8 +53,8 @@ const JobLocations = (props) => {
   return <AccordionTable
     data={data}
     columns={columns}
-    motherMenu="sidebar.customers.cus"
-    activeMenu="sidebar.customers.customerList"
+    motherMenu="sidebar.definitions.def"
+    activeMenu="sidebar.definitions.jobLocations"
     usePageTitle
     useFilter
     accordionBody={CitiesTable}

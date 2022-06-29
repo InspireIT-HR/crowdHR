@@ -20,6 +20,63 @@ export const getJobSalaryTypes = () => (dispatch, getState) => {
   });
 }
 
+export const addJobSalaryTypeRequest = (data) => (dispatch, getState) => {
+  if (getState.jobSalaryTypeApp.jobSalaryTypes.isSubmitting) {
+    return;
+  }
+
+  dispatch(setIsJobSalaryTypeSubmitting(true));
+
+  axios.post('/SalaryTypes', data)
+  .then((response) => {
+    dispatch(addJobSalaryType(response.data));
+    dispatch(setIsJobSalaryTypeSubmitting(false));
+    dispatch(closeJobSalaryTypeModal());
+  })
+  .catch((err) => {
+    dispatch(setIsJobSalaryTypeSubmitting(false));
+    showError(err.message);
+  });
+}
+
+export const updateJobSalaryTypeRequest = (data) => (dispatch, getState) => {
+  if (getState.jobSalaryTypeApp.jobSalaryTypes.isSubmitting) {
+    return;
+  }
+
+  dispatch(setIsJobSalaryTypeSubmitting(true));
+
+  axios.put('/SalaryTypes', data)
+  .then((response) => {
+    dispatch(updateJobSalaryType(response.data));
+    dispatch(setIsJobSalaryTypeSubmitting(false));
+    dispatch(closeJobSalaryTypeModal());
+  })
+  .catch((err) => {
+    dispatch(setIsJobSalaryTypeSubmitting(false));
+    showError(err.message);
+  });
+}
+
+export const removeJobSalaryTypeRequest = (data) => (dispatch, getState) => {
+  if (getState.jobSalaryTypeApp.jobSalaryTypes.isSubmitting) {
+    return;
+  }
+
+  dispatch(setIsJobSalaryTypeSubmitting(true));
+
+  axios.delete(`/SalaryType/${data}`)
+  .then((response) => {
+    dispatch(removeJobSalaryType(data));
+    dispatch(setIsJobSalaryTypeSubmitting(false));
+    dispatch(closeJobSalaryTypeModal());
+  })
+  .catch((err) => {
+    dispatch(closeJobSalaryTypeModal());
+    showError(err.message);
+  });
+}
+
 const jobSalaryTypesAdapter = createEntityAdapter({});
 
 export const {
@@ -31,6 +88,12 @@ export const {
 
 const initialState = {
   loading: false,
+  isSubmitting: false,
+  modal: {
+    type: 'new',
+    open: false,
+    data: null,
+  },
 };
 
 const jobSalaryTypesSlice = createSlice({
@@ -44,6 +107,26 @@ const jobSalaryTypesSlice = createSlice({
     setJobSalaryTypesLoading: (state, action) => {
       state.loading = action.payload;
     },
+    openNewJobSalaryTypeModal: (state, action) => {
+      state.modal = {
+        type: 'new',
+        open: true,
+        data: null,
+      };
+    },
+    openEditJobSalaryTypeModal: (state, action) => {
+      state.modal = {
+        type: 'edit',
+        open: true,
+        data: action.payload,
+      };
+    },
+    closeJobSalaryTypeModal: (state, action) => {
+      state.modal = initialState.modal;
+    },
+    setIsJobSalaryTypeSubmitting: (state, action) => {
+      state.isSubmitting = action.payload;
+    },
   },
   extraReducers: {},
 });
@@ -54,6 +137,10 @@ export const {
   updateJobSalaryType,
   removeJobSalaryType,
   setJobSalaryTypesLoading,
+  openNewJobSalaryTypeModal,
+  openEditJobSalaryTypeModal,
+  closeJobSalaryTypeModal,
+  setIsJobSalaryTypeSubmitting,
 } = jobSalaryTypesSlice.actions;
 
 export default jobSalaryTypesSlice.reducer;

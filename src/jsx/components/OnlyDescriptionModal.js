@@ -1,9 +1,7 @@
 import { Button, Modal } from 'react-bootstrap';
-import { useDispatch, useSelector } from 'react-redux';
-import { addEducationLevelRequest, closeEducationLevelModal, updateEducationLevelRequest } from "./store/educationLevelSlice";
 import { Formik } from 'formik';
 import * as yup from 'yup';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 const defaultValues = {
   description: '',
@@ -15,10 +13,10 @@ const schema = yup.object().shape({
     .required('Please enter a description'),
 });
 
-const EducationLevelModal = (props) => {
-  const dispatch = useDispatch();
-  const modal = useSelector(({ educationLevelApp }) => educationLevelApp.educationLevels.modal);
-  const isSubmitting = useSelector(({ educationLevelApp }) => educationLevelApp.educationLevels.isSubmitting);
+const OnlyDescriptionModal = (props) => {
+  const modal = useMemo(() => props.modal, [props.modal]);
+  const isSubmitting = useMemo(() => props.isSubmitting, [props.isSubmitting]);
+
   const [initialValues, setInitialValues] = useState({
     description: '',
   });
@@ -39,25 +37,31 @@ const EducationLevelModal = (props) => {
     }
   }, [initModal, modal.open]);
 
-  const handleOnSubmit = (data, { setSubmitting }) => {
+  const handleOnSubmit = (data) => {
     if (modal.type === 'edit') {
-      dispatch(updateEducationLevelRequest(data));
+      if (props.update) {
+        props.update(data);
+      }
     }
 
     if (modal.type === 'new') {
-      dispatch(addEducationLevelRequest(data));
+      if (props.add) {
+        props.add(data);
+      }
     }
   }
 
   const handleModalClose = () => {
-    dispatch(closeEducationLevelModal({}));
+    if (props.closeModal) {
+      props.closeModal({});
+    }
   }
 
   return (
     <Modal className="fade" show={modal.open} onHide={handleModalClose}>
       <Modal.Header>
         <Modal.Title>
-          {modal.type === 'new' ? 'New' : 'Edit'} Education Level
+          {modal.type === 'new' ? 'New' : 'Edit'} {props.header}
         </Modal.Title>
         <Button
           variant=""
@@ -83,10 +87,10 @@ const EducationLevelModal = (props) => {
             <Modal.Body>
               <div
                 className={`form-group mb-1 ${values.description
-                    ? errors.description
-                      ? 'is-invalid'
-                      : 'is-valid'
-                    : ''
+                  ? errors.description
+                    ? 'is-invalid'
+                    : 'is-valid'
+                  : ''
                   }`}
               >
                 <label className="text-label">Description</label>
@@ -154,4 +158,4 @@ const EducationLevelModal = (props) => {
   )
 }
 
-export default EducationLevelModal;
+export default OnlyDescriptionModal;

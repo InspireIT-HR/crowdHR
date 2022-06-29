@@ -48,14 +48,35 @@ const AccordionTable = (props) => {
 
   const { globalFilter, pageIndex } = state;
 
-  function CustomToggle({ children, eventKey }) {
+  function CustomToggle({ children, eventKey, rowCells }) {
     const decoratedOnClick = useAccordionToggle(eventKey, () =>
       setActiveAccordion(activeAccordion === eventKey ? -1 : eventKey),
     );
 
+    const cellsLength = useMemo(() => rowCells.length, [rowCells]);
+
     return (
-      <tr className={`accordion-header rounded-lg ${activeAccordion === eventKey ? '' : 'collapsed'}`} onClick={decoratedOnClick}>
-        {children}
+      <tr 
+        className={`accordion-header rounded-lg ${activeAccordion === eventKey ? '' : 'collapsed'}`} 
+      >
+        {rowCells.map((cell, i) => {
+          if (i + 1 === cellsLength) {
+            return (
+              <td {...cell.getCellProps()}>
+                {cell.render('Cell')}
+              </td>
+            )
+          } else {
+            return (
+              <td 
+                {...cell.getCellProps()}
+                onClick={decoratedOnClick}
+              >
+                {cell.render('Cell')}
+              </td>
+            )
+          }
+        })}
       </tr>
     );
   }
@@ -100,14 +121,7 @@ const AccordionTable = (props) => {
                       return (
                         <Fragment key={i}>
                           {/* Appearantly eventKey param must be a string, otherwise it just dont want to work :/ */}
-                          <CustomToggle eventKey={'' + i}>
-                            {row.cells.map((cell, j) => {
-                              return (
-                                <td {...cell.getCellProps()}>
-                                  {cell.render('Cell')}
-                                </td>
-                              )
-                            })}
+                          <CustomToggle eventKey={'' + i} rowCells={row.cells}>
                           </CustomToggle>
                           <tr
                             {...row.getRowProps()}
@@ -123,42 +137,40 @@ const AccordionTable = (props) => {
                     })}
                   </tbody>
                 </table>
-                <div className="d-flex justify-content-between">
-                  <span>
-                    Page{' '}
-                    <strong>
-                      {pageIndex + 1} of {pageOptions.length}
-                    </strong>{''}
-                  </span>
-                  <span className="table-index">
-                    Go to page : {' '}
-                    <input
-                      type="number"
-                      className="ml-2"
-                      defaultValue={pageIndex + 1}
-                      onChange={(e) => {
-                        const pageNumber = e.target.value ? Number(e.target.value) - 1 : 0;
-                        gotoPage(pageNumber);
-                      }}
-                    />
-                  </span>
-                </div>
-                <div className="text-center">
-                  <div className="filter-pagination mt-3">
-                    <button className="previous-button" onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
-                      {'<<'}
+                <div className="d-sm-flex text-center justify-content-between align-items-center mt-3">
+                  <div className="dataTables_info">
+                    Showing {data.length >= 10 ? '10' : data.length} data of {data.length} entries over {pageCount} pages
+                  </div>
+                  <div
+                    className="dataTables_paginate paging_simple_numbers"
+                    id="example5_paginate"
+                  >
+                    <button
+                      className={`paginate_button previous ${!canPreviousPage ? 'disabled' : ''}`}
+                      onClick={() => previousPage()} disabled={!canPreviousPage}
+                    >
+                      <i className="fa fa-angle-double-left" aria-hidden="true"></i>
                     </button>
-
-                    <button className="previous-button" onClick={() => previousPage()} disabled={!canPreviousPage}>
-                      Previous
-                    </button>
-
-                    <button className="previous-button" onClick={() => nextPage()} disabled={!canNextPage}>
-                      Next
-                    </button>
-
-                    <button className="previous-button" onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
-                      {'>>'}
+                    <span>
+                      {pageOptions.map((number) => (
+                        <button
+                          className={`paginate_button  ${
+                            // eslint-disable-next-line no-sequences
+                            pageIndex === number ? "current" : "",
+                            pageCount <= 1 ? 'disabled' : ''
+                            } `}
+                          key={number}
+                          onClick={() => gotoPage(number)}
+                        >
+                          {number + 1}
+                        </button>
+                      ))}
+                    </span>
+                    <button
+                      className={`paginate_button next ${!canNextPage ? 'disabled' : ''}`}
+                      onClick={() => nextPage()} disabled={!canNextPage}
+                    >
+                      <i className="fa fa-angle-double-right" aria-hidden="true"></i>
                     </button>
                   </div>
                 </div>

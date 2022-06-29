@@ -5,19 +5,24 @@ import reducer from './store';
 
 import DefaultTable from '../../../components/table/DefaultTable';
 import { 
+  addCandidateStatusRequest,
+  closeCandidateStatusModal,
   getCandidateStatuses, 
   openEditCandidateStatusModal, 
   openNewCandidateStatusModal, 
   removeCandidateStatusRequest, 
-  selectCandidateStatuses 
+  selectCandidateStatuses, 
+  updateCandidateStatusRequest
 } from './store/candidateStatusSlice';
-import CandidateStatusModal from './candidateStatusModal';
 import ConfirmModal from '../../../components/ConfirmModal';
 import { Button } from 'react-bootstrap';
+import OnlyDescriptionModal from '../../../components/OnlyDescriptionModal';
 
 const CandidateStatuses = (props) => {
   const dispatch = useDispatch();
   const data = useSelector(selectCandidateStatuses);
+  const modal = useSelector(({ candidateStatusApp }) => candidateStatusApp.candidateStatuses.modal);
+  const isSubmitting = useSelector(({ candidateStatusApp }) => candidateStatusApp.candidateStatuses.isSubmitting);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [confirmModalData, setConfirmModalData] = useState('');
 
@@ -77,7 +82,7 @@ const CandidateStatuses = (props) => {
       variant="primary"
       onClick={handleCreate}
     >
-      Add New Candidate Status
+      New Candidate Status
     </Button>
   );
 
@@ -92,7 +97,14 @@ const CandidateStatuses = (props) => {
         useFilter
         rightButtons={rightButtons}
       />
-      <CandidateStatusModal />
+      <OnlyDescriptionModal
+        header="Candidate Status"
+        modal={modal}
+        isSubmitting={isSubmitting}
+        add={(data) => dispatch(addCandidateStatusRequest(data))}
+        update={(data) => dispatch(updateCandidateStatusRequest(data))}
+        closeModal={() => dispatch(closeCandidateStatusModal())}
+      />
       <ConfirmModal 
         title="Deleting Candidate Status"
         content="Are you sure about deleting?"
