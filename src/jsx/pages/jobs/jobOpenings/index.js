@@ -80,7 +80,12 @@ const JobOpenings = (props) => {
       }
     },
   ], []);
+  const rightButtons = (
+    <Link to={"/jobs/open-job"} className="btn btn-success  mr-2">
+             <i class="bi bi-plus-circle"></i>
+      </Link>
 
+  )
   return <DefaultTable
     data={data}
     columns={columns}
@@ -88,6 +93,7 @@ const JobOpenings = (props) => {
     activeMenu="sidebar.jobs.jobOpenings"
     usePageTitle
     useFilter
+    rightButtons={rightButtons}
   />
 }
 
