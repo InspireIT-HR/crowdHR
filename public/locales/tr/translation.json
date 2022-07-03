@@ -83,6 +83,7 @@
     "internalRecruiter":"Dahili İşe Alımcı",
     "qualifications":"Özellikler",
     "description":"Açıklama",
+    "currencyType":"Para Birimi",
     "required":"Bu alanın doldurulması zorunludur.",
     "add":"Ekle",
     "clear":"Temizle"

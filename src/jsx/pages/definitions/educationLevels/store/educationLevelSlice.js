@@ -2,6 +2,7 @@ import { createEntityAdapter, createSlice } from '@reduxjs/toolkit';
 import axios from '../../../../../services/axios';
 import { showError } from '../../../../helpers/notificationHelper';
 
+
 export const getEducationLevels = () => (dispatch, getState) => {
   if (getState().educationLevelApp.educationLevels.loading) {
     return;
