@@ -55,8 +55,7 @@ const DefaultTable = (props) => {
                 {props.useFilter && 
                   <GlobalFilter 
                     filter={globalFilter} 
-                    setFilter={setGlobalFilter} 
-                    onCreateButtonClick={props.onCreateButtonClick}
+                    setFilter={setGlobalFilter}
                   />
                 }
                 <div style={{ display: 'flex', alignItems: 'flex-end' }}>

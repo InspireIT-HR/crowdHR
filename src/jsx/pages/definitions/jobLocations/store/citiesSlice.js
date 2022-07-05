@@ -29,9 +29,15 @@ export const addCityRequest = (data) => (dispatch, getState) => {
     return;
   }
 
+  // Not efficient but works :/
+  const countryId = getState().jobLocationApp.cities.modal.countryId;
+
   dispatch(setIsCitySubmitting(true));
 
-  axios.post('/Cities', data)
+  axios.post('/Cities', {
+    ...data,
+    countryId,
+  })
   .then((response) => {
     dispatch(addCity(response.data));
     dispatch(setIsCitySubmitting(false));
@@ -97,6 +103,7 @@ const initialState = {
     type: 'new',
     open: false,
     data: null,
+    countryId: '',
   },
 };
 
@@ -116,6 +123,7 @@ const citiesSlice = createSlice({
         type: 'new',
         open: true,
         data: null,
+        countryId: action.payload || 5,
       };
     },
     openEditCityModal: (state, action) => {
@@ -123,6 +131,7 @@ const citiesSlice = createSlice({
         type: 'edit',
         open: true,
         data: action.payload,
+        countryId: action.payload.countryId
       };
     },
     closeCityModal: (state, action) => {

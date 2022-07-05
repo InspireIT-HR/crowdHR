@@ -1,19 +1,32 @@
-import { useEffect, useMemo } from 'react';
+import { Fragment, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import withReducer from '../../../../store/withReducer';
 import reducer from './store';
 
-import { 
-  getCountries, 
-  selectCountries, 
+import {
+  addCountryRequest,
+  closeCountryModal,
+  getCountries,
+  openEditCountryModal,
+  openNewCountryModal,
+  removeCountryRequest,
+  selectCountries,
+  updateCountryRequest,
 } from './store/countriesSlice';
 import { getCities } from './store/citiesSlice';
 import CitiesTable from './citiesTable';
 import AccordionTable from '../../../components/table/AccordionTable';
+import { Button } from 'react-bootstrap';
+import OnlyDescriptionModal from '../../../components/OnlyDescriptionModal';
+import ConfirmModal from '../../../components/ConfirmModal';
 
 const JobLocations = (props) => {
   const dispatch = useDispatch();
   const data = useSelector(selectCountries);
+  const modal = useSelector(({ jobLocationApp }) => jobLocationApp.countries.modal);
+  const isSubmitting = useSelector(({ jobLocationApp }) => jobLocationApp.countries.isSubmitting);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [confirmModalData, setConfirmModalData] = useState('');
 
   useEffect(() => {
     dispatch(getCountries());
@@ -38,27 +51,74 @@ const JobLocations = (props) => {
       Cell: (props) => {
         return (
           <>
-            <button className="btn btn-primary shadow btn-xs sharp me-1">
+            <button
+              className="btn btn-primary shadow btn-xs sharp me-1"
+              onClick={() => dispatch(openEditCountryModal(props.row.original))}
+            >
               <i className="fas fa-pencil-alt"></i>
             </button>
-            <button className="btn btn-danger shadow btn-xs sharp">
+            <button
+              className="btn btn-danger shadow btn-xs sharp"
+              onClick={() => {
+                setConfirmModalData(props.row.original.id);
+                setShowConfirmModal(true);
+              }}
+            >
               <i className="fa fa-trash"></i>
             </button>
           </>
         )
       }
     }
-  ], []);
+  ], [dispatch]);
 
-  return <AccordionTable
-    data={data}
-    columns={columns}
-    motherMenu="sidebar.definitions.def"
-    activeMenu="sidebar.definitions.jobLocations"
-    usePageTitle
-    useFilter
-    accordionBody={CitiesTable}
-  />
+  const handleRemove = (data) => {
+    dispatch(removeCountryRequest(data));
+  }
+
+  const handleCreate = () => {
+    dispatch(openNewCountryModal());
+  }
+
+  const rightButtons = (
+    <Button
+      variant="primary"
+      onClick={handleCreate}
+    >
+      New Country
+    </Button>
+  );
+
+  return (
+    <Fragment>
+      <AccordionTable
+        data={data}
+        columns={columns}
+        motherMenu="sidebar.definitions.def"
+        activeMenu="sidebar.definitions.jobLocations"
+        usePageTitle
+        useFilter
+        accordionBody={CitiesTable}
+        rightButtons={rightButtons}
+      />
+      <OnlyDescriptionModal
+        header="Country"
+        modal={modal}
+        isSubmitting={isSubmitting}
+        add={(data) => dispatch(addCountryRequest(data))}
+        update={(data) => dispatch(updateCountryRequest(data))}
+        closeModal={() => dispatch(closeCountryModal())}
+      />
+      <ConfirmModal
+        title="Deleting Country"
+        content="Are you sure about deleting?"
+        onConfirm={handleRemove}
+        onClose={() => setShowConfirmModal(false)}
+        showModal={showConfirmModal}
+        data={confirmModalData}
+      />
+    </Fragment>
+  )
 }
 
 export default withReducer('jobLocationApp', reducer)(JobLocations);

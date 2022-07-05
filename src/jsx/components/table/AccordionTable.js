@@ -93,6 +93,9 @@ const AccordionTable = (props) => {
             <div className="dataTables_wrapper">
               <div className="d-flex" style={{ justifyContent: 'space-between' }}>
                 <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} />
+                <div style={{ display: 'flex', alignItems: 'flex-end' }}>
+                  {props.rightButtons}
+                </div>
               </div>
               <Accordion className="accordion accordion-primary">
                 <table {...getTableProps()} className="table display">

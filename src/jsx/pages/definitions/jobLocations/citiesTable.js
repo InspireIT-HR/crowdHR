@@ -1,7 +1,15 @@
 import { Fragment, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { addCityRequest, closeCityModal, openEditCityModal, openNewCityModal, removeCityRequest, selectCities, updateCityRequest } from './store/citiesSlice';
+import { 
+  addCityRequest, 
+  closeCityModal, 
+  openEditCityModal, 
+  openNewCityModal, 
+  removeCityRequest, 
+  selectCities, 
+  updateCityRequest 
+} from './store/citiesSlice';
 import DefaultTable from '../../../components/table/DefaultTable';
 import { Button } from 'react-bootstrap';
 import OnlyDescriptionModal from '../../../components/OnlyDescriptionModal';
@@ -65,14 +73,10 @@ const CitiesTable = (props) => {
     dispatch(removeCityRequest(data));
   }
 
-  const handleCreate = () => {
-    dispatch(openNewCityModal());
-  }
-
   const rightButtons = (
     <Button
       variant="primary"
-      onClick={handleCreate}
+      onClick={() => dispatch(openNewCityModal(props.row.id))}
     >
       New City
     </Button>
