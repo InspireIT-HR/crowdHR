@@ -31,7 +31,7 @@ const OnlyDescriptionModal = (props) => {
     }
   }, [modal.data, modal.type]);
 
-  useEffect(() => {
+  useEffect(() => {  
     if (modal.open) {
       initModal();
     }

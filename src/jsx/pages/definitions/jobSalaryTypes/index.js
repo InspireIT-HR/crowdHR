@@ -69,12 +69,9 @@ const JobSalaryTypes = (props) => {
   }
 
   const rightButtons = (
-    <Button
-      variant="primary"
-      onClick={handleCreate}
-    >
-      New Job Salary Type
-    </Button>
+    <button className="btn add_button" onClick={handleCreate}>
+      <i class="bi bi-plus-circle add_icon"></i>
+    </button>
   )
 
   return (

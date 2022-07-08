@@ -58,7 +58,7 @@ const DefaultTable = (props) => {
                     setFilter={setGlobalFilter}
                   />
                 }
-                <div style={{ display: 'flex', alignItems: 'flex-end' }}>
+                <div style={{ display: 'flex', alignItems: 'center' }}>
                   {props.rightButtons}
                 </div>
               </div>
