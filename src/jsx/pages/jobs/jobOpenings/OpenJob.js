@@ -5,6 +5,9 @@ import React, {
   useState,
   Fragment,
 } from "react";
+import { useDispatch, useSelector } from 'react-redux';
+import withReducer from '../../../../store/withReducer';
+import reducer from './store';
 import PageTItle from "../../../layouts/PageTitle";
 import { ButtonGroup, Dropdown, SplitButton } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
@@ -15,38 +18,106 @@ import { Stepper, Step } from "react-form-stepper";
 import { Editor } from "@tinymce/tinymce-react";
 import { Formik } from "formik";
 import * as yup from "yup";
-const defaultValues = {
-  referenceCode: "",
-};
-const schema = yup.object().shape({
-  referenceCode: yup
-    .string()
-    .min(3, "Description must have more than 3 characters")
-    .required("Please enter a reference code"),
-});
-const OpenJob = () => {
-  const [initialValues, setInitialValues] = useState({
-    referenceCode: "",
-  });
+import { 
+  setJobOpenings,
+  addJobOpening,
+  updateJobOpening,
+  removeJobOpening,
+  setJobOpeningsLoading,
+  addNewJob
+} from './store/jobOpeningSlice';
+const OpenJob = (props) => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
   const [selectedOption, setSelectedOption] = useState(null);
   const [selectedJobTypeOption, setSelectedJobTypeOption] = useState(null);
   const [goSteps, setGoSteps] = useState(0);
-
   const [statuses, setStatuses] = useState([]);
   const [types, setTypes] = useState([]);
+  const defaultValues = {
+    shortName: "",
+    jobDescription: "",
+    genderId: 0,
+    minEducationLevelId: 0,
+    customerId: 0,
+    customerIsVisible: 0,
+    jobTypeId: 0,
+    locationCountryId: 0,
+    locationCityId: 0,
+    isRemote: 0,
+    minExperience: 0,
+    statusId: 0,
+    minSalary: 0,
+    salaryTypeId: 0,
+    currencyTypeId: 0, //for salary
+    numberOfPositions: 0,
+    commissionFee: 0,
+    commissionCurrencyTypeId: 0,
+    targetDate: "",
+    createUserId: 0,
+    qualification: "",
+    referenceCode: "",
+    maxSalary: 0,
+    openToExternal: 0,
+    maxExperience: 0,
+  };
+  const schema = yup.object().shape({
+    shortName: yup.string().required(t("required")),
+    jobDescription: yup.string().required(t("required")),
+    genderId: yup.boolean().required(t("required")),
+    minEducationLevelId: yup.boolean().required(t("required")),
+    customerId: yup.boolean().required(t("required")),
+    customerIsVisible: yup.boolean().required(t("required")),
+    jobTypeId: yup.boolean().required(t("required")),
+    locationCountryId: yup.boolean().required(t("required")),
+    locationCityId: yup.boolean().required(t("required")),
+    isRemote: yup.boolean().required(t("required")),
+    minExperience: yup.number().required(t("required")),
+    statusId: yup.boolean().required(t("required")),
+    minSalary: yup.number().required(t("required")),
+    salaryTypeId: yup.boolean().required(t("required")),
+    currencyTypeId: yup.boolean().required(t("required")), //for salary
+    numberOfPositions: yup.number().required(t("required")),
+    commissionFee: yup.number().required(t("required")),
+    commissionCurrencyTypeId: yup.boolean().required(t("required")),
+    targetDate: yup.date().required(t("required")),
+    createUserId: yup.boolean().required(t("required")),
+    qualification: yup.string().required(t("required")),
+    referenceCode: yup.string().required(t("required")),
+    maxSalary: yup.number().required(t("required")),
+    openToExternal: yup.boolean().required(t("required")),
+    maxExperience: yup.number().required(t("required")),
+  });
+  const [initialValues, setInitialValues] = useState({
+    shortName: "",
+    jobDescription: "",
+    genderId: 0,
+    minEducationLevelId: 0,
+    customerId: 0,
+    customerIsVisible: 0,
+    jobTypeId: 0,
+    locationCountryId: 0,
+    locationCityId: 0,
+    isRemote: 0,
+    minExperience: 0,
+    statusId: 0,
+    minSalary: 0,
+    salaryTypeId: 0,
+    currencyTypeId: 0, //for salary
+    numberOfPositions: 0,
+    commissionFee: 0,
+    commissionCurrencyTypeId: 0,
+    targetDate: "",
+    createUserId: 0,
+    qualification: "",
+    referenceCode: "",
+    maxSalary: 0,
+    openToExternal: 0,
+    maxExperience: 0,
+  });
 
   const handleOnSubmit = (data) => {
-    // if (modal.type === 'edit') {
-    //   if (props.update) {
-    //     props.update(data);
-    //   }
-    // }
-    // if (modal.type === 'new') {
-    //   if (props.add) {
-    //     props.add(data);
-    //   }
-    // }
+    dispatch(addNewJob(data))
   };
 
   const handleEditorChange = (content, editor) => {
@@ -138,7 +209,7 @@ const OpenJob = () => {
                                   value={values.referenceCode}
                                 />
                                 <div
-                                  id="val-description-error"
+                                  id="val-referenceCode-error"
                                   className="invalid-feedback animated fadeInUp"
                                   style={{ display: "block" }}
                                 >
@@ -146,42 +217,154 @@ const OpenJob = () => {
                                 </div>
 
                                 <div
-                                  id="val-description-error"
+                                  id="val-referenceCode-error"
                                   className="invalid-feedback animated fadeInUp"
                                   style={{ display: "block" }}
                                 />
                               </div>
-                              <div className="form-group mb-3 col-md-6">
+                              {/*Reference Code*/}
+                              <div
+                                className={`form-group mb-3 col-md-6 ${
+                                  values.shortName
+                                    ? errors.shortName
+                                      ? "is-invalid"
+                                      : "is-valid"
+                                    : ""
+                                }`}
+                              >
                                 <label>{t("newJobForm.shortName")}</label>
-                                <input type="text" className="form-control" />
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  required
+                                  id="val-shortName"
+                                  name="shortName"
+                                  onChange={handleChange}
+                                  onBlur={handleBlur}
+                                  value={values.shortName}
+                                />
+                                <div
+                                  id="val-shortName-error"
+                                  className="invalid-feedback animated fadeInUp"
+                                  style={{ display: "block" }}
+                                >
+                                  {errors.shortName && errors.shortName}
+                                </div>
+                                <div
+                                  id="val-shortName-error"
+                                  className="invalid-feedback animated fadeInUp"
+                                  style={{ display: "block" }}
+                                />
                               </div>
-                              <div className="form-group mb-3 col-md-6">
+                              {/*Short Name*/}
+                              <div
+                                className={`form-group mb-3 col-md-6 ${
+                                  values.shortName
+                                    ? errors.shortName
+                                      ? "is-invalid"
+                                      : "is-valid"
+                                    : ""
+                                }`}
+                              >
                                 <label>{t("newJobForm.targetDate")}</label>
                                 <input
                                   type="date"
                                   className="form-control"
-                                  placeholder="Password"
+                                  required
+                                  id="val-targetDate"
+                                  name="targetDate"
+                                  onChange={handleChange}
+                                  onBlur={handleBlur}
+                                  value={values.targetDate}
+                                />
+                                <div
+                                  id="val-targetDate-error"
+                                  className="invalid-feedback animated fadeInUp"
+                                  style={{ display: "block" }}
+                                >
+                                  {errors.targetDate && errors.targetDate}
+                                </div>
+                                <div
+                                  id="val-targetDate-error"
+                                  className="invalid-feedback animated fadeInUp"
+                                  style={{ display: "block" }}
                                 />
                               </div>
-                              <div className="form-group mb-3 col-md-6">
+                              {/*Target Date*/}
+                              <div
+                                className={`form-group mb-3 col-md-6 ${
+                                  values.statusId
+                                    ? errors.statusId
+                                      ? "is-invalid"
+                                      : "is-valid"
+                                    : ""
+                                }`}
+                              >
                                 <label>{t("newJobForm.status")}</label>
                                 <Select
                                   defaultValue={selectedOption}
-                                  onChange={setSelectedOption}
+                                  onChange={handleChange}
+                                  onBlur={handleBlur}
                                   options={options}
                                   style={{
                                     lineHeight: "40px",
                                     color: "#7e7e7e",
                                     paddingLeft: " 15px",
                                   }}
+                                  value={values.statusId}
+                                  required
+                                  id="val-statusId"
+                                />
+                                <div
+                                  id="val-statusId-error"
+                                  className="invalid-feedback animated fadeInUp"
+                                  style={{ display: "block" }}
+                                >
+                                  {errors.statusId && errors.statusId}
+                                </div>
+                                <div
+                                  id="val-statusId-error"
+                                  className="invalid-feedback animated fadeInUp"
+                                  style={{ display: "block" }}
                                 />
                               </div>
-                              <div className="form-group mb-3 col-md-6">
+                              {/*Job Status*/}
+                              <div
+                                className={`form-group mb-3 col-md-6 ${
+                                  values.numberOfPositions
+                                    ? errors.numberOfPositions
+                                      ? "is-invalid"
+                                      : "is-valid"
+                                    : ""
+                                }`}
+                              >
                                 <label>
                                   {t("newJobForm.numberOfPosition")}
                                 </label>
-                                <input type="number" className="form-control" />
+                                <input
+                                  type="number"
+                                  className="form-control"
+                                  required
+                                  onChange={handleChange}
+                                  onBlur={handleBlur}
+                                  value={values.numberOfPositions}
+                                  id="val-numberOfPositions"
+                                />
+                                <div
+                                  id="val-numberOfPositions-error"
+                                  className="invalid-feedback animated fadeInUp"
+                                  style={{ display: "block" }}
+                                >
+                                  {errors.numberOfPositions &&
+                                    errors.numberOfPositions}
+                                </div>
+                                <div
+                                  id="val-numberOfPositions-error"
+                                  className="invalid-feedback animated fadeInUp"
+                                  style={{ display: "block" }}
+                                />
                               </div>
+                              {/*Number Of Positions */}
                             </div>
                           </section>
                           <div className="text-end toolbar toolbar-bottom p-2">
@@ -520,7 +703,7 @@ const OpenJob = () => {
                             >
                               Prev
                             </button>
-                            <button className="btn btn-primary sw-btn-next ms-1">
+                            <button className="btn btn-primary sw-btn-next ms-1" type="submit">
                               Submit
                             </button>
                           </div>
@@ -538,4 +721,4 @@ const OpenJob = () => {
   );
 };
 
-export default OpenJob;
+export default withReducer('jobOpeningApp',reducer)(OpenJob);

@@ -20,6 +20,17 @@ export const getJobOpenings = () => (dispatch, getState) => {
   });
 }
 
+export const addNewJob=(data)=>(dispatch,getState)=>{
+  axios.post('/JobOpenings', data)
+  .then((response) => {
+    dispatch(addJobOpening(response.data));
+
+  })
+  .catch((err) => {
+    showError(err.message);
+  });
+}
+
 
 const jobOpeningsAdapter = createEntityAdapter({});
 
@@ -32,6 +43,7 @@ export const {
 
 const initialState = {
   loading: false,
+  data:null
 };
 
 const jobOpeningsSlice = createSlice({
@@ -45,7 +57,7 @@ const jobOpeningsSlice = createSlice({
     removeJobOpening: jobOpeningsAdapter.removeOne,
     setJobOpeningsLoading: (state, action) => {
       state.loading = action.payload;
-    },
+    }
   },
   extraReducers: {},
 });
@@ -55,7 +67,7 @@ export const {
   addJobOpening,
   updateJobOpening,
   removeJobOpening,
-  setJobOpeningsLoading,
+  setJobOpeningsLoading
 } = jobOpeningsSlice.actions;
 
 export default jobOpeningsSlice.reducer;

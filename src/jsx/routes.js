@@ -11,7 +11,7 @@ import jobLocations from "./pages/definitions/jobLocations";
 import jobSalaryTypes from "./pages/definitions/jobSalaryTypes";
 import customers from "./pages/customers/customers";
 import users from "./pages/users/users";
-import openJob from "./pages/jobs/NewJob/OpenJob";
+import openJob from "./pages/jobs/jobOpenings/OpenJob";
 
 export const routes = [
   {
