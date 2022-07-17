@@ -31,6 +31,9 @@ export const addNewJob=(data)=>(dispatch,getState)=>{
   });
 }
 
+export const referUser = (data) => (dispatch, getState) => {
+  
+}
 
 const jobOpeningsAdapter = createEntityAdapter({});
 
@@ -43,7 +46,7 @@ export const {
 
 const initialState = {
   loading: false,
-  data:null
+  data: null
 };
 
 const jobOpeningsSlice = createSlice({
@@ -51,7 +54,6 @@ const jobOpeningsSlice = createSlice({
   initialState: jobOpeningsAdapter.getInitialState(initialState),
   reducers: {
     setJobOpenings: jobOpeningsAdapter.setAll,
-
     addJobOpening: jobOpeningsAdapter.addOne,
     updateJobOpening: jobOpeningsAdapter.upsertOne,
     removeJobOpening: jobOpeningsAdapter.removeOne,

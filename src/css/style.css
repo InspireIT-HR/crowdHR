@@ -3193,6 +3193,7 @@ textarea.form-control.is-valid {
   margin-top: 0.25rem;
   font-size: 0.875em;
   color: #f72b50;
+  height: 16.08px;
 }
 
 .invalid-tooltip {
@@ -44934,6 +44935,22 @@ html[dir="rtl"] [direction="rtl"][data-sidebar-style="compact"]:not([data-layout
 
 [data-theme-version="dark"] .footer .copyright p {
   color: #fff;
+}
+
+.noselect {
+  -webkit-touch-callout: none;
+  /* iOS Safari */
+  -webkit-user-select: none;
+  /* Safari */
+  -khtml-user-select: none;
+  /* Konqueror HTML */
+  -moz-user-select: none;
+  /* Old versions of Firefox */
+  -ms-user-select: none;
+  /* Internet Explorer/Edge */
+  user-select: none;
+  /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
 }
 
 /*# sourceMappingURL=style.css.map */

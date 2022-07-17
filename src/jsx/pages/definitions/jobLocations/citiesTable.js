@@ -11,7 +11,6 @@ import {
   updateCityRequest 
 } from './store/citiesSlice';
 import DefaultTable from '../../../components/table/DefaultTable';
-import { Button } from 'react-bootstrap';
 import OnlyDescriptionModal from '../../../components/OnlyDescriptionModal';
 import ConfirmModal from '../../../components/ConfirmModal';
 
