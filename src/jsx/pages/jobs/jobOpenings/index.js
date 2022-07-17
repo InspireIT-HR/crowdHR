@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { Fragment, useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import withReducer from "../../../../store/withReducer";
@@ -6,6 +6,7 @@ import reducer from "./store";
 import DefaultTable from "../../../components/table/DefaultTable";
 import { getJobOpenings, selectJobOpenings } from "./store/jobOpeningSlice";
 import { Row, Card, Col, Button, Modal, Container } from "react-bootstrap";
+import ReferModal from "./ReferModal";
 
 const JobOpenings = (props) => {
   const dispatch = useDispatch();
@@ -13,7 +14,7 @@ const JobOpenings = (props) => {
   const [referModal, setReferModal] = useState(false);
   const [applyModal, setApplyModal] = useState(false);
   const [referJob, setReferJob] = useState();
-
+  const [selectedJobName, setSelectedJobName] = useState('');
   
 
   useEffect(() => {
@@ -110,7 +111,10 @@ const referClick=(original,open)=>{
               </button>
               <button
                 className="btn btn-outline-warning btn-sm"
-                onClick={() => setReferModal(true)}
+                onClick={() => {
+                  setReferModal(true);
+                  setSelectedJobName(`${props.row.original.shortName} / ${props.row.original.customer.name}`)
+                }}
               >
                 Refer
               </button>
@@ -128,34 +132,9 @@ const referClick=(original,open)=>{
   );
 
   return (
-    <div>
-      {/*Refer Modal*/}
-        <Modal className="fade" show={referModal}>
-          <Modal.Header>
-            <Modal.Title>Aday Öner</Modal.Title>
-            <Button
-              onClick={() => setReferModal(false)}
-              variant=""
-              className="btn-close"
-            ></Button>
-          </Modal.Header>
-          <Modal.Body>
-            <h4>{referJob}</h4>
-            <p>
-              Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
-              dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta
-              ac consectetur ac, vestibulum at eros.
-            </p>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button onClick={() => setReferModal(false)} variant="danger light">
-              Close
-            </Button>
-            <Button variant="primary">Save changes</Button>
-          </Modal.Footer>
-        </Modal>
-      {/*Refer Modal End*/}
-
+    <Fragment>
+      <ReferModal open={referModal} jobName={selectedJobName} closeModal={() => setReferModal(false)}/>
+      
       {/*Apply Modal*/}
       <Modal className="fade" show={applyModal}>
           <Modal.Header>
@@ -191,7 +170,7 @@ const referClick=(original,open)=>{
         useFilter
         rightButtons={rightButtons}
       />
-    </div>
+    </Fragment>
   );
 };
 
