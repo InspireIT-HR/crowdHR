@@ -18,7 +18,7 @@ const Setting = () => {
 	const changeThemeLanguage=(e)=>{
 		changeLanguage(e);
 		i18n.changeLanguage(e.value);
-		console.log('language changedd : '+ e.value)
+		// console.log('language changedd : '+ e.value)
 	}
   const [settingToggle, setSettingToggle] = useState(false);
   const [demoToggle, setDemoToggle] = useState(false);

@@ -74,7 +74,7 @@ const CitiesTable = (props) => {
 
   const rightButtons = (
     <button className="btn add_button" onClick={() => dispatch(openNewCityModal(props.row.id))}>
-      <i class="bi bi-plus-circle add_icon"></i>
+      <i className="bi bi-plus-circle add_icon"></i>
     </button>
   )
 

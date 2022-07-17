@@ -31,7 +31,6 @@ export const checkAutoLogin = (history) => (dispatch, getState) => {
     if (response.data) {
       dispatch(setUser(response.data));
       dispatch(setIsAuthenticating(false));
-      history.push('/dashboard');
     } else {
       dispatch(logoutUser());
       history.push('/login');

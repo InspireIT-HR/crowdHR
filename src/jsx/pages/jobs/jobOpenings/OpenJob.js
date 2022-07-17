@@ -1,7 +1,5 @@
 import React, {
-  useCallback,
   useEffect,
-  useMemo,
   useState,
   Fragment,
 } from "react";
@@ -9,58 +7,88 @@ import { useDispatch, useSelector } from 'react-redux';
 import withReducer from '../../../../store/withReducer';
 import reducer from './store';
 import PageTItle from "../../../layouts/PageTitle";
-import { ButtonGroup, Dropdown, SplitButton } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import Select from "react-select";
-import axios from "../../../../services/axios";
 import Nouislider from "nouislider-react";
 import { Stepper, Step } from "react-form-stepper";
 import { Editor } from "@tinymce/tinymce-react";
 import { Formik } from "formik";
 import * as yup from "yup";
-import { 
-  setJobOpenings,
-  addJobOpening,
-  updateJobOpening,
-  removeJobOpening,
-  setJobOpeningsLoading,
-  addNewJob
-} from './store/jobOpeningSlice';
+import { addNewJob } from './store/jobOpeningSlice';
+import { getJobStatuses, selectJobStatuses } from '../../definitions/jobStatuses/store/jobStatusSlice';
+import { getJobTypes, selectJobTypes } from '../../definitions/jobTypes/store/jobTypeSlice';
+import { getCustomers, selectCustomers } from '../../customers/customers/store/customersSlice';
+import { getCountries, selectCountries } from '../../definitions/jobLocations/store/countriesSlice';
+import { getCities, selectCities } from '../../definitions/jobLocations/store/citiesSlice';
+import { getEducationLevels, selectEducationLevels } from '../../definitions/educationLevels/store/educationLevelSlice';
+import { getJobSalaryTypes, selectJobSalaryTypes } from '../../definitions/jobSalaryTypes/store/jobSalaryTypeSlice'; 
+import { getInternalRecruiters, selectInternalRecruiters } from "../../users/users/store/internalRecruitersSlice";
+
+const defaultValues = {
+  shortName: "",
+  jobDescription: "",
+  genderId: 0,
+  minEducationLevelId: 0,
+  customerId: 0,
+  customerResponsibleId: '',
+  customerIsVisible: 0,
+  jobTypeId: 0,
+  locationCountryId: 0,
+  locationCityId: 0,
+  isRemote: 0,
+  minExperience: 0,
+  statusId: 0,
+  minSalary: 0,
+  salaryTypeId: 0,
+  currencyTypeId: 0, //for salary
+  numberOfPositions: 0,
+  commissionFee: 0,
+  commissionCurrencyTypeId: 0,
+  targetDate: "",
+  createUserId: 0,
+  qualification: "",
+  referenceCode: "",
+  maxSalary: 0,
+  openToExternal: 0,
+  maxExperience: 0,
+};
+
 const OpenJob = (props) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const [selectedOption, setSelectedOption] = useState(null);
   const [selectedJobTypeOption, setSelectedJobTypeOption] = useState(null);
   const [goSteps, setGoSteps] = useState(0);
-  const [statuses, setStatuses] = useState([]);
-  const [types, setTypes] = useState([]);
-  const defaultValues = {
-    shortName: "",
-    jobDescription: "",
-    genderId: 0,
-    minEducationLevelId: 0,
-    customerId: 0,
-    customerIsVisible: 0,
-    jobTypeId: 0,
-    locationCountryId: 0,
-    locationCityId: 0,
-    isRemote: 0,
-    minExperience: 0,
-    statusId: 0,
-    minSalary: 0,
-    salaryTypeId: 0,
-    currencyTypeId: 0, //for salary
-    numberOfPositions: 0,
-    commissionFee: 0,
-    commissionCurrencyTypeId: 0,
-    targetDate: "",
-    createUserId: 0,
-    qualification: "",
-    referenceCode: "",
-    maxSalary: 0,
-    openToExternal: 0,
-    maxExperience: 0,
-  };
+  const jobStatuses = useSelector(selectJobStatuses);
+  const jobTypes = useSelector(selectJobTypes);
+  const customers = useSelector(selectCustomers);
+  const customerResponsibles = useSelector(({ customerApp }) => customerApp.customerResponsibles);
+  const countries = useSelector(selectCountries);
+  const cities = useSelector(selectCities);
+  const educationLevels = useSelector(selectEducationLevels);
+  const salaryTypes = useSelector(selectJobSalaryTypes);
+  const internalRecruiters = useSelector(selectInternalRecruiters);
+  const genders = [
+    {
+      id: 1,
+      description: 'Male',
+    },
+    {
+      id: 2,
+      description: 'Female',
+    }
+  ];
+
+  const customerVisibilities = [
+    {
+      id: 1,
+      description: 'Açık',
+    },
+    {
+      id: 2,
+      description: 'Gizli',
+    }
+  ];
+
   const schema = yup.object().shape({
     shortName: yup.string().required(t("required")),
     jobDescription: yup.string().required(t("required")),
@@ -88,33 +116,6 @@ const OpenJob = (props) => {
     openToExternal: yup.boolean().required(t("required")),
     maxExperience: yup.number().required(t("required")),
   });
-  const [initialValues, setInitialValues] = useState({
-    shortName: "",
-    jobDescription: "",
-    genderId: 0,
-    minEducationLevelId: 0,
-    customerId: 0,
-    customerIsVisible: 0,
-    jobTypeId: 0,
-    locationCountryId: 0,
-    locationCityId: 0,
-    isRemote: 0,
-    minExperience: 0,
-    statusId: 0,
-    minSalary: 0,
-    salaryTypeId: 0,
-    currencyTypeId: 0, //for salary
-    numberOfPositions: 0,
-    commissionFee: 0,
-    commissionCurrencyTypeId: 0,
-    targetDate: "",
-    createUserId: 0,
-    qualification: "",
-    referenceCode: "",
-    maxSalary: 0,
-    openToExternal: 0,
-    maxExperience: 0,
-  });
 
   const handleOnSubmit = (data) => {
     dispatch(addNewJob(data))
@@ -123,28 +124,17 @@ const OpenJob = (props) => {
   const handleEditorChange = (content, editor) => {
     console.log("Content was updated:", content);
   };
+
   useEffect(() => {
-    axios
-      .get("/JobStatus")
-      .then((response) => {
-        setStatuses(response.data);
-      })
-      .catch((err) => {});
-    axios
-      .get("/JobTypes")
-      .then((response) => {
-        setTypes(response.data);
-      })
-      .catch((err) => {});
-  }, []);
-  const options = [];
-  statuses.forEach((item) => {
-    options.push({ value: item.description, label: item.description });
-  });
-  const jobTypes = [];
-  types.forEach((item) => {
-    jobTypes.push({ value: item.description, label: item.description });
-  });
+    dispatch(getJobStatuses());
+    dispatch(getJobTypes());
+    dispatch(getCustomers());
+    dispatch(getCountries());
+    dispatch(getCities());
+    dispatch(getEducationLevels());
+    dispatch(getJobSalaryTypes());
+    dispatch(getInternalRecruiters());
+  }, [dispatch]);
 
   return (
     <Fragment>
@@ -161,7 +151,6 @@ const OpenJob = (props) => {
                 <Stepper
                   className="nav-wizard"
                   activeStep={goSteps}
-                  label={false}
                 >
                   <Step className="nav-link" onClick={() => setGoSteps(0)} />
                   <Step className="nav-link" onClick={() => setGoSteps(1)} />
@@ -169,8 +158,9 @@ const OpenJob = (props) => {
                   <Step className="nav-link" onClick={() => setGoSteps(3)} />
                   <Step className="nav-link" onClick={() => setGoSteps(4)} />
                 </Stepper>
+
                 <Formik
-                  initialValues={initialValues}
+                  initialValues={defaultValues}
                   validationSchema={schema}
                   onSubmit={handleOnSubmit}
                   enableReinitialize
@@ -181,6 +171,8 @@ const OpenJob = (props) => {
                     handleChange,
                     handleBlur,
                     handleSubmit,
+                    setFieldValue,
+                    touched,
                     isValid,
                   }) => (
                     <form onSubmit={handleSubmit}>
@@ -213,7 +205,7 @@ const OpenJob = (props) => {
                                   className="invalid-feedback animated fadeInUp"
                                   style={{ display: "block" }}
                                 >
-                                  {errors.referenceCode && errors.referenceCode}
+                                  {errors.referenceCode && touched.referenceCode ? errors.referenceCode : ''}
                                 </div>
 
                                 <div
@@ -223,6 +215,7 @@ const OpenJob = (props) => {
                                 />
                               </div>
                               {/*Reference Code*/}
+
                               <div
                                 className={`form-group mb-3 col-md-6 ${
                                   values.shortName
@@ -248,7 +241,7 @@ const OpenJob = (props) => {
                                   className="invalid-feedback animated fadeInUp"
                                   style={{ display: "block" }}
                                 >
-                                  {errors.shortName && errors.shortName}
+                                  {errors.shortName && touched.shortName ? errors.shortName : ''}
                                 </div>
                                 <div
                                   id="val-shortName-error"
@@ -257,6 +250,7 @@ const OpenJob = (props) => {
                                 />
                               </div>
                               {/*Short Name*/}
+
                               <div
                                 className={`form-group mb-3 col-md-6 ${
                                   values.shortName
@@ -270,7 +264,6 @@ const OpenJob = (props) => {
                                 <input
                                   type="date"
                                   className="form-control"
- 
                                   id="val-targetDate"
                                   name="targetDate"
                                   onChange={handleChange}
@@ -279,6 +272,7 @@ const OpenJob = (props) => {
                                 />
                               </div>
                               {/*Target Date*/}
+
                               <div
                                 className={`form-group mb-3 col-md-6 ${
                                   values.statusId
@@ -290,10 +284,11 @@ const OpenJob = (props) => {
                               >
                                 <label>{t("newJobForm.status")}</label>
                                 <Select
-                                  defaultValue={selectedOption}
-                                  onChange={handleChange}
-                                  onBlur={handleBlur}
-                                  options={options}
+                                  defaultValue={''}
+                                  onChange={(value) => setFieldValue('status', value.id)}
+                                  options={jobStatuses}
+                                  getOptionLabel={(o) => o.description}
+                                  getOptionValue={(o) => o.id}
                                   style={{
                                     lineHeight: "40px",
                                     color: "#7e7e7e",
@@ -304,6 +299,7 @@ const OpenJob = (props) => {
                                 />
                               </div>
                               {/*Job Status*/}
+
                               <div
                                 className={`form-group mb-3 col-md-6 ${
                                   values.numberOfPositions
@@ -332,7 +328,7 @@ const OpenJob = (props) => {
                             <button
                               className="btn btn-primary sw-btn-next"
                               onClick={() => setGoSteps(1)}
-                              disabled={values.referenceCode === '' || values.shortName===''}
+                              // disabled={values.referenceCode === '' || values.shortName===''}
                             >
                               Next
                             </button>
@@ -344,30 +340,6 @@ const OpenJob = (props) => {
                           <section>
                             <div className="row">
                               <div className={`form-group mb-3 col-md-6 ${
-                                  values.customerIsVisible
-                                    ? errors.customerIsVisible
-                                      ? "is-invalid"
-                                      : "is-valid"
-                                    : ""
-                                }`}>
-                                <label>
-                                  {t("newJobForm.customerVisibilty")}
-                                </label>
-                                <Select
-                                  defaultValue={selectedOption}
-                                  onChange={setSelectedOption}
-                                  options={[
-                                    { value: 1, label: "Açık" },
-                                    { value: 0, label: "Gizli" },
-                                  ]}
-                                  style={{
-                                    lineHeight: "40px",
-                                    color: "#7e7e7e",
-                                    paddingLeft: " 15px",
-                                  }}
-                                />
-                              </div>{/*Customer Is Visible */}
-                              <div className={`form-group mb-3 col-md-6 ${
                                   values.customerId
                                     ? errors.customerId
                                       ? "is-invalid"
@@ -377,12 +349,13 @@ const OpenJob = (props) => {
                                 <label>{t("newJobForm.customerName")}</label>
                                 <Select
                                   defaultValue={selectedJobTypeOption}
-                                  id="val-customerId"
-                                  name="customerId"
-                                  onChange={handleChange}
-                                  onBlur={handleBlur}
-                                  value={values.customerId}
-                                  options={jobTypes}
+                                  onChange={(value) => {
+                                    setFieldValue('customerId', value.id);
+                                    setFieldValue('customerResponsibleId', '');
+                                  }}
+                                  options={customers}
+                                  getOptionLabel={(o) => o.name}
+                                  getOptionValue={(o) => o.id}
                                   required
                                   style={{
                                     lineHeight: "40px",
@@ -395,7 +368,7 @@ const OpenJob = (props) => {
                                   className="invalid-feedback animated fadeInUp"
                                   style={{ display: "block" }}
                                 >
-                                  {errors.customerId && errors.customerId}
+                                  {errors.customerId && touched.customerId ? errors.customerId : ''}
                                 </div>
 
                                 <div
@@ -403,13 +376,67 @@ const OpenJob = (props) => {
                                   className="invalid-feedback animated fadeInUp"
                                   style={{ display: "block" }}
                                 />
-                              </div>{/*Customer Name */}
-                              <div className="form-group mb-3 col-md-6">
-                                <label>
-                                  {t("newJobForm.customerReponsibles")}
-                                </label>
-                                <input type="text" className="form-control" />
                               </div>
+                              {/*Customer Name */}
+
+                              <div className="form-group mb-3 col-md-6">
+                                <label>{t("newJobForm.customerReponsibles")}</label>
+                                <Select
+                                  defaultValue={''}
+                                  onChange={(value) => setFieldValue('customerResponsibleId', value.id)}
+                                  value={values.customerResponsibleId ? customerResponsibles['' + values.customerId].find((c) => c.id === values.customerResponsibleId) : ''}
+                                  options={values.customerId && customerResponsibles['' + values.customerId]
+                                    ? customerResponsibles['' + values.customerId]
+                                    : []
+                                  }
+                                  getOptionLabel={(o) => o.fullname}
+                                  getOptionValue={(o) => o.id}
+                                  required
+                                  style={{
+                                    lineHeight: "40px",
+                                    color: "#7e7e7e",
+                                    paddingLeft: "15px"
+                                  }}
+                                />
+                                <div
+                                  id="val-customerResponsibleId-error"
+                                  className="invalid-feedback animated fadeInUp"
+                                  style={{ display: "block" }}
+                                >
+                                  {errors.customerResponsibleId && touched.customerResponsibleId ? errors.customerResponsibleId : ''}
+                                </div>
+
+                                <div
+                                  id="val-customerResponsibleId-error"
+                                  className="invalid-feedback animated fadeInUp"
+                                  style={{ display: "block" }}
+                                />
+                              </div>
+
+
+                              <div className={`form-group mb-3 col-md-6 ${values.customerIsVisible
+                                  ? errors.customerIsVisible
+                                    ? "is-invalid"
+                                    : "is-valid"
+                                  : ""
+                                }`}>
+                                <label>
+                                  {t("newJobForm.customerVisibilty")}
+                                </label>
+                                <Select
+                                  defaultValue={''}
+                                  onChange={(value) => setFieldValue('customerVisibilty', value.id)}
+                                  options={customerVisibilities}
+                                  getOptionLabel={(o) => o.description}
+                                  getOptionValue={(o) => o.id}
+                                  style={{
+                                    lineHeight: "40px",
+                                    color: "#7e7e7e",
+                                    paddingLeft: " 15px",
+                                  }}
+                                />
+                              </div>
+                              {/*Customer Is Visible */}
                             </div>
                           </section>
                           <div className="text-end toolbar toolbar-bottom p-2">
@@ -437,8 +464,10 @@ const OpenJob = (props) => {
                                 <label>{t("newJobForm.jobType")}</label>
                                 <Select
                                   defaultValue={selectedJobTypeOption}
-                                  onChange={setSelectedJobTypeOption}
+                                  onChange={(value) => setFieldValue('jobType', value.id)}
                                   options={jobTypes}
+                                  getOptionLabel={(o) => o.description}
+                                  getOptionValue={(o) => o.id}
                                   style={{
                                     lineHeight: "40px",
                                     color: "#7e7e7e",
@@ -446,14 +475,15 @@ const OpenJob = (props) => {
                                   }}
                                 />
                               </div>
+
                               <div className="form-group mb-3 col-md-6">
                                 <label>{t("newJobForm.isRemote")}</label>
                                 <Select
-                                  defaultValue={selectedOption}
-                                  onChange={setSelectedOption}
+                                  defaultValue={''}
+                                  onChange={(value) => setFieldValue('isRemote', value.value)}
                                   options={[
-                                    { value: "yes", label: "Evet" },
-                                    { value: "no", label: "Hayır" },
+                                    { value: true, label: "Evet" },
+                                    { value: false, label: "Hayır" },
                                   ]}
                                   style={{
                                     lineHeight: "40px",
@@ -462,12 +492,18 @@ const OpenJob = (props) => {
                                   }}
                                 />
                               </div>
+
                               <div className="form-group mb-3 col-md-6">
                                 <label>{t("newJobForm.country")}</label>
                                 <Select
                                   defaultValue={selectedJobTypeOption}
-                                  onChange={setSelectedJobTypeOption}
-                                  options={jobTypes}
+                                  onChange={(value) => {
+                                    setFieldValue('locationCountryId', value.id);
+                                    setFieldValue('locationCityId', '');
+                                  }}
+                                  options={countries}
+                                  getOptionLabel={(o) => o.description}
+                                  getOptionValue={(o) => o.id}
                                   style={{
                                     lineHeight: "40px",
                                     color: "#7e7e7e",
@@ -475,12 +511,16 @@ const OpenJob = (props) => {
                                   }}
                                 />
                               </div>
+
                               <div className="form-group mb-3 col-md-6">
                                 <label>{t("newJobForm.city")}</label>
                                 <Select
                                   defaultValue={selectedJobTypeOption}
-                                  onChange={setSelectedJobTypeOption}
-                                  options={jobTypes}
+                                  onChange={(value) => setFieldValue('locationCityId', value.id)}
+                                  value={values.locationCityId ? cities.find((c) => c.id === values.locationCityId) : ''}
+                                  options={values.locationCountryId ? cities.filter((c) => c.countryId === values.locationCountryId) : []}
+                                  getOptionLabel={(o) => o.description}
+                                  getOptionValue={(o) => o.id}
                                   style={{
                                     lineHeight: "40px",
                                     color: "#7e7e7e",
@@ -488,12 +528,15 @@ const OpenJob = (props) => {
                                   }}
                                 />
                               </div>
+
                               <div className="form-group mb-3 col-md-6">
                                 <label>{t("newJobForm.gender")}</label>
                                 <Select
                                   defaultValue={selectedJobTypeOption}
-                                  onChange={setSelectedJobTypeOption}
-                                  options={jobTypes}
+                                  onChange={(value) => setFieldValue('gender', value.id)}
+                                  options={genders}
+                                  getOptionLabel={(o) => o.description}
+                                  getOptionValue={(o) => o.id}
                                   style={{
                                     lineHeight: "40px",
                                     color: "#7e7e7e",
@@ -501,12 +544,15 @@ const OpenJob = (props) => {
                                   }}
                                 />
                               </div>
+
                               <div className="form-group mb-3 col-md-6">
                                 <label>{t("newJobForm.minEduLevel")}</label>
                                 <Select
                                   defaultValue={selectedJobTypeOption}
-                                  onChange={setSelectedJobTypeOption}
-                                  options={jobTypes}
+                                  onChange={(value) => setFieldValue('minEduLevel', value.id)}
+                                  options={educationLevels}
+                                  getOptionLabel={(o) => o.description}
+                                  getOptionValue={(o) => o.id}
                                   style={{
                                     lineHeight: "40px",
                                     color: "#7e7e7e",
@@ -514,6 +560,7 @@ const OpenJob = (props) => {
                                   }}
                                 />
                               </div>
+
                               <div className="form-group mb-3 col-md-6">
                                 <label>{t("newJobForm.experienceYear")}</label>
                                 <Nouislider
@@ -561,8 +608,10 @@ const OpenJob = (props) => {
                                 <label>{t("newJobForm.salaryType")}</label>
                                 <Select
                                   defaultValue={selectedJobTypeOption}
-                                  onChange={setSelectedJobTypeOption}
-                                  options={jobTypes}
+                                  onChange={(value) => setFieldValue('salaryType', value.id)}
+                                  options={salaryTypes}
+                                  getOptionLabel={(o) => o.description}
+                                  getOptionValue={(o) => o.id}
                                   style={{
                                     lineHeight: "40px",
                                     color: "#7e7e7e",
@@ -570,6 +619,7 @@ const OpenJob = (props) => {
                                   }}
                                 />
                               </div>
+
                               <div className="form-group mb-3 col-md-3">
                                 <label>{t("newJobForm.salaryBetween")}</label>
                                 <input
@@ -578,6 +628,7 @@ const OpenJob = (props) => {
                                   required
                                 />
                               </div>
+
                               <div className="form-group mb-3 col-md-3">
                                 <label>{t("newJobForm.referenceCode")}</label>
                                 <input
@@ -586,6 +637,7 @@ const OpenJob = (props) => {
                                   required
                                 />
                               </div>
+
                               <div className="form-group mb-3 col-md-3">
                                 <label>{t("newJobForm.salaryBetween")}</label>
                                 <Select
@@ -599,6 +651,7 @@ const OpenJob = (props) => {
                                   }}
                                 />
                               </div>
+
                               <div className="form-group mb-3 col-md-4">
                                 <label>{t("newJobForm.commissionFee")}</label>
                                 <input
@@ -620,14 +673,17 @@ const OpenJob = (props) => {
                                   }}
                                 />
                               </div>
+
                               <div className="form-group mb-3 col-md-6">
                                 <label>
                                   {t("newJobForm.internalRecruiter")}
                                 </label>
                                 <Select
-                                  defaultValue={selectedJobTypeOption}
-                                  onChange={setSelectedJobTypeOption}
-                                  options={jobTypes}
+                                  defaultValue={''}
+                                  onChange={(value) => setFieldValue('internalRecruiter', value.id)}
+                                  options={internalRecruiters}
+                                  getOptionLabel={(o) => o.fullname}
+                                  getOptionValue={(o) => o.id}
                                   style={{
                                     lineHeight: "40px",
                                     color: "#7e7e7e",

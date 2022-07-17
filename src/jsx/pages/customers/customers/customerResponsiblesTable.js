@@ -1,21 +1,13 @@
 import { useEffect, useMemo, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import EditIconSvg from '../../../../svg/edit-icon';
 import TrashIconSvg from '../../../../svg/trash-icon';
 import DefaultTable from '../../../components/table/DefaultTable';
-import { getCustomerResponsibles } from './store/customerResponsiblesSlice';
 
 const CustomerResponsiblesTable = (props) => {
-  const dispatch = useDispatch();
   const [responsibles, setResponsibles] = useState([]);
   const allResponsibles = useSelector(({ customerApp }) => customerApp.customerResponsibles);
-
-  useEffect(() => {
-    if (props.row) {
-      dispatch(getCustomerResponsibles(props.row.id));
-    }
-  }, [dispatch, props.row]);
 
   useEffect(() => {
     if (props.row) {

@@ -127,7 +127,7 @@ const referClick=(original,open)=>{
   );
   const rightButtons = (
     <Link to={"/jobs/open-job"} className="btn add_button  mr-2">
-      <i class="bi bi-plus-circle add_icon"></i>
+      <i className="bi bi-plus-circle add_icon"></i>
     </Link>
   );
 

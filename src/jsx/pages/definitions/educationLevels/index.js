@@ -79,7 +79,7 @@ const EducationLevels = (props) => {
 
   const rightButtons = (
     <button className="btn add_button" onClick={handleCreate}>
-      <i class="bi bi-plus-circle add_icon"></i>
+      <i className="bi bi-plus-circle add_icon"></i>
     </button>
   )
 

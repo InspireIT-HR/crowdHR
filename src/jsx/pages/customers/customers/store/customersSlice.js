@@ -1,6 +1,7 @@
 import { createEntityAdapter, createSlice } from '@reduxjs/toolkit';
 import axios from '../../../../../services/axios';
 import { showError } from '../../../../helpers/notificationHelper';
+import { getCustomerResponsibles } from './customerResponsiblesSlice';
 
 export const getCustomers = () => (dispatch, getState) => {
   if (getState().customerApp.customers.loading) {
@@ -12,6 +13,9 @@ export const getCustomers = () => (dispatch, getState) => {
   axios.get('/Customers')
   .then((response) => {
     dispatch(setCustomers(response.data));
+    response.data.forEach((customer) => {
+      dispatch(getCustomerResponsibles(customer.id));
+    })
     dispatch(setCustomersLoading(false));
   })
   .catch((err) => {

@@ -16,7 +16,6 @@ import {
 import { getCities } from './store/citiesSlice';
 import CitiesTable from './citiesTable';
 import AccordionTable from '../../../components/table/AccordionTable';
-import { Button } from 'react-bootstrap';
 import OnlyDescriptionModal from '../../../components/OnlyDescriptionModal';
 import ConfirmModal from '../../../components/ConfirmModal';
 
@@ -82,7 +81,7 @@ const JobLocations = (props) => {
 
   const rightButtons = (
     <button className="btn add_button" onClick={handleCreate}>
-      <i class="bi bi-plus-circle add_icon"></i>
+      <i className="bi bi-plus-circle add_icon"></i>
     </button>
   );
 
