@@ -270,24 +270,12 @@ const OpenJob = (props) => {
                                 <input
                                   type="date"
                                   className="form-control"
-                                  required
+ 
                                   id="val-targetDate"
                                   name="targetDate"
                                   onChange={handleChange}
                                   onBlur={handleBlur}
                                   value={values.targetDate}
-                                />
-                                <div
-                                  id="val-targetDate-error"
-                                  className="invalid-feedback animated fadeInUp"
-                                  style={{ display: "block" }}
-                                >
-                                  {errors.targetDate && errors.targetDate}
-                                </div>
-                                <div
-                                  id="val-targetDate-error"
-                                  className="invalid-feedback animated fadeInUp"
-                                  style={{ display: "block" }}
                                 />
                               </div>
                               {/*Target Date*/}
@@ -312,20 +300,7 @@ const OpenJob = (props) => {
                                     paddingLeft: " 15px",
                                   }}
                                   value={values.statusId}
-                                  required
                                   id="val-statusId"
-                                />
-                                <div
-                                  id="val-statusId-error"
-                                  className="invalid-feedback animated fadeInUp"
-                                  style={{ display: "block" }}
-                                >
-                                  {errors.statusId && errors.statusId}
-                                </div>
-                                <div
-                                  id="val-statusId-error"
-                                  className="invalid-feedback animated fadeInUp"
-                                  style={{ display: "block" }}
                                 />
                               </div>
                               {/*Job Status*/}
@@ -344,24 +319,10 @@ const OpenJob = (props) => {
                                 <input
                                   type="number"
                                   className="form-control"
-                                  required
                                   onChange={handleChange}
                                   onBlur={handleBlur}
                                   value={values.numberOfPositions}
                                   id="val-numberOfPositions"
-                                />
-                                <div
-                                  id="val-numberOfPositions-error"
-                                  className="invalid-feedback animated fadeInUp"
-                                  style={{ display: "block" }}
-                                >
-                                  {errors.numberOfPositions &&
-                                    errors.numberOfPositions}
-                                </div>
-                                <div
-                                  id="val-numberOfPositions-error"
-                                  className="invalid-feedback animated fadeInUp"
-                                  style={{ display: "block" }}
                                 />
                               </div>
                               {/*Number Of Positions */}
@@ -371,6 +332,7 @@ const OpenJob = (props) => {
                             <button
                               className="btn btn-primary sw-btn-next"
                               onClick={() => setGoSteps(1)}
+                              disabled={values.referenceCode === '' || values.shortName===''}
                             >
                               Next
                             </button>
@@ -381,7 +343,13 @@ const OpenJob = (props) => {
                         <>
                           <section>
                             <div className="row">
-                              <div className="form-group mb-3 col-md-6">
+                              <div className={`form-group mb-3 col-md-6 ${
+                                  values.customerIsVisible
+                                    ? errors.customerIsVisible
+                                      ? "is-invalid"
+                                      : "is-valid"
+                                    : ""
+                                }`}>
                                 <label>
                                   {t("newJobForm.customerVisibilty")}
                                 </label>
@@ -389,8 +357,8 @@ const OpenJob = (props) => {
                                   defaultValue={selectedOption}
                                   onChange={setSelectedOption}
                                   options={[
-                                    { value: "yes", label: "Açık" },
-                                    { value: "no", label: "Gizli" },
+                                    { value: 1, label: "Açık" },
+                                    { value: 0, label: "Gizli" },
                                   ]}
                                   style={{
                                     lineHeight: "40px",
@@ -398,11 +366,44 @@ const OpenJob = (props) => {
                                     paddingLeft: " 15px",
                                   }}
                                 />
-                              </div>
-                              <div className="form-group mb-3 col-md-6">
+                              </div>{/*Customer Is Visible */}
+                              <div className={`form-group mb-3 col-md-6 ${
+                                  values.customerId
+                                    ? errors.customerId
+                                      ? "is-invalid"
+                                      : "is-valid"
+                                    : ""
+                                }`}>
                                 <label>{t("newJobForm.customerName")}</label>
-                                <input type="text" className="form-control" />
-                              </div>
+                                <Select
+                                  defaultValue={selectedJobTypeOption}
+                                  id="val-customerId"
+                                  name="customerId"
+                                  onChange={handleChange}
+                                  onBlur={handleBlur}
+                                  value={values.customerId}
+                                  options={jobTypes}
+                                  required
+                                  style={{
+                                    lineHeight: "40px",
+                                    color: "#7e7e7e",
+                                    paddingLeft: " 15px",
+                                  }}
+                                />
+                                <div
+                                  id="val-customerId-error"
+                                  className="invalid-feedback animated fadeInUp"
+                                  style={{ display: "block" }}
+                                >
+                                  {errors.customerId && errors.customerId}
+                                </div>
+
+                                <div
+                                  id="val-customerId-error"
+                                  className="invalid-feedback animated fadeInUp"
+                                  style={{ display: "block" }}
+                                />
+                              </div>{/*Customer Name */}
                               <div className="form-group mb-3 col-md-6">
                                 <label>
                                   {t("newJobForm.customerReponsibles")}
@@ -421,6 +422,7 @@ const OpenJob = (props) => {
                             <button
                               className="btn btn-primary sw-btn-next ms-1"
                               onClick={() => setGoSteps(2)}
+                              disabled={values.customerId === null}
                             >
                               Next
                             </button>
@@ -544,6 +546,7 @@ const OpenJob = (props) => {
                             <button
                               className="btn btn-primary sw-btn-next ms-1"
                               onClick={() => setGoSteps(3)}
+                              disabled={values.jobTypeId === null||values.genderId===null||values.minEducationLevelId===null||values.locationCityId===null}
                             >
                               Next
                             </button>
@@ -644,6 +647,7 @@ const OpenJob = (props) => {
                             <button
                               className="btn btn-primary sw-btn-next ms-1"
                               onClick={() => setGoSteps(4)}
+                              disabled={values.salaryTypeId === null}
                             >
                               Next
                             </button>
