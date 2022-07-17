@@ -113,7 +113,6 @@ const referClick=(original,open)=>{
                 className="btn btn-outline-warning btn-sm"
                 onClick={() => {
                   setReferModal(true);
-                  console.log(props);
                   setSelectedJobName(`${props.row.original.shortName} / ${props.row.original.customer.name}`)
                 }}
               >

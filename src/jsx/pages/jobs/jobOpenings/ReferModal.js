@@ -37,11 +37,13 @@ const ReferModal = (props) => {
   const [fileUploadError, setFileUploadError] = useState(null);
   const [cvFiles, setCvFiles] = useState([]);
   const [acceptCheckbox, setAcceptCheckbox] = useState(false);
+  const [isDropzoneBusy, setIsDropzoneBusy] = useState(false);
 
   useEffect(() => {
     if (!props.open) {
       setFileUploadError(null);
       setCvFiles([]);
+      setIsDropzoneBusy(false);
     }
   }, [props.open])
 
@@ -49,9 +51,17 @@ const ReferModal = (props) => {
     setFileUploadError(null);
 
     const newCvFiles = [];
+    const acceptedFilesLength = acceptedFiles.length;
+    let done = 0;
+
+    if (acceptedFiles.length) {
+      setIsDropzoneBusy(true);
+    }
+
     acceptedFiles.forEach((file) => {
       if (!acceptedFileTypes.includes(file.type)) {
         setFileUploadError(`File type not accepted: ${file.type}`);
+        setIsDropzoneBusy(false);
         return;
       }
   
@@ -71,19 +81,37 @@ const ReferModal = (props) => {
       for (let i = 0; i < newCvFilesLength; i += 1) {
         if (cvFiles[i].name === fileName) {
           setFileUploadError('File already exist');
+          setIsDropzoneBusy(false);
           return;
         }
       }
-      newCvFiles.push({
-        name: fileName,
-        size: file.size,
-      });
+
+      const reader = new FileReader();
+
+      reader.onabort = () => console.log('File reading was aborted');
+      reader.onerror = () => console.log('File reading has failed');
+      reader.onload = () => {
+        newCvFiles.push({
+          name: fileName,
+          size: file.size,
+          content: reader.result,
+        });
+
+        done += 1;
+
+        if (done === acceptedFilesLength) {
+          setCvFiles([
+            ...cvFiles,
+            ...newCvFiles
+          ]);
+
+          setIsDropzoneBusy(false);
+        }
+      }
+
+      reader.readAsArrayBuffer(file);
     });
     
-    setCvFiles([
-      ...cvFiles,
-      ...newCvFiles
-    ]);
   }
 
   const {
@@ -92,6 +120,7 @@ const ReferModal = (props) => {
     open,
   } = useDropzone({
     noClick: true,
+    disabled: isDropzoneBusy,
     onDrop: handleOnDrop,
     onError: (e) => console.log(e),
   });
@@ -403,7 +432,7 @@ const ReferModal = (props) => {
                     className="container"
                     style={{ border: '.1rem solid #6e6e6e' }}
                   >
-                    <div {...getRootProps({ className: 'dropzone' })}>
+                    <div {...getRootProps({ className: `dropzone ${isDropzoneBusy ? 'disabled' : ''}` })}>
                       <input {...getInputProps()} />
                       <button 
                         className="btn btn-primary btn-sm my-4"
