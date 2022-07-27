@@ -97,43 +97,48 @@ const DefaultTable = (props) => {
                   })}
                 </tbody>
               </table>
-              <div className="d-sm-flex text-center justify-content-between align-items-center mt-3">
-                <div className="dataTables_info">
-                  Showing {data.length >= 10 ? '10' : data.length} data of {data.length} entries over {pageCount} pages
-                </div>
-                <div
-                  className="dataTables_paginate paging_simple_numbers"
-                  id="example5_paginate"
-                >
-                  <button
-                    className={`paginate_button previous ${!canPreviousPage ? 'disabled' : ''}`}
-                    onClick={() => previousPage()} disabled={!canPreviousPage}
+              {data && data.length > 0 && (
+                <div className="d-sm-flex text-center justify-content-between align-items-center mt-3">
+                  <div className="dataTables_info">
+                    Showing {data.length >= 10 ? '10' : data.length} data of {data.length} entries over {pageCount} pages
+                  </div>
+                  <div
+                    className="dataTables_paginate paging_simple_numbers"
+                    id="example5_paginate"
                   >
-                    <i className="fa fa-angle-double-left" aria-hidden="true"></i>
-                  </button>
-                  <span>
-                    {pageOptions.map((number) => (
-                      <button
-                        className={`paginate_button  ${
-                          // eslint-disable-next-line no-sequences
-                          pageIndex === number ? "current" : "",
-                          pageCount <= 1 ? 'disabled' : ''
-                        } `}
-                        key={number}
-                        onClick={() => gotoPage(number)}
-                      >
-                        { number + 1 }
-                      </button>
-                    ))}
-                  </span>
-                  <button
-                    className={`paginate_button next ${!canNextPage ? 'disabled' : ''}`}
-                    onClick={() => nextPage()} disabled={!canNextPage}
-                  >
-                    <i className="fa fa-angle-double-right" aria-hidden="true"></i>
-                  </button>
+                    <button
+                      className={`paginate_button previous ${!canPreviousPage ? 'disabled' : ''}`}
+                      onClick={() => previousPage()} disabled={!canPreviousPage}
+                    >
+                      <i className="fa fa-angle-double-left" aria-hidden="true"></i>
+                    </button>
+                    <span>
+                      {pageOptions.map((number) => (
+                        <button
+                          className={`paginate_button  ${
+                            // eslint-disable-next-line no-sequences
+                            pageIndex === number ? "current" : "",
+                            pageCount <= 1 ? 'disabled' : ''
+                          } `}
+                          key={number}
+                          onClick={() => gotoPage(number)}
+                        >
+                          { number + 1 }
+                        </button>
+                      ))}
+                    </span>
+                    <button
+                      className={`paginate_button next ${!canNextPage ? 'disabled' : ''}`}
+                      onClick={() => nextPage()} disabled={!canNextPage}
+                    >
+                      <i className="fa fa-angle-double-right" aria-hidden="true"></i>
+                    </button>
+                  </div>
                 </div>
-              </div>
+              )}
+              {(!data || !data.length) && (
+                <h5>No data available</h5>
+              )}
             </div>
           </div>
         </div>

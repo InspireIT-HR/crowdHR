@@ -35,6 +35,10 @@ export const referUser = (data) => (dispatch, getState) => {
   
 }
 
+export const applyJobOpening = (data) => (dispatch, getState) => {
+  
+}
+
 const jobOpeningsAdapter = createEntityAdapter({});
 
 export const {

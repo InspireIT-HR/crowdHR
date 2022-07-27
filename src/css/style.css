@@ -32849,19 +32849,19 @@ table {
   }
 }
 
-.accordion-primary .accordion-header {
+/* .accordion-primary .accordion-header {
   background: var(--primary);
   border-color: var(--primary);
   color: #fff;
   box-shadow: 0 0.9375rem 1.25rem 0 var(--rgba-primary-1);
-}
+} */
 
-.accordion-primary .accordion-header.collapsed {
+/* .accordion-primary .accordion-header.collapsed {
   background: var(--rgba-primary-1);
   border-color: var(--rgba-primary-1);
   color: var(--primary);
   box-shadow: none;
-}
+} */
 
 [data-theme-version="dark"] .accordion-primary .accordion-header.collapsed {
   background: var(--rgba-primary-1);

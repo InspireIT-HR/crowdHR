@@ -89,6 +89,7 @@ export const {
 const initialState = {
   loading: false,
   isSubmitting: false,
+  jobCandidates: {},
   modal: {
     type: 'new',
     open: false,
@@ -100,7 +101,14 @@ const candidateStatusSlice = createSlice({
   name: 'candidateStatusApp/candidateStatuses',
   initialState: candidateStatusesAdapter.getInitialState(initialState),
   reducers: {
-    setCandidateStatuses: candidateStatusesAdapter.setAll,
+    setCandidateStatuses: (state, action) => {
+      candidateStatusesAdapter.setAll(state, action.payload);
+      const newJobCandidates = {};
+      action.payload.forEach((candidateStatus) => {
+        newJobCandidates[candidateStatus.id] = candidateStatus.jobCandidates;
+      });
+      state.jobCandidates = newJobCandidates;
+    },
     addCandidateStatus: candidateStatusesAdapter.addOne,
     updateCandidateStatus: candidateStatusesAdapter.upsertOne,
     removeCandidateStatus: candidateStatusesAdapter.removeOne,

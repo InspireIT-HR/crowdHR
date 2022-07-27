@@ -5,27 +5,20 @@ import withReducer from "../../../../store/withReducer";
 import reducer from "./store";
 import DefaultTable from "../../../components/table/DefaultTable";
 import { getJobOpenings, selectJobOpenings } from "./store/jobOpeningSlice";
-import { Row, Card, Col, Button, Modal, Container } from "react-bootstrap";
 import ReferModal from "./ReferModal";
+import ApplyModal from "./ApplyModal";
 
 const JobOpenings = (props) => {
   const dispatch = useDispatch();
   const data = useSelector(selectJobOpenings);
   const [referModal, setReferModal] = useState(false);
   const [applyModal, setApplyModal] = useState(false);
-  const [referJob, setReferJob] = useState();
   const [selectedJobName, setSelectedJobName] = useState('');
   
 
   useEffect(() => {
     dispatch(getJobOpenings());
   }, [dispatch]);
-
-const referClick=(original,open)=>{
-  setReferModal(open);
-
-
-}
 
   const columns = useMemo(
     () => [
@@ -105,7 +98,10 @@ const referClick=(original,open)=>{
             <>
               <button
                 className="btn btn-outline-success btn-sm me-1"
-                onClick={() => referClick("a",true)}
+                onClick={() => {
+                  setApplyModal(true);
+                  setSelectedJobName(`${props.row.original.shortName} / ${props.row.original.customer.name}`)
+                }}
               >
                 Apply
               </button>
@@ -134,32 +130,7 @@ const referClick=(original,open)=>{
   return (
     <Fragment>
       <ReferModal open={referModal} jobName={selectedJobName} closeModal={() => setReferModal(false)}/>
-      
-      {/*Apply Modal*/}
-      <Modal className="fade" show={applyModal}>
-          <Modal.Header>
-            <Modal.Title>Modal title</Modal.Title>
-            <Button
-              onClick={() => setApplyModal(false)}
-              variant=""
-              className="btn-close"
-            ></Button>
-          </Modal.Header>
-          <Modal.Body>
-            <p>
-              Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
-              dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta
-              ac consectetur ac, vestibulum at eros.
-            </p>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button onClick={() => setApplyModal(false)} variant="danger light">
-              Close
-            </Button>
-            <Button variant="primary">Save changes</Button>
-          </Modal.Footer>
-        </Modal>
-      {/*Apply Modal End*/}
+      <ApplyModal open={applyModal} jobName={selectedJobName} closeModal={() => setApplyModal(false)} />
 
       <DefaultTable
         data={data}

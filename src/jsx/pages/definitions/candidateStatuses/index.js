@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import withReducer from "../../../../store/withReducer";
 import reducer from "./store";
 
-import DefaultTable from "../../../components/table/DefaultTable";
 import {
   addCandidateStatusRequest,
   closeCandidateStatusModal,
@@ -15,8 +14,9 @@ import {
   updateCandidateStatusRequest,
 } from "./store/candidateStatusSlice";
 import ConfirmModal from "../../../components/ConfirmModal";
-import { Button } from "react-bootstrap";
 import OnlyDescriptionModal from "../../../components/OnlyDescriptionModal";
+import AccordionTable from "../../../components/table/AccordionTable";
+import JobCandidatesTable from "./jobCandidatesTable";
 
 const CandidateStatuses = (props) => {
   const dispatch = useDispatch();
@@ -95,13 +95,14 @@ const CandidateStatuses = (props) => {
 
   return (
     <Fragment>
-      <DefaultTable
+      <AccordionTable
         data={data}
         columns={columns}
         motherMenu="sidebar.definitions.def"
         activeMenu="sidebar.definitions.candidateStatuses"
         usePageTitle
         useFilter
+        accordionBody={JobCandidatesTable}
         rightButtons={rightButtons}
       />
       <OnlyDescriptionModal
