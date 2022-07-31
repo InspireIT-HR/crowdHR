@@ -1,9 +1,10 @@
 import { createEntityAdapter, createSlice } from '@reduxjs/toolkit';
-import axios from '../../../../../services/axios';
-import { showError } from '../../../../helpers/notificationHelper';
+import axios from '../../../../services/axios';
+import { showError } from '../../../helpers/notificationHelper';
+import { defaultInitinalState } from '../../../helpers/storeHelper';
 
 export const getJobTypes = () => (dispatch, getState) => {
-  if (getState().jobTypeApp.jobTypes.loading) {
+  if (getState().definitions.jobType.loading) {
     return;
   }
   
@@ -21,7 +22,7 @@ export const getJobTypes = () => (dispatch, getState) => {
 }
 
 export const addJobTypeRequest = (data) => (dispatch, getState) => {
-  if (getState().jobTypeApp.jobTypes.isSubmitting) {
+  if (getState().definitions.jobType.isSubmitting) {
     return;
   }
 
@@ -40,7 +41,7 @@ export const addJobTypeRequest = (data) => (dispatch, getState) => {
 }
 
 export const updateJobTypeRequest = (data) => (dispatch, getState) => {
-  if (getState().jobTypeApp.jobTypes.isSubmitting) {
+  if (getState().definitions.jobType.isSubmitting) {
     return;
   }
 
@@ -59,7 +60,7 @@ export const updateJobTypeRequest = (data) => (dispatch, getState) => {
 }
 
 export const removeJobTypeRequest = (data) => (dispatch, getState) => {
-  if (getState().jobTypeApp.jobTypes.isSubmitting) {
+  if (getState().definitions.jobType.isSubmitting) {
     return;
   }
 
@@ -83,22 +84,12 @@ export const {
   selectAll: selectJobTypes,
   selectById: selectJobTypeById,
 } = jobTypesAdapter.getSelectors(
-  (state) => state.jobTypeApp.jobTypes
+  (state) => state.definitions.jobType
 );
 
-const initialState = {
-  loading: false,
-  isSubmitting: false,
-  modal: {
-    type: 'new',
-    open: false,
-    data: null,
-  },
-};
-
 const jobTypeSlice = createSlice({
-  name: 'jobTypeApp/jobTypes',
-  initialState: jobTypesAdapter.getInitialState(initialState),
+  name: 'definitions/jobType',
+  initialState: jobTypesAdapter.getInitialState(defaultInitinalState),
   reducers: {
     setJobTypes: jobTypesAdapter.setAll,
     addJobType: jobTypesAdapter.addOne,
@@ -122,7 +113,7 @@ const jobTypeSlice = createSlice({
       };
     },
     closeJobTypeModal: (state, action) => {
-      state.modal = initialState.modal;
+      state.modal = defaultInitinalState.modal;
     },
     setIsJobTypeSubmitting: (state, action) => {
       state.isSubmitting = action.payload;

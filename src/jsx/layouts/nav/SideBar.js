@@ -36,6 +36,7 @@ class MM extends Component {
 const SideBar = () => {
   const isAuthenticated = useSelector(({ auth }) => auth.isAuthenticated);
   const user = useSelector(({ auth }) => auth.user);
+  const permissions = useSelector(({ auth }) => auth.permissions);
 
   const {
     iconHover,
@@ -164,8 +165,7 @@ const SideBar = () => {
           </Dropdown.Menu>
         </Dropdown>
         <MM className="metismenu" id="menu">
-          {routes.map((route, i) => {
-            return (
+          {routes.map((route, i) => (route.permission === '' || permissions[route.permission]) && (
               <li key={i} className={path.startsWith(route.url) ? 'mm-active' : ''}>
                 <Link className={route.children.length > 0 ? 'has-arrow ai-icon' : 'ai-icon'} to={`/${route.url}`}>
                   <i className={route.icon}></i>
@@ -189,7 +189,7 @@ const SideBar = () => {
                 )}
               </li>
             )
-          })}
+          )}
         </MM>
         <div className="copyright">
           <p>

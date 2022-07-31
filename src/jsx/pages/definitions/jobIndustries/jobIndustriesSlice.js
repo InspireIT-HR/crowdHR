@@ -1,9 +1,10 @@
 import { createEntityAdapter, createSlice } from '@reduxjs/toolkit';
-import axios from '../../../../../services/axios';
-import { showError } from '../../../../helpers/notificationHelper';
+import axios from '../../../../services/axios';
+import { showError } from '../../../helpers/notificationHelper';
+import { defaultInitinalState } from '../../../helpers/storeHelper';
 
 export const getJobIndustries = () => (dispatch, getState) => {
-  if (getState().jobIndustryApp.jobIndustries.loading) {
+  if (getState().definitions.jobIndustry.loading) {
     return;
   }
 
@@ -21,7 +22,7 @@ export const getJobIndustries = () => (dispatch, getState) => {
 }
 
 export const addJobIndustryRequest = (data) => (dispatch, getState) => {
-  if (getState().jobIndustryApp.jobIndustries.isSubmitting) {
+  if (getState().definitions.jobIndustry.isSubmitting) {
     return;
   }
 
@@ -40,7 +41,7 @@ export const addJobIndustryRequest = (data) => (dispatch, getState) => {
 }
 
 export const updateJobIndustryRequest = (data) => (dispatch, getState) => {
-  if (getState().jobIndustryApp.jobIndustries.isSubmitting) {
+  if (getState().definitions.jobIndustry.isSubmitting) {
     return;
   }
 
@@ -59,7 +60,7 @@ export const updateJobIndustryRequest = (data) => (dispatch, getState) => {
 }
 
 export const removeJobIndustryRequest = (data) => (dispatch, getState) => {
-  if (getState().jobIndustryApp.jobIndustries.isSubmitting) {
+  if (getState().definitions.jobIndustry.isSubmitting) {
     return;
   }
 
@@ -83,22 +84,12 @@ export const {
   selectAll: selectJobIndustries,
   selectById: selectJobIndustryById,
 } = jobIndustriesAdapter.getSelectors(
-  (state) => state.jobIndustryApp.jobIndustries
+  (state) => state.definitions.jobIndustry
 );
 
-const initialState = {
-  loading: false,
-  isSubmitting: false,
-  modal: {
-    type: 'new',
-    open: false,
-    data: null,
-  },
-};
-
 const jobIndustriesSlice = createSlice({
-  name: 'jobIndustryApp/jobIndustries',
-  initialState: jobIndustriesAdapter.getInitialState(initialState),
+  name: 'definitions/jobIndustry',
+  initialState: jobIndustriesAdapter.getInitialState(defaultInitinalState),
   reducers: {
     setJobIndustries: jobIndustriesAdapter.setAll,
     addJobIndustry: jobIndustriesAdapter.addOne,
@@ -122,7 +113,7 @@ const jobIndustriesSlice = createSlice({
       };
     },
     closeJobIndustryModal: (state, action) => {
-      state.modal = initialState.modal;
+      state.modal = defaultInitinalState.modal;
     },
     setIsJobIndustrySubmitting: (state, action) => {
       state.isSubmitting = action.payload;

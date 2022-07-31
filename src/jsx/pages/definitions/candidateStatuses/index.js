@@ -1,7 +1,5 @@
 import { Fragment, useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import withReducer from "../../../../store/withReducer";
-import reducer from "./store";
 
 import {
   addCandidateStatusRequest,
@@ -12,7 +10,7 @@ import {
   removeCandidateStatusRequest,
   selectCandidateStatuses,
   updateCandidateStatusRequest,
-} from "./store/candidateStatusSlice";
+} from "./candidateStatusSlice";
 import ConfirmModal from "../../../components/ConfirmModal";
 import OnlyDescriptionModal from "../../../components/OnlyDescriptionModal";
 import AccordionTable from "../../../components/table/AccordionTable";
@@ -22,11 +20,11 @@ const CandidateStatuses = (props) => {
   const dispatch = useDispatch();
   const data = useSelector(selectCandidateStatuses);
   const modal = useSelector(
-    ({ candidateStatusApp }) => candidateStatusApp.candidateStatuses.modal
+    ({ definitions }) => definitions.candidateStatus.modal
   );
   const isSubmitting = useSelector(
-    ({ candidateStatusApp }) =>
-      candidateStatusApp.candidateStatuses.isSubmitting
+    ({ definitions }) =>
+      definitions.candidateStatus.isSubmitting
   );
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [confirmModalData, setConfirmModalData] = useState("");
@@ -125,4 +123,4 @@ const CandidateStatuses = (props) => {
   );
 };
 
-export default withReducer("candidateStatusApp", reducer)(CandidateStatuses);
+export default CandidateStatuses;

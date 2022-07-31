@@ -1,19 +1,25 @@
 import { Fragment, useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux"
-import withReducer from "../../../../store/withReducer";
-import reducer from './store';
 
 import DefaultTable from "../../../components/table/DefaultTable";
-import { addJobTypeRequest, closeJobTypeModal, getJobTypes, openEditJobTypeModal, openNewJobTypeModal, removeJobType, selectJobTypes, updateJobTypeRequest } from "./store/jobTypeSlice";
-import { Button } from "react-bootstrap";
+import { 
+  addJobTypeRequest, 
+  closeJobTypeModal, 
+  getJobTypes, 
+  openEditJobTypeModal, 
+  openNewJobTypeModal, 
+  removeJobType, 
+  selectJobTypes, 
+  updateJobTypeRequest 
+} from "./jobTypeSlice";
 import OnlyDescriptionModal from "../../../components/OnlyDescriptionModal";
 import ConfirmModal from "../../../components/ConfirmModal";
 
 const JobTypes = (props) => {
   const dispatch = useDispatch();
   const data = useSelector(selectJobTypes);
-  const modal = useSelector(({ jobTypeApp }) => jobTypeApp.jobTypes.modal);
-  const isSubmitting = useSelector(({ jobTypeApp }) => jobTypeApp.jobTypes.isSubmitting);
+  const modal = useSelector(({ definitions }) => definitions.jobType.modal);
+  const isSubmitting = useSelector(({ definitions }) => definitions.jobType.isSubmitting);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [confirmModalData, setConfirmModalData] = useState('');
 
@@ -105,4 +111,4 @@ const JobTypes = (props) => {
   )
 }
 
-export default withReducer('jobTypeApp', reducer)(JobTypes);
+export default JobTypes;

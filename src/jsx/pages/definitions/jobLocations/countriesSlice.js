@@ -1,9 +1,10 @@
 import { createEntityAdapter, createSlice } from '@reduxjs/toolkit';
-import axios from '../../../../../services/axios';
-import { showError } from '../../../../helpers/notificationHelper';
+import axios from '../../../../services/axios';
+import { showError } from '../../../helpers/notificationHelper';
+import { defaultInitinalState } from '../../../helpers/storeHelper';
 
 export const getCountries = () => (dispatch, getState) => {
-  if (getState().jobLocationApp.countries.loading) {
+  if (getState().definitions.jobLocation.country.loading) {
     return;
   }
 
@@ -21,7 +22,7 @@ export const getCountries = () => (dispatch, getState) => {
 }
 
 export const addCountryRequest = (data) => (dispatch, getState) => {
-  if (getState().jobLocationApp.countries.isSubmitting) {
+  if (getState().definitions.jobLocation.country.isSubmitting) {
     return;
   }
 
@@ -40,7 +41,7 @@ export const addCountryRequest = (data) => (dispatch, getState) => {
 }
 
 export const updateCountryRequest = (data) => (dispatch, getState) => {
-  if (getState().jobLocationApp.countries.isSubmitting) {
+  if (getState().definitions.jobLocation.country.isSubmitting) {
     return;
   }
 
@@ -59,7 +60,7 @@ export const updateCountryRequest = (data) => (dispatch, getState) => {
 }
 
 export const removeCountryRequest = (data) => (dispatch, getState) => {
-  if (getState().jobLocationApp.countries.isSubmitting) {
+  if (getState().definitions.jobLocation.country.isSubmitting) {
     return;
   }
 
@@ -83,22 +84,12 @@ export const {
   selectAll: selectCountries,
   selectById: selectCountryById,
 } = countriesAdapter.getSelectors(
-  (state) => state.jobLocationApp.countries
+  (state) => state.definitions.jobLocation.country
 );
 
-const initialState = {
-  loading: false,
-  isSubmitting: false,
-  modal: {
-    type: 'new',
-    open: false,
-    data: null,
-  }
-};
-
 const countriesSlice = createSlice({
-  name: 'jobLocationApp/countries',
-  initialState: countriesAdapter.getInitialState(initialState),
+  name: 'definitions/jobLocation/country',
+  initialState: countriesAdapter.getInitialState(defaultInitinalState),
   reducers: {
     setCountries: countriesAdapter.setAll,
     addCountry: countriesAdapter.addOne,
@@ -122,7 +113,7 @@ const countriesSlice = createSlice({
       };
     },
     closeCountryModal: (state, action) => {
-      state.modal = initialState.modal;
+      state.modal = defaultInitinalState.modal;
     },
     setIsCountrySubmitting: (state, action) => {
       state.isSubmitting = action.payload;

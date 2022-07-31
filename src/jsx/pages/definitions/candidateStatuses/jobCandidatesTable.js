@@ -7,7 +7,7 @@ import DefaultTable from '../../../components/table/DefaultTable';
 
 const JobCandidatesTable = (props) => {
   const [jobCandidates, setJobCandidates] = useState([]);
-  const allJobCandidates = useSelector(({ candidateStatusApp }) => candidateStatusApp.candidateStatuses.jobCandidates);
+  const allJobCandidates = useSelector(({ definitions }) => definitions.candidateStatus.jobCandidates);
 
   useEffect(() => {
     if (props.row) {

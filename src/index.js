@@ -10,17 +10,15 @@ import  ThemeContext  from "./context/ThemeContext";
 import './i18n';
 
 ReactDOM.render(
-	<React.StrictMode>
-		<Provider store = {store}>
-      <SimpleReactLightbox>
-        <BrowserRouter basename='/'>
-          <ThemeContext>
-            <App />
-          </ThemeContext>  
-        </BrowserRouter>    
-      </SimpleReactLightbox>
-    </Provider>	
-	</React.StrictMode>,
+  <Provider store = {store}>
+    <SimpleReactLightbox>
+      <BrowserRouter basename='/'>
+        <ThemeContext>
+          <App />
+        </ThemeContext>
+      </BrowserRouter>
+    </SimpleReactLightbox>
+  </Provider>,
   document.getElementById("root")
 );
 reportWebVitals();

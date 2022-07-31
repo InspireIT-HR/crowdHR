@@ -2,7 +2,7 @@
 import React, { useContext } from "react";
 
 /// React router dom
-import {  Switch, Route } from "react-router-dom";
+import {  Switch, Route, Redirect } from "react-router-dom";
 
 /// Css
 import "./index.css";
@@ -28,8 +28,11 @@ import Setting from "./layouts/Setting";
 import { ThemeContext } from "../context/ThemeContext";
 
 import { routes } from './routes';
+import { useSelector } from "react-redux";
 
 const Markup = () => {
+  const permissions = useSelector(({ auth }) => auth.permissions);
+
   const { menuToggle } = useContext(ThemeContext);
   
   let path = window.location.pathname;
@@ -53,6 +56,12 @@ const Markup = () => {
             style={{ minHeight: window.screen.height - 60 }}
           >
             <Switch>
+              <Route
+                exact
+                path="/"
+              >
+                <Redirect to="/dashboard" />
+              </Route>
               {routes.map((route) => (
                 <Route
                   exact

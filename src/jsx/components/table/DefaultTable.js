@@ -48,8 +48,8 @@ const DefaultTable = (props) => {
     <>
       {props.usePageTitle && <PageTitle motherMenu={t(motherMenu)} activeMenu={t(activeMenu)} />}
       <div className="card">
-        <div className="card-body">
-          <div className="table-responsive">
+        <div className="card-body" style={{ minHeight: props.customFilter ? '400px' : '' }}>
+          <div className="table-responsive" style={{ minHeight: props.customFilter ? '350px' : '' }}>
             <div className="dataTables_wrapper">
               <div className="d-flex" style={{ justifyContent: 'space-between' }}>
                 {props.useFilter && 
@@ -58,6 +58,7 @@ const DefaultTable = (props) => {
                     setFilter={setGlobalFilter}
                   />
                 }
+                {props.customFilter}
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                   {props.rightButtons}
                 </div>

@@ -2,6 +2,28 @@ import { createSlice } from '@reduxjs/toolkit';
 import axios from '../services/axios';
 import swal from 'sweetalert';
 
+const roles = {
+  1: 'ADMIN',
+  2: 'EXTERNAL_USER',
+  3: 'INTERNAL_RECRUITER',
+  5: 'CUSTOMER_USER'
+}
+
+const permissions = {
+  ADMIN: {
+    definitions: {},
+  },
+  EXTERNAL_USER: {
+
+  },
+  INTERNAL_RECRUITER: {
+    
+  },
+  CUSTOMER: {
+
+  }
+}
+
 export function generateBasicAuth(email, password) {
   return btoa(`${email}:${password}`);
 }
@@ -84,12 +106,13 @@ export const logout = () => (dispatch, getState) => {
   dispatch(logoutUser());
   localStorage.removeItem('token');
   window.location.reload();
-} 
+}
 
 const initialState = {
   isAuthenticated: false,
   user: {},
   isAuthenticating: false,
+  permissions: {},
 };
 
 const authSlice = createSlice({
@@ -97,8 +120,12 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     setUser: (state, action) => {
-      state.user = action.payload;
+      state.user = {
+        ...action.payload,
+        role: roles[action.payload.roleId]
+      };
       state.isAuthenticated = true;
+      state.permissions = permissions[state.user.role];
     },
     logoutUser: (state, action) => initialState,
     setIsAuthenticating: (state, action) => {

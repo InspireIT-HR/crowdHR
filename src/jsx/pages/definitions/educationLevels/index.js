@@ -1,8 +1,5 @@
 import { Fragment, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import withReducer from '../../../../store/withReducer';
-import reducer from './store';
-
 import DefaultTable from '../../../components/table/DefaultTable';
 import { 
   addEducationLevelRequest,
@@ -13,16 +10,15 @@ import {
   removeEducationLevelRequest,
   selectEducationLevels,
   updateEducationLevelRequest
-} from './store/educationLevelSlice';
-import { Button } from 'react-bootstrap';
+} from './educationLevelSlice';
 import ConfirmModal from '../../../components/ConfirmModal';
 import OnlyDescriptionModal from '../../../components/OnlyDescriptionModal';
 
 const EducationLevels = (props) => {
   const dispatch = useDispatch();
   const data = useSelector(selectEducationLevels);
-  const modal = useSelector(({ educationLevelApp }) => educationLevelApp.educationLevels.modal);
-  const isSubmitting = useSelector(({ educationLevelApp }) => educationLevelApp.educationLevels.isSubmitting);
+  const modal = useSelector(({ definitions }) => definitions.educationLevel.modal);
+  const isSubmitting = useSelector(({ definitions }) => definitions.educationLevel.isSubmitting);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [confirmModalData, setConfirmModalData] = useState('');
 
@@ -114,4 +110,4 @@ const EducationLevels = (props) => {
   )
 }
 
-export default withReducer('educationLevelApp', reducer)(EducationLevels);
+export default EducationLevels;

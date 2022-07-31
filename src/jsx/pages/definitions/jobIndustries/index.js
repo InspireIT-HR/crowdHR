@@ -1,20 +1,26 @@
 import { Fragment, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import withReducer from '../../../../store/withReducer';
-import reducer from './store';
 
 import DefaultTable from '../../../components/table/DefaultTable';
 
-import { addJobIndustryRequest, closeJobIndustryModal, getJobIndustries, openEditJobIndustryModal, openNewJobIndustryModal, removeJobIndustryRequest, selectJobIndustries, updateJobIndustryRequest } from './store/jobIndustriesSlice';
-import { Button } from 'react-bootstrap';
+import { 
+  addJobIndustryRequest, 
+  closeJobIndustryModal, 
+  getJobIndustries, 
+  openEditJobIndustryModal, 
+  openNewJobIndustryModal, 
+  removeJobIndustryRequest, 
+  selectJobIndustries, 
+  updateJobIndustryRequest 
+} from './jobIndustriesSlice';
 import OnlyDescriptionModal from '../../../components/OnlyDescriptionModal';
 import ConfirmModal from '../../../components/ConfirmModal';
 
 const JobIndustries = (props) => {
   const dispatch = useDispatch();
   const data = useSelector(selectJobIndustries);
-  const modal = useSelector(({ jobIndustryApp }) => jobIndustryApp.jobIndustries.modal);
-  const isSubmitting = useSelector(({ jobIndustryApp }) => jobIndustryApp.jobIndustries.isSubmitting);
+  const modal = useSelector(({ definitions }) => definitions.jobIndustry.modal);
+  const isSubmitting = useSelector(({ definitions }) => definitions.jobIndustry.isSubmitting);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [confirmModalData, setConfirmModalData] = useState('');
 
@@ -106,4 +112,4 @@ const JobIndustries = (props) => {
   )
 }
 
-export default withReducer('jobIndustryApp', reducer)(JobIndustries);
+export default JobIndustries;

@@ -1,7 +1,5 @@
 import { Fragment, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import withReducer from '../../../../store/withReducer';
-import reducer from './store';
 
 import {
   addCountryRequest,
@@ -12,8 +10,8 @@ import {
   removeCountryRequest,
   selectCountries,
   updateCountryRequest,
-} from './store/countriesSlice';
-import { getCities } from './store/citiesSlice';
+} from './countriesSlice';
+import { getCities } from './citiesSlice';
 import CitiesTable from './citiesTable';
 import AccordionTable from '../../../components/table/AccordionTable';
 import OnlyDescriptionModal from '../../../components/OnlyDescriptionModal';
@@ -22,8 +20,8 @@ import ConfirmModal from '../../../components/ConfirmModal';
 const JobLocations = (props) => {
   const dispatch = useDispatch();
   const data = useSelector(selectCountries);
-  const modal = useSelector(({ jobLocationApp }) => jobLocationApp.countries.modal);
-  const isSubmitting = useSelector(({ jobLocationApp }) => jobLocationApp.countries.isSubmitting);
+  const modal = useSelector(({ definitions }) => definitions.jobLocation.country.modal);
+  const isSubmitting = useSelector(({ definitions }) => definitions.jobLocation.country.isSubmitting);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [confirmModalData, setConfirmModalData] = useState('');
 
@@ -117,4 +115,4 @@ const JobLocations = (props) => {
   )
 }
 
-export default withReducer('jobLocationApp', reducer)(JobLocations);
+export default JobLocations;

@@ -1,9 +1,10 @@
 import { createEntityAdapter, createSlice } from '@reduxjs/toolkit';
-import axios from '../../../../../services/axios';
-import { showError } from '../../../../helpers/notificationHelper';
+import axios from '../../../../services/axios';
+import { showError } from '../../../helpers/notificationHelper';
+import { defaultInitinalState } from '../../../helpers/storeHelper';
 
 export const getCities = () => (dispatch, getState) => {
-  if (getState().jobLocationApp.cities.loading) {
+  if (getState().definitions.jobLocation.city.loading) {
     return;
   }
 
@@ -25,12 +26,12 @@ export const getCities = () => (dispatch, getState) => {
 //  countryId: 'string'
 
 export const addCityRequest = (data) => (dispatch, getState) => {
-  if (getState().jobLocationApp.cities.isSubmitting) {
+  if (getState().definitions.jobLocation.city.isSubmitting) {
     return;
   }
 
   // Not efficient but works :/
-  const countryId = getState().jobLocationApp.cities.modal.countryId;
+  const countryId = getState().definitions.jobLocation.city.modal.countryId;
 
   dispatch(setIsCitySubmitting(true));
 
@@ -50,7 +51,7 @@ export const addCityRequest = (data) => (dispatch, getState) => {
 }
 
 export const updateCityRequest = (data) => (dispatch, getState) => {
-  if (getState().jobLocationApp.cities.isSubmitting) {
+  if (getState().definitions.jobLocation.city.isSubmitting) {
     return;
   }
 
@@ -69,7 +70,7 @@ export const updateCityRequest = (data) => (dispatch, getState) => {
 }
 
 export const removeCityRequest = (data) => (dispatch, getState) => {
-  if (getState().jobLocationApp.cities.isSubmitting) {
+  if (getState().definitions.jobLocation.city.isSubmitting) {
     return;
   }
 
@@ -93,23 +94,12 @@ export const {
   selectAll: selectCities,
   selectById: selectCityById,
 } = citiesAdapter.getSelectors(
-  (state) => state.jobLocationApp.cities
+  (state) => state.definitions.jobLocation.city
 );
 
-const initialState = {
-  loading: false,
-  isSubmitting: false,
-  modal: {
-    type: 'new',
-    open: false,
-    data: null,
-    countryId: '',
-  },
-};
-
 const citiesSlice = createSlice({
-  name: 'jobLocationApp/cities',
-  initialState: citiesAdapter.getInitialState(initialState),
+  name: 'definitions/jobLocation/city',
+  initialState: citiesAdapter.getInitialState(defaultInitinalState),
   reducers: {
     setCities: citiesAdapter.setAll,
     addCity: citiesAdapter.addOne,
@@ -135,7 +125,7 @@ const citiesSlice = createSlice({
       };
     },
     closeCityModal: (state, action) => {
-      state.modal = initialState.modal;
+      state.modal = defaultInitinalState.modal;
     },
     setIsCitySubmitting: (state, action) => {
       state.isSubmitting = action.payload;

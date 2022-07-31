@@ -9,7 +9,7 @@ import {
   removeCityRequest, 
   selectCities, 
   updateCityRequest 
-} from './store/citiesSlice';
+} from './citiesSlice';
 import DefaultTable from '../../../components/table/DefaultTable';
 import OnlyDescriptionModal from '../../../components/OnlyDescriptionModal';
 import ConfirmModal from '../../../components/ConfirmModal';
@@ -18,8 +18,8 @@ const CitiesTable = (props) => {
   const dispatch = useDispatch();
   const allCities = useSelector(selectCities);
   const [filteredCities, setFilteredCities] = useState([]);
-  const modal = useSelector(({ jobLocationApp }) => jobLocationApp.cities.modal);
-  const isSubmitting = useSelector(({ jobLocationApp }) => jobLocationApp.cities.isSubmitting);
+  const modal = useSelector(({ definitions }) => definitions.jobLocation.city.modal);
+  const isSubmitting = useSelector(({ definitions }) => definitions.jobLocation.city.isSubmitting);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [confirmModalData, setConfirmModalData] = useState('');
 

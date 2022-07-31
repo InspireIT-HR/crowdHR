@@ -15,13 +15,13 @@ import { Editor } from "@tinymce/tinymce-react";
 import { Formik } from "formik";
 import * as yup from "yup";
 import { addNewJob } from './store/jobOpeningSlice';
-import { getJobStatuses, selectJobStatuses } from '../../definitions/jobStatuses/store/jobStatusSlice';
-import { getJobTypes, selectJobTypes } from '../../definitions/jobTypes/store/jobTypeSlice';
+import { getJobStatuses, selectJobStatuses } from '../../definitions/jobStatuses/jobStatusSlice';
+import { getJobTypes, selectJobTypes } from '../../definitions/jobTypes/jobTypeSlice';
 import { getCustomers, selectCustomers } from '../../customers/customers/store/customersSlice';
-import { getCountries, selectCountries } from '../../definitions/jobLocations/store/countriesSlice';
-import { getCities, selectCities } from '../../definitions/jobLocations/store/citiesSlice';
-import { getEducationLevels, selectEducationLevels } from '../../definitions/educationLevels/store/educationLevelSlice';
-import { getJobSalaryTypes, selectJobSalaryTypes } from '../../definitions/jobSalaryTypes/store/jobSalaryTypeSlice'; 
+import { getCountries, selectCountries } from '../../definitions/jobLocations/countriesSlice';
+import { getCities, selectCities } from '../../definitions/jobLocations/citiesSlice';
+import { getEducationLevels, selectEducationLevels } from '../../definitions/educationLevels/educationLevelSlice';
+import { getJobSalaryTypes, selectJobSalaryTypes } from '../../definitions/jobSalaryTypes/jobSalaryTypeSlice'; 
 import { getInternalRecruiters, selectInternalRecruiters } from "../../users/users/store/internalRecruitersSlice";
 
 const defaultValues = {
@@ -89,27 +89,32 @@ const OpenJob = (props) => {
     }
   ];
 
+  const yesNoOptions = [
+    { id: 1, description: "Evet" },
+    { id: 2, description: "Hayır" },
+  ];
+
   const schema = yup.object().shape({
     shortName: yup.string().required(t("required")),
     jobDescription: yup.string().required(t("required")),
-    genderId: yup.boolean().required(t("required")),
-    minEducationLevelId: yup.boolean().required(t("required")),
-    customerId: yup.boolean().required(t("required")),
-    customerIsVisible: yup.boolean().required(t("required")),
-    jobTypeId: yup.boolean().required(t("required")),
-    locationCountryId: yup.boolean().required(t("required")),
-    locationCityId: yup.boolean().required(t("required")),
+    genderId: yup.number().required(t("required")),
+    minEducationLevelId: yup.number().required(t("required")),
+    customerId: yup.number().required(t("required")),
+    customerIsVisible: yup.number().required(t("required")),
+    jobTypeId: yup.number().required(t("required")),
+    locationCountryId: yup.number().required(t("required")),
+    locationCityId: yup.number().required(t("required")),
     isRemote: yup.boolean().required(t("required")),
     minExperience: yup.number().required(t("required")),
-    statusId: yup.boolean().required(t("required")),
+    statusId: yup.number().required(t("required")),
     minSalary: yup.number().required(t("required")),
-    salaryTypeId: yup.boolean().required(t("required")),
-    currencyTypeId: yup.boolean().required(t("required")), //for salary
+    salaryTypeId: yup.number().required(t("required")),
+    currencyTypeId: yup.number().required(t("required")), //for salary
     numberOfPositions: yup.number().required(t("required")),
     commissionFee: yup.number().required(t("required")),
-    commissionCurrencyTypeId: yup.boolean().required(t("required")),
+    commissionCurrencyTypeId: yup.number().required(t("required")),
     targetDate: yup.date().required(t("required")),
-    createUserId: yup.boolean().required(t("required")),
+    createUserId: yup.number().required(t("required")),
     qualification: yup.string().required(t("required")),
     referenceCode: yup.string().required(t("required")),
     maxSalary: yup.number().required(t("required")),
@@ -285,17 +290,17 @@ const OpenJob = (props) => {
                                 <label>{t("newJobForm.status")}</label>
                                 <Select
                                   defaultValue={''}
-                                  onChange={(value) => setFieldValue('status', value.id)}
+                                  onChange={(value) => setFieldValue('statusId', value.id)}
                                   options={jobStatuses}
                                   getOptionLabel={(o) => o.description}
                                   getOptionValue={(o) => o.id}
+                                  value={jobStatuses.find((js) => js.id === values.statusId)}
+                                  id="val-statusId"
                                   style={{
                                     lineHeight: "40px",
                                     color: "#7e7e7e",
                                     paddingLeft: " 15px",
                                   }}
-                                  value={values.statusId}
-                                  id="val-statusId"
                                 />
                               </div>
                               {/*Job Status*/}
@@ -356,6 +361,7 @@ const OpenJob = (props) => {
                                   options={customers}
                                   getOptionLabel={(o) => o.name}
                                   getOptionValue={(o) => o.id}
+                                  value={customers.find((c) => c.id === values.customerID)}
                                   required
                                   style={{
                                     lineHeight: "40px",
@@ -421,14 +427,15 @@ const OpenJob = (props) => {
                                   : ""
                                 }`}>
                                 <label>
-                                  {t("newJobForm.customerVisibilty")}
+                                  {t("newJobForm.customerIsVisible")}
                                 </label>
                                 <Select
                                   defaultValue={''}
-                                  onChange={(value) => setFieldValue('customerVisibilty', value.id)}
+                                  onChange={(value) => setFieldValue('customerIsVisible', value.id)}
                                   options={customerVisibilities}
                                   getOptionLabel={(o) => o.description}
                                   getOptionValue={(o) => o.id}
+                                  value={customerVisibilities.find((cv) => cv.id === values.customerIsVisible)}
                                   style={{
                                     lineHeight: "40px",
                                     color: "#7e7e7e",
@@ -464,10 +471,11 @@ const OpenJob = (props) => {
                                 <label>{t("newJobForm.jobType")}</label>
                                 <Select
                                   defaultValue={selectedJobTypeOption}
-                                  onChange={(value) => setFieldValue('jobType', value.id)}
+                                  onChange={(value) => setFieldValue('jobTypeId', value.id)}
                                   options={jobTypes}
                                   getOptionLabel={(o) => o.description}
                                   getOptionValue={(o) => o.id}
+                                  value={jobTypes.find((jt) => jt.id === values.jobTypeId)}
                                   style={{
                                     lineHeight: "40px",
                                     color: "#7e7e7e",
@@ -481,10 +489,8 @@ const OpenJob = (props) => {
                                 <Select
                                   defaultValue={''}
                                   onChange={(value) => setFieldValue('isRemote', value.value)}
-                                  options={[
-                                    { value: true, label: "Evet" },
-                                    { value: false, label: "Hayır" },
-                                  ]}
+                                  options={yesNoOptions}
+                                  value={yesNoOptions.find((yno) => yno.id === values.isRemote)}
                                   style={{
                                     lineHeight: "40px",
                                     color: "#7e7e7e",
@@ -504,6 +510,7 @@ const OpenJob = (props) => {
                                   options={countries}
                                   getOptionLabel={(o) => o.description}
                                   getOptionValue={(o) => o.id}
+                                  value={countries.find((c) => c.id === values.locationCountryId)}
                                   style={{
                                     lineHeight: "40px",
                                     color: "#7e7e7e",
@@ -533,10 +540,11 @@ const OpenJob = (props) => {
                                 <label>{t("newJobForm.gender")}</label>
                                 <Select
                                   defaultValue={selectedJobTypeOption}
-                                  onChange={(value) => setFieldValue('gender', value.id)}
+                                  onChange={(value) => setFieldValue('genderId', value.id)}
                                   options={genders}
                                   getOptionLabel={(o) => o.description}
                                   getOptionValue={(o) => o.id}
+                                  value={genders.find((g) => g.id === values.genderId)}
                                   style={{
                                     lineHeight: "40px",
                                     color: "#7e7e7e",
@@ -549,10 +557,11 @@ const OpenJob = (props) => {
                                 <label>{t("newJobForm.minEduLevel")}</label>
                                 <Select
                                   defaultValue={selectedJobTypeOption}
-                                  onChange={(value) => setFieldValue('minEduLevel', value.id)}
+                                  onChange={(value) => setFieldValue('minEducationLevelId', value.id)}
                                   options={educationLevels}
                                   getOptionLabel={(o) => o.description}
                                   getOptionValue={(o) => o.id}
+                                  value={educationLevels.find((el) => el.id === values.minEducationLevelId)}
                                   style={{
                                     lineHeight: "40px",
                                     color: "#7e7e7e",
@@ -608,10 +617,11 @@ const OpenJob = (props) => {
                                 <label>{t("newJobForm.salaryType")}</label>
                                 <Select
                                   defaultValue={selectedJobTypeOption}
-                                  onChange={(value) => setFieldValue('salaryType', value.id)}
+                                  onChange={(value) => setFieldValue('salaryTypeId', value.id)}
                                   options={salaryTypes}
                                   getOptionLabel={(o) => o.description}
                                   getOptionValue={(o) => o.id}
+                                  value={salaryTypes.find((st) => st.id === values.salaryTypeId)}
                                   style={{
                                     lineHeight: "40px",
                                     color: "#7e7e7e",
@@ -644,6 +654,7 @@ const OpenJob = (props) => {
                                   defaultValue={selectedJobTypeOption}
                                   onChange={setSelectedJobTypeOption}
                                   options={jobTypes}
+                                  value={jobTypes.find((jt) => jt.id === values.jobTypeId)}
                                   style={{
                                     lineHeight: "40px",
                                     color: "#7e7e7e",

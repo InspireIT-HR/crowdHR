@@ -40,15 +40,17 @@
       "jobIndustries": "Endüstriler",
       "jobLocations": "Lokasyonlar",
       "jobSalaryTypes": "Maaş Türleri",
-      "candidateStatuses": "Aday Durumları"
+      "candidateStatuses": "Aday Durumları",
+      "attachmentTypes": "Ek Türleri",
+      "currencyTypes": "Para Türleri"
     },
     "users": {
       "user": "Kullanıcılar",
       "userList": "Kullanıcı Listesi"
     },
     "customers": {
-      "cus": "Müşteriler",
-      "customerList": "Müşteri Listesi"
+      "cus": "Şirketler",
+      "customerList": "Şirket Listesi"
     },
     "jobs": {
       "job": "İşler",

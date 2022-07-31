@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const GlobalFilter = ( {filter, setFilter, onCreateButtonClick} ) =>{
+export const GlobalFilter = ( {filter, setFilter} ) =>{
 	return(
 		<div>
 			Search : {' '}

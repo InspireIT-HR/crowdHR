@@ -1,9 +1,10 @@
 import { createSlice, createEntityAdapter } from '@reduxjs/toolkit';
-import axios from '../../../../../services/axios';
-import { showError } from '../../../../helpers/notificationHelper';
+import axios from '../../../../services/axios';
+import { showError } from '../../../helpers/notificationHelper';
+import { defaultInitinalState } from '../../../helpers/storeHelper';
 
 export const getJobStatuses = () => (dispatch, getState) => {
-  if (getState().jobStatusApp.jobStatuses.loading) {
+  if (getState().definitions.jobStatus.loading) {
     return;
   }
   
@@ -21,7 +22,7 @@ export const getJobStatuses = () => (dispatch, getState) => {
 }
 
 export const addJobStatusRequest = (data) => (dispatch, getState) => {
-  if (getState().jobStatusApp.jobStatuses.isSubmitting) {
+  if (getState().definitions.jobStatus.isSubmitting) {
     return;
   }
 
@@ -40,7 +41,7 @@ export const addJobStatusRequest = (data) => (dispatch, getState) => {
 }
 
 export const updateJobStatusRequest = (data) => (dispatch, getState) => {
-  if (getState().jobStatusApp.jobStatuses.isSubmitting) {
+  if (getState().definitions.jobStatus.isSubmitting) {
     return;
   }
 
@@ -59,7 +60,7 @@ export const updateJobStatusRequest = (data) => (dispatch, getState) => {
 }
 
 export const removeJobStatusRequest = (data) => (dispatch, getState) => {
-  if (getState().jobStatusApp.jobStatuses.isSubmitting) {
+  if (getState().definitions.jobStatus.isSubmitting) {
     return;
   }
 
@@ -83,22 +84,12 @@ export const {
   selectAll: selectJobStatuses, 
   selectById: selectJobStatusesById 
 } = jobStatusesAdapter.getSelectors(
-  (state) => state.jobStatusApp.jobStatuses
+  (state) => state.definitions.jobStatus
 );
 
-const initialState = {
-  loading: false,
-  isSubmitting: false,
-  modal: {
-    type: 'new',
-    open: false,
-    data: null,
-  },
-};
-
 const JobStatusSlice = createSlice({
-  name: 'jobStatusApp/jobStatuses',
-  initialState: jobStatusesAdapter.getInitialState(initialState),
+  name: 'definitions/jobStatus',
+  initialState: jobStatusesAdapter.getInitialState(defaultInitinalState),
   reducers: {
     setJobStatuses: jobStatusesAdapter.setAll,
     addJobStatus: jobStatusesAdapter.addOne,
@@ -122,7 +113,7 @@ const JobStatusSlice = createSlice({
       };
     },
     closeJobStatusModal: (state, action) => {
-      state.modal = initialState.modal;
+      state.modal = defaultInitinalState.modal;
     },
     setIsJobStatusSubmitting: (state, action) => {
       state.isSubmitting = action.payload;

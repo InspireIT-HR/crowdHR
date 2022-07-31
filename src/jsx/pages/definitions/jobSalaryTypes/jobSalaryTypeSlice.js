@@ -1,9 +1,10 @@
 import { createEntityAdapter, createSlice } from '@reduxjs/toolkit';
-import axios from '../../../../../services/axios';
-import { showError } from '../../../../helpers/notificationHelper';
+import axios from '../../../../services/axios';
+import { showError } from '../../../helpers/notificationHelper';
+import { defaultInitinalState } from '../../../helpers/storeHelper';
 
 export const getJobSalaryTypes = () => (dispatch, getState) => {
-  if (getState().jobSalaryTypeApp.jobSalaryTypes.loading) {
+  if (getState().definitions.jobSalaryType.loading) {
     return;
   }
 
@@ -21,7 +22,7 @@ export const getJobSalaryTypes = () => (dispatch, getState) => {
 }
 
 export const addJobSalaryTypeRequest = (data) => (dispatch, getState) => {
-  if (getState.jobSalaryTypeApp.jobSalaryTypes.isSubmitting) {
+  if (getState.definitions.jobSalaryType.isSubmitting) {
     return;
   }
 
@@ -40,7 +41,7 @@ export const addJobSalaryTypeRequest = (data) => (dispatch, getState) => {
 }
 
 export const updateJobSalaryTypeRequest = (data) => (dispatch, getState) => {
-  if (getState.jobSalaryTypeApp.jobSalaryTypes.isSubmitting) {
+  if (getState.definitions.jobSalaryType.isSubmitting) {
     return;
   }
 
@@ -59,7 +60,7 @@ export const updateJobSalaryTypeRequest = (data) => (dispatch, getState) => {
 }
 
 export const removeJobSalaryTypeRequest = (data) => (dispatch, getState) => {
-  if (getState.jobSalaryTypeApp.jobSalaryTypes.isSubmitting) {
+  if (getState.definitions.jobSalaryType.isSubmitting) {
     return;
   }
 
@@ -83,22 +84,12 @@ export const {
   selectAll: selectJobSalaryTypes,
   selectById: selectJobSalaryTypeById,
 } = jobSalaryTypesAdapter.getSelectors(
-  (state) => state.jobSalaryTypeApp.jobSalaryTypes
+  (state) => state.definitions.jobSalaryType
 );
 
-const initialState = {
-  loading: false,
-  isSubmitting: false,
-  modal: {
-    type: 'new',
-    open: false,
-    data: null,
-  },
-};
-
 const jobSalaryTypesSlice = createSlice({
-  name: 'jobSalaryTypeApp/jobSalaryTypes',
-  initialState: jobSalaryTypesAdapter.getInitialState(initialState),
+  name: 'definitions/jobSalaryType',
+  initialState: jobSalaryTypesAdapter.getInitialState(defaultInitinalState),
   reducers: {
     setJobSalaryTypes: jobSalaryTypesAdapter.setAll,
     addJobSalaryType: jobSalaryTypesAdapter.addOne,
@@ -122,7 +113,7 @@ const jobSalaryTypesSlice = createSlice({
       };
     },
     closeJobSalaryTypeModal: (state, action) => {
-      state.modal = initialState.modal;
+      state.modal = defaultInitinalState.modal;
     },
     setIsJobSalaryTypeSubmitting: (state, action) => {
       state.isSubmitting = action.payload;

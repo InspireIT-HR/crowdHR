@@ -1,10 +1,10 @@
 import { createEntityAdapter, createSlice } from '@reduxjs/toolkit';
-import axios from '../../../../../services/axios';
-import { showError } from '../../../../helpers/notificationHelper';
-
+import axios from '../../../../services/axios';
+import { showError } from '../../../helpers/notificationHelper';
+import { defaultInitinalState } from '../../../helpers/storeHelper';
 
 export const getEducationLevels = () => (dispatch, getState) => {
-  if (getState().educationLevelApp.educationLevels.loading) {
+  if (getState().definitions.educationLevel.loading) {
     return;
   }
 
@@ -22,7 +22,7 @@ export const getEducationLevels = () => (dispatch, getState) => {
 }
 
 export const addEducationLevelRequest = (data) => (dispatch, getState) => {
-  if (getState().educationLevelApp.educationLevels.isSubmitting) {
+  if (getState().definitions.educationLevel.isSubmitting) {
     return;
   }
 
@@ -41,7 +41,7 @@ export const addEducationLevelRequest = (data) => (dispatch, getState) => {
 }
 
 export const updateEducationLevelRequest = (data) => (dispatch, getState) => {
-  if (getState().educationLevelApp.educationLevels.isSubmitting) {
+  if (getState().definitions.educationLevel.isSubmitting) {
     return;
   }
 
@@ -60,7 +60,7 @@ export const updateEducationLevelRequest = (data) => (dispatch, getState) => {
 }
 
 export const removeEducationLevelRequest = (data) => (dispatch, getState) => {
-  if (getState().educationLevelApp.educationLevels.isSubmitting) {
+  if (getState().definitions.educationLevel.isSubmitting) {
     return;
   }
 
@@ -84,22 +84,12 @@ export const {
   selectAll: selectEducationLevels,
   selectById: selectEducationLevelById,
 } = educationLevelsAdapter.getSelectors(
-  (state) => state.educationLevelApp.educationLevels
+  (state) => state.definitions.educationLevel
 );
 
-const initialState = {
-  loading: false,
-  isSubmitting: false,
-  modal: {
-    type: 'new',
-    open: false,
-    data: null,
-  },
-};
-
 const educationLevelSlice = createSlice({
-  name: 'educationLevelApp/educationLevels',
-  initialState: educationLevelsAdapter.getInitialState(initialState),
+  name: 'definitions/educationLevel',
+  initialState: educationLevelsAdapter.getInitialState(defaultInitinalState),
   reducers: {
     setEducationLevels: educationLevelsAdapter.setAll,
     addEducationLevel: educationLevelsAdapter.addOne,
@@ -123,7 +113,7 @@ const educationLevelSlice = createSlice({
       };
     },
     closeEducationLevelModal: (state, action) => {
-      state.modal = initialState.modal;
+      state.modal = defaultInitinalState.modal;
     },
     setIsEducationLevelSubmitting: (state, action) => {
       state.isSubmitting = action.payload;

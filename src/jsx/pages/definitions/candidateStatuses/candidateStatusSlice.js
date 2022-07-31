@@ -1,9 +1,10 @@
 import { createEntityAdapter, createSlice } from '@reduxjs/toolkit';
-import axios from '../../../../../services/axios';
-import { showError } from '../../../../helpers/notificationHelper';
+import axios from '../../../../services/axios';
+import { showError } from '../../../helpers/notificationHelper';
+import { defaultInitinalState } from '../../../helpers/storeHelper';
 
 export const getCandidateStatuses = () => (dispatch, getState) => {
-  if (getState().candidateStatusApp.candidateStatuses.loading) {
+  if (getState().definitions.candidateStatus.loading) {
     return;
   }
 
@@ -21,7 +22,7 @@ export const getCandidateStatuses = () => (dispatch, getState) => {
 }
 
 export const addCandidateStatusRequest = (data) => (dispatch, getState) => {
-  if (getState().candidateStatusApp.candidateStatuses.isSubmitting) {
+  if (getState().definitions.candidateStatus.isSubmitting) {
     return;
   }
 
@@ -40,7 +41,7 @@ export const addCandidateStatusRequest = (data) => (dispatch, getState) => {
 }
 
 export const updateCandidateStatusRequest = (data) => (dispatch, getState) => {
-  if (getState().candidateStatusApp.candidateStatuses.isSubmitting) {
+  if (getState().definitions.candidateStatus.isSubmitting) {
     return;
   }
 
@@ -59,7 +60,7 @@ export const updateCandidateStatusRequest = (data) => (dispatch, getState) => {
 }
 
 export const removeCandidateStatusRequest = (data) => (dispatch, getState) => {
-  if (getState().candidateStatusApp.candidateStatuses.isSubmitting) {
+  if (getState().definitions.candidateStatus.isSubmitting) {
     return;
   }
 
@@ -83,23 +84,12 @@ export const {
   selectAll: selectCandidateStatuses, 
   selectById: selectCandidateStatusById 
 } = candidateStatusesAdapter.getSelectors(
-  (state) => state.candidateStatusApp.candidateStatuses
+  (state) => state.definitions.candidateStatus
 );
 
-const initialState = {
-  loading: false,
-  isSubmitting: false,
-  jobCandidates: {},
-  modal: {
-    type: 'new',
-    open: false,
-    data: null,
-  },
-};
-
 const candidateStatusSlice = createSlice({
-  name: 'candidateStatusApp/candidateStatuses',
-  initialState: candidateStatusesAdapter.getInitialState(initialState),
+  name: 'definitions/candidateStatus',
+  initialState: candidateStatusesAdapter.getInitialState(defaultInitinalState),
   reducers: {
     setCandidateStatuses: (state, action) => {
       candidateStatusesAdapter.setAll(state, action.payload);
@@ -130,7 +120,7 @@ const candidateStatusSlice = createSlice({
       };
     },
     closeCandidateStatusModal: (state, action) => {
-      state.modal = initialState.modal;
+      state.modal = defaultInitinalState.modal;
     },
     setIsCandidateStatusSubmitting: (state, action) => {
       state.isSubmitting = action.payload;
