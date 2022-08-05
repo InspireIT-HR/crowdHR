@@ -48,9 +48,9 @@
       "user": "Users",
       "userList": "User List"
     },
-    "customers": {
-      "cus": "Companies",
-      "customerList": "Company List"
+    "companies": {
+      "companies": "Companies",
+      "companyList": "Company List"
     },
     "jobs": {
       "job": "Jobs",
@@ -69,7 +69,7 @@
     "targetDate":"Target Date",
     "status":"Status",
     "numberOfPosition":"Number Of Position",
-    "customerVisibilty":"Customer Visibility",
+    "customerIsVisible":"Customer Visibility",
     "customerName":"Customer Name",
     "customerReponsibles":"Customer Responsibles",
     "isRemote":"Working Remote",
@@ -78,9 +78,11 @@
     "city":"City",
     "gender":"Gender",
     "minEduLevel":"Minimum Education Level",
-    "experienceYear":"Experience Between",
+    "minExperienceYear":"Minimum Experience Year",
+    "maxExperienceYear":"Maximum Experience Year",
     "salaryType":"Salary Type",
-    "salaryBetween":"Salary Between",
+    "minSalary":"Minimum Salary",
+    "maxSalary":"Maximum Salary",
     "commissionFee":"Commission Fee",
     "internalRecruiter":"Internal Recruiter",
     "qualifications":"Qualifications",

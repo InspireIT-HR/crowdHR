@@ -10,10 +10,12 @@ import jobIndustries from "./pages/definitions/jobIndustries";
 import jobLocations from "./pages/definitions/jobLocations";
 import jobSalaryTypes from "./pages/definitions/jobSalaryTypes";
 import customers from "./pages/customers/customers";
+import companies from "./pages/companies/companyList";
 import users from "./pages/users/users";
 import openJob from "./pages/jobs/jobOpenings/OpenJob";
 import attachmentTypes from "./pages/definitions/attachmentTypes";
 import currencyTypes from "./pages/definitions/currencyTypes";
+import jobCandidates from "./pages/jobCandidates/JobCandidates";
 
 export const routes = [
   {
@@ -93,16 +95,16 @@ export const routes = [
     ]
   },
   {
-    title: 'sidebar.customers.cus',
-    url: 'customers',
+    title: 'sidebar.companies.companies',
+    url: 'companies',
     icon: 'flaticon-041-graph',
-    component: customers,
+    component: companies,
     permission: '',
     children: [
       {
-        title: 'sidebar.customers.customerList',
+        title: 'sidebar.companies.companyList',
         url: 'customers',
-        component: customers,
+        component: companies,
       },
     ]
   },
@@ -127,15 +129,15 @@ export const routes = [
   },
   {
     title: 'sidebar.candidates.cand',
-    url: '#',
+    url: 'candidates',
     icon: 'flaticon-045-heart',
-    component: Select2,
+    component: jobCandidates,
     permission: '',
     children: [
       {
         title: 'sidebar.candidates.jobCandidates',
-        url: 'uc-select2',
-        component: Select2,
+        url: 'job-candidates',
+        component: jobCandidates,
       }
     ]
   }

@@ -9,7 +9,6 @@ import reducer from './store';
 import PageTItle from "../../../layouts/PageTitle";
 import { useTranslation } from "react-i18next";
 import Select from "react-select";
-import Nouislider from "nouislider-react";
 import { Stepper, Step } from "react-form-stepper";
 import { Editor } from "@tinymce/tinymce-react";
 import { Formik } from "formik";
@@ -23,6 +22,7 @@ import { getCities, selectCities } from '../../definitions/jobLocations/citiesSl
 import { getEducationLevels, selectEducationLevels } from '../../definitions/educationLevels/educationLevelSlice';
 import { getJobSalaryTypes, selectJobSalaryTypes } from '../../definitions/jobSalaryTypes/jobSalaryTypeSlice'; 
 import { getInternalRecruiters, selectInternalRecruiters } from "../../users/users/store/internalRecruitersSlice";
+import { getCurrencyTypes, selectCurrencyTypes } from "../../definitions/currencyTypes/currenyTypeSlice";
 
 const defaultValues = {
   shortName: "",
@@ -67,6 +67,7 @@ const OpenJob = (props) => {
   const educationLevels = useSelector(selectEducationLevels);
   const salaryTypes = useSelector(selectJobSalaryTypes);
   const internalRecruiters = useSelector(selectInternalRecruiters);
+  const currencyTypes=useSelector(selectCurrencyTypes);
   const genders = [
     {
       id: 1,
@@ -80,18 +81,20 @@ const OpenJob = (props) => {
 
   const customerVisibilities = [
     {
-      id: 1,
-      description: 'Açık',
+      id: 0,
+      description: 'Gizli',
     },
     {
-      id: 2,
-      description: 'Gizli',
+      id: 1,
+      description: 'Açık',
     }
+    
   ];
 
   const yesNoOptions = [
-    { id: 1, description: "Evet" },
-    { id: 2, description: "Hayır" },
+    { id: 0, description: "Hayır" },
+    { id: 1, description: "Evet" }
+    
   ];
 
   const schema = yup.object().shape({
@@ -139,6 +142,7 @@ const OpenJob = (props) => {
     dispatch(getEducationLevels());
     dispatch(getJobSalaryTypes());
     dispatch(getInternalRecruiters());
+    dispatch(getCurrencyTypes());
   }, [dispatch]);
 
   return (
@@ -320,7 +324,7 @@ const OpenJob = (props) => {
                                 <input
                                   type="number"
                                   className="form-control"
-                                  onChange={handleChange}
+                                  onChange={(ev) => setFieldValue('numberOfPositions', ev.target.value)}
                                   onBlur={handleBlur}
                                   value={values.numberOfPositions}
                                   id="val-numberOfPositions"
@@ -418,7 +422,7 @@ const OpenJob = (props) => {
                                   style={{ display: "block" }}
                                 />
                               </div>
-
+                              {/*Customer Responsibles */}
 
                               <div className={`form-group mb-3 col-md-6 ${values.customerIsVisible
                                   ? errors.customerIsVisible
@@ -483,13 +487,15 @@ const OpenJob = (props) => {
                                   }}
                                 />
                               </div>
-
+                              {/*Job Type */}
                               <div className="form-group mb-3 col-md-6">
                                 <label>{t("newJobForm.isRemote")}</label>
                                 <Select
                                   defaultValue={''}
-                                  onChange={(value) => setFieldValue('isRemote', value.value)}
+                                  onChange={(value) => setFieldValue('isRemote', value.id)}
                                   options={yesNoOptions}
+                                  getOptionLabel={(o) => o.description}
+                                  getOptionValue={(o) => o.id}
                                   value={yesNoOptions.find((yno) => yno.id === values.isRemote)}
                                   style={{
                                     lineHeight: "40px",
@@ -498,11 +504,11 @@ const OpenJob = (props) => {
                                   }}
                                 />
                               </div>
-
+                              {/*Is Remote */}
                               <div className="form-group mb-3 col-md-6">
                                 <label>{t("newJobForm.country")}</label>
                                 <Select
-                                  defaultValue={selectedJobTypeOption}
+                                  defaultValue={''}
                                   onChange={(value) => {
                                     setFieldValue('locationCountryId', value.id);
                                     setFieldValue('locationCityId', '');
@@ -518,11 +524,11 @@ const OpenJob = (props) => {
                                   }}
                                 />
                               </div>
-
+                              {/*Country */}
                               <div className="form-group mb-3 col-md-6">
                                 <label>{t("newJobForm.city")}</label>
                                 <Select
-                                  defaultValue={selectedJobTypeOption}
+                                  defaultValue={''}
                                   onChange={(value) => setFieldValue('locationCityId', value.id)}
                                   value={values.locationCityId ? cities.find((c) => c.id === values.locationCityId) : ''}
                                   options={values.locationCountryId ? cities.filter((c) => c.countryId === values.locationCountryId) : []}
@@ -535,7 +541,7 @@ const OpenJob = (props) => {
                                   }}
                                 />
                               </div>
-
+                              {/*City */}
                               <div className="form-group mb-3 col-md-6">
                                 <label>{t("newJobForm.gender")}</label>
                                 <Select
@@ -552,7 +558,7 @@ const OpenJob = (props) => {
                                   }}
                                 />
                               </div>
-
+                              {/*Gender */}
                               <div className="form-group mb-3 col-md-6">
                                 <label>{t("newJobForm.minEduLevel")}</label>
                                 <Select
@@ -569,27 +575,51 @@ const OpenJob = (props) => {
                                   }}
                                 />
                               </div>
-
-                              <div className="form-group mb-3 col-md-6">
-                                <label>{t("newJobForm.experienceYear")}</label>
-                                <Nouislider
-                                  connect
-                                  start={[20, 80]}
-                                  behaviour="tap"
-                                  snap
-                                  range={{
-                                    min: [0],
-                                    "10%": 30,
-                                    "20%": 40,
-                                    "30%": 50,
-                                    "50%": 60,
-                                    "60%": 70,
-                                    "70%": 80,
-                                    "90%": 90,
-                                    max: [100],
-                                  }}
+                              {/*Min Edu Level */}
+                              <div
+                                className={`form-group mb-3 col-md-6 ${
+                                  values.minExperience
+                                    ? errors.minExperience
+                                      ? "is-invalid"
+                                      : "is-valid"
+                                    : ""
+                                }`}
+                              >
+                                <label>
+                                  {t("newJobForm.minExperienceYear")}
+                                </label>
+                                <input
+                                  type="number"
+                                  className="form-control"
+                                  onChange={(ev) => setFieldValue('minExperience', ev.target.value)}
+                                  onBlur={handleBlur}
+                                  value={values.minExperience}
+                                  id="val-minExperience"
                                 />
                               </div>
+                              {/*Min Exp. Year */}
+                              <div
+                                className={`form-group mb-3 col-md-6 ${
+                                  values.maxExperience
+                                    ? errors.maxExperience
+                                      ? "is-invalid"
+                                      : "is-valid"
+                                    : ""
+                                }`}
+                              >
+                                <label>
+                                  {t("newJobForm.maxExperienceYear")}
+                                </label>
+                                <input
+                                  type="number"
+                                  className="form-control"
+                                  onChange={(ev) => setFieldValue('maxExperience', ev.target.value)}
+                                  onBlur={handleBlur}
+                                  value={values.maxExperience}
+                                  id="val-maxExperience"
+                                />
+                              </div>
+                              {/*Max Exp. Year */}
                             </div>
                           </section>
                           <div className="text-end toolbar toolbar-bottom p-2">
@@ -629,32 +659,60 @@ const OpenJob = (props) => {
                                   }}
                                 />
                               </div>
-
-                              <div className="form-group mb-3 col-md-3">
-                                <label>{t("newJobForm.salaryBetween")}</label>
+                              {/*Salary Type */}
+                              <div
+                                className={`form-group mb-3 col-md-3 ${
+                                  values.minSalary
+                                    ? errors.minSalary
+                                      ? "is-invalid"
+                                      : "is-valid"
+                                    : ""
+                                }`}
+                              >
+                                <label>
+                                  {t("newJobForm.minSalary")}
+                                </label>
                                 <input
-                                  type="text"
+                                  type="number"
                                   className="form-control"
-                                  required
+                                  onChange={(ev) => setFieldValue('minSalary', ev.target.value)}
+                                  onBlur={handleBlur}
+                                  value={values.minSalary}
+                                  id="val-minSalary"
                                 />
                               </div>
-
-                              <div className="form-group mb-3 col-md-3">
-                                <label>{t("newJobForm.referenceCode")}</label>
+                              {/*Min Salary */}        
+                              <div
+                                className={`form-group mb-3 col-md-3 ${
+                                  values.maxSalary
+                                    ? errors.maxSalary
+                                      ? "is-invalid"
+                                      : "is-valid"
+                                    : ""
+                                }`}
+                              >
+                                <label>
+                                  {t("newJobForm.maxSalary")}
+                                </label>
                                 <input
-                                  type="text"
+                                  type="number"
                                   className="form-control"
-                                  required
+                                  onChange={(ev) => setFieldValue('maxSalary', ev.target.value)}
+                                  onBlur={handleBlur}
+                                  value={values.maxSalary}
+                                  id="val-maxSalary"
                                 />
                               </div>
-
+                              {/*Max Salary */}
                               <div className="form-group mb-3 col-md-3">
-                                <label>{t("newJobForm.salaryBetween")}</label>
+                                <label>{t("newJobForm.currencyType")}</label>
                                 <Select
-                                  defaultValue={selectedJobTypeOption}
-                                  onChange={setSelectedJobTypeOption}
-                                  options={jobTypes}
-                                  value={jobTypes.find((jt) => jt.id === values.jobTypeId)}
+                                  defaultValue={''}
+                                  onChange={(value) => setFieldValue('currencyTypeId', value.id)}
+                                  options={currencyTypes}
+                                  getOptionLabel={(o) => o.description}
+                                  getOptionValue={(o) => o.id}
+                                  value={currencyTypes.find((ct) => ct.id === values.currencyTypeId)}
                                   style={{
                                     lineHeight: "40px",
                                     color: "#7e7e7e",
@@ -662,21 +720,38 @@ const OpenJob = (props) => {
                                   }}
                                 />
                               </div>
-
-                              <div className="form-group mb-3 col-md-4">
-                                <label>{t("newJobForm.commissionFee")}</label>
+                              {/*Salary Currency */}
+                              <div
+                                className={`form-group mb-3 col-md-4 ${
+                                  values.commissionFee
+                                    ? errors.commissionFee
+                                      ? "is-invalid"
+                                      : "is-valid"
+                                    : ""
+                                }`}
+                              >
+                                <label>
+                                  {t("newJobForm.commissionFee")}
+                                </label>
                                 <input
-                                  type="text"
+                                  type="number"
                                   className="form-control"
-                                  required
+                                  onChange={(ev) => setFieldValue('commissionFee', ev.target.value)}
+                                  onBlur={handleBlur}
+                                  value={values.commissionFee}
+                                  id="val-commissionFee"
                                 />
                               </div>
+                              {/*Commission Fee*/}
                               <div className="form-group mb-3 col-md-2">
                                 <label>{t("newJobForm.currencyType")}</label>
                                 <Select
-                                  defaultValue={selectedJobTypeOption}
-                                  onChange={setSelectedJobTypeOption}
-                                  options={jobTypes}
+                                  defaultValue={''}
+                                  onChange={(value) => setFieldValue('commissionCurrencyTypeId', value.id)}
+                                  options={currencyTypes}
+                                  getOptionLabel={(o) => o.description}
+                                  getOptionValue={(o) => o.id}
+                                  value={currencyTypes.find((c) => c.id === values.commissionCurrencyTypeId)}
                                   style={{
                                     lineHeight: "40px",
                                     color: "#7e7e7e",
@@ -684,7 +759,7 @@ const OpenJob = (props) => {
                                   }}
                                 />
                               </div>
-
+                              {/*Commission Currency Type */}
                               <div className="form-group mb-3 col-md-6">
                                 <label>
                                   {t("newJobForm.internalRecruiter")}
@@ -702,6 +777,7 @@ const OpenJob = (props) => {
                                   }}
                                 />
                               </div>
+                              {/*Internal Recruiter */}
                             </div>
                           </section>
                           <div className="text-end toolbar toolbar-bottom p-2">
@@ -742,9 +818,14 @@ const OpenJob = (props) => {
                                       "bullist numlist outdent indent | removeformat | help ",
                                     content_style: "body { color: #828282 }",
                                   }}
-                                  onEditorChange={handleEditorChange}
+                                  onChange={handleChange}
+                                  value={values.qualifications}
+                                  id="val-qualifications"
+                                  name="qualifications"
+                                  onBlur={handleBlur}
                                 />
                               </div>
+                              {/*Qualifications */}
                               <div className="form-group mb-3 col-md-6">
                                 <label>{t("newJobForm.description")}</label>
                                 <Editor
@@ -762,9 +843,14 @@ const OpenJob = (props) => {
                                       "bullist numlist outdent indent | removeformat | help ",
                                     content_style: "body { color: #828282 }",
                                   }}
-                                  onEditorChange={handleEditorChange}
+                                  onChange={handleChange}
+                                  value={values.description}
+                                  id="val-description"
+                                  name="description"
+                                  onBlur={handleBlur}
                                 />
                               </div>
+                              {/*Description */}
                             </div>
                           </section>
                           <div className="text-end toolbar toolbar-bottom p-2">

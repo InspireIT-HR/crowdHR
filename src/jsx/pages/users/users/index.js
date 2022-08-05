@@ -73,11 +73,20 @@ const Users = (props) => {
       Cell: (props) => {
         return (
           <>
-            <button className="btn btn-secondary btn-icon light mr-2 p-2">
-              <EditIconSvg />
+            <button
+              className="btn btn-primary shadow btn-xs sharp me-1"
+              // onClick={() => dispatch(openEditAttachmentTypeModal(props.row.original))}
+            >
+              <i className="fas fa-pencil-alt"></i>
             </button>
-            <button className="btn btn-danger btn-icon light mr-2 p-2">
-              <TrashIconSvg />
+            <button
+              className="btn btn-danger shadow btn-xs sharp"
+              // onClick={() => {
+              //   setConfirmModalData(props.row.original.id);
+              //   setShowConfirmModal(true);
+              // }}
+            >
+              <i className="fa fa-trash"></i>
             </button>
           </>
         )

@@ -48,9 +48,9 @@
       "user": "Kullanıcılar",
       "userList": "Kullanıcı Listesi"
     },
-    "customers": {
-      "cus": "Şirketler",
-      "customerList": "Şirket Listesi"
+    "companies": {
+      "companies": "Şirketler",
+      "companyList": "Şirket Listesi"
     },
     "jobs": {
       "job": "İşler",
@@ -69,7 +69,7 @@
     "targetDate":"Hedef Tarih",
     "status":"Durum",
     "numberOfPosition":"Pozisyon Sayısı",
-    "customerVisibilty":"Müşteri Görünürlüğü",
+    "customerIsVisible":"Müşteri Görünürlüğü",
     "customerName":"Müşteri Adı",
     "customerReponsibles":"Müşteri Sorumluları",
     "isRemote":"Uzaktan Çalışma",
@@ -78,9 +78,11 @@
     "city":"Şehir",
     "gender":"Cinsiyet",
     "minEduLevel":"Minimum Eğitim Seviyesi",
-    "experienceYear":"Tücrübe Yılı Aralığı",
+    "minExperienceYear":"En Düşük Tecrübe Yılı",
+    "maxExperienceYear":"En Yüksek Tecrübe Yılı",
     "salaryType":"Maaş Tipi",
-    "salaryBetween":"Maaş Aralığı",
+    "minSalary":"En Düşük Maaş",
+    "maxSalary":"En yüksek Maaş",
     "commissionFee":"Komisyon Miktarı",
     "internalRecruiter":"Dahili İşe Alımcı",
     "qualifications":"Özellikler",
