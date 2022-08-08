@@ -7,7 +7,7 @@ import EditIconSvg from '../../../../svg/edit-icon';
 import TrashIconSvg from '../../../../svg/trash-icon';
 import { getCustomers, selectCustomers } from './store/customersSlice';
 import AccordionTable from '../../../components/table/AccordionTable';
-import CustomerResponsiblesTable from './customerResponsiblesTable';
+import CompanyResponsiblesTable from './companyResponsiblesTable';
 
 const Customers = (props) => {
   const dispatch = useDispatch();
@@ -72,7 +72,7 @@ const Customers = (props) => {
     activeMenu="sidebar.customers.customerList"
     usePageTitle
     useFilter
-    accordionBody={CustomerResponsiblesTable}
+    accordionBody={CompanyResponsiblesTable}
   />
 }
 

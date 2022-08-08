@@ -16,7 +16,7 @@ import * as yup from "yup";
 import { addNewJob } from './store/jobOpeningSlice';
 import { getJobStatuses, selectJobStatuses } from '../../definitions/jobStatuses/jobStatusSlice';
 import { getJobTypes, selectJobTypes } from '../../definitions/jobTypes/jobTypeSlice';
-import { getCustomers, selectCustomers } from '../../customers/customers/store/customersSlice';
+import { getCustomers, selectCustomers } from '../../companies/companies/store/customersSlice';
 import { getCountries, selectCountries } from '../../definitions/jobLocations/countriesSlice';
 import { getCities, selectCities } from '../../definitions/jobLocations/citiesSlice';
 import { getEducationLevels, selectEducationLevels } from '../../definitions/educationLevels/educationLevelSlice';

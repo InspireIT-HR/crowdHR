@@ -9,8 +9,7 @@ import jobStatuses from "./pages/definitions/jobStatuses";
 import jobIndustries from "./pages/definitions/jobIndustries";
 import jobLocations from "./pages/definitions/jobLocations";
 import jobSalaryTypes from "./pages/definitions/jobSalaryTypes";
-import customers from "./pages/customers/customers";
-import companies from "./pages/companies/companyList";
+import companies from "./pages/companies/companies";
 import users from "./pages/users/users";
 import openJob from "./pages/jobs/jobOpenings/OpenJob";
 import attachmentTypes from "./pages/definitions/attachmentTypes";
@@ -103,7 +102,7 @@ export const routes = [
     children: [
       {
         title: 'sidebar.companies.companyList',
-        url: 'customers',
+        url: 'companies',
         component: companies,
       },
     ]
