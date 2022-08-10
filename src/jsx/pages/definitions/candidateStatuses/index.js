@@ -15,10 +15,12 @@ import ConfirmModal from "../../../components/ConfirmModal";
 import OnlyDescriptionModal from "../../../components/OnlyDescriptionModal";
 import AccordionTable from "../../../components/table/AccordionTable";
 import JobCandidatesTable from "./jobCandidatesTable";
+import { getCandidateSkills } from "../candidateSkill/candidateSkillSlice";
+import { getCandidateStages, selectCandidateStages } from "../candidateStages/candidateStageSlice";
 
 const CandidateStatuses = (props) => {
   const dispatch = useDispatch();
-  const data = useSelector(selectCandidateStatuses);
+  const data = useSelector(selectCandidateStages);
   const modal = useSelector(
     ({ definitions }) => definitions.candidateStatus.modal
   );
@@ -31,6 +33,8 @@ const CandidateStatuses = (props) => {
 
   useEffect(() => {
     dispatch(getCandidateStatuses());
+    dispatch(getCandidateSkills());
+    dispatch(getCandidateStages());
   }, [dispatch]);
 
   const columns = useMemo(

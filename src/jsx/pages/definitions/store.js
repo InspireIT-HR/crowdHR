@@ -1,6 +1,8 @@
 import { combineReducers } from '@reduxjs/toolkit';
 import attachmentType from "./attachmentTypes/attachmentTypeSlice";
 import candidateStatus from "./candidateStatuses/candidateStatusSlice";
+import candidateStage from './candidateStages/candidateStageSlice';
+import candidateSkill from './candidateSkill/candidateSkillSlice';
 import currencyType from './currencyTypes/currenyTypeSlice';
 import educationLevel from './educationLevels/educationLevelSlice';
 import jobIndustry from './jobIndustries/jobIndustriesSlice';
@@ -18,6 +20,8 @@ const jobLocation = combineReducers({
 const reducer = combineReducers({
   attachmentType,
   candidateStatus,
+  candidateStage,
+  candidateSkill,
   currencyType,
   educationLevel,
   jobIndustry,

@@ -7,25 +7,22 @@ import DefaultTable from '../../../components/table/DefaultTable';
 
 const JobCandidatesTable = (props) => {
   const [jobCandidates, setJobCandidates] = useState([]);
-  const allJobCandidates = useSelector(({ definitions }) => definitions.candidateStatus.jobCandidates);
 
   useEffect(() => {
     if (props.row) {
-      if (allJobCandidates[props.row.id] && allJobCandidates[props.row.id].length) {
-        setJobCandidates(allJobCandidates[props.row.id]);
-      }
+      setJobCandidates(props.row.candidateStatuses);
     }
-  }, [allJobCandidates, props.row]);
+  }, [props.row]);
   
   const columns = useMemo(() => [
     {
-      Header: 'User',
-      accessor: 'user.fullname',
+      Header: 'Id',
+      accessor: 'id',
       sortable: true,
     },
     {
-      Header: 'Additional Info',
-      accessor: 'additionalInfo',
+      Header: 'Description',
+      accessor: 'description',
       sortable: true,
     },
     // {
