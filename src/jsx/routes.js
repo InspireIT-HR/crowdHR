@@ -1,8 +1,7 @@
 import Home from "./components/Dashboard/Home";
-import CandidateStatuses from "./pages/definitions/candidateStatuses";
+import Candidates from "./pages/definitions/candidates";
 import EducationLevels from "./pages/definitions/educationLevels";
 
-import Select2 from "./components/PluginsMenu/Select2/Select2";
 import jobTypes from "./pages/definitions/jobTypes";
 import JobOpenings from "./pages/jobs/jobOpenings";
 import jobStatuses from "./pages/definitions/jobStatuses";
@@ -29,13 +28,13 @@ export const routes = [
     title: 'sidebar.definitions.def',
     url: 'definitions',
     icon: 'flaticon-093-waving',
-    component: CandidateStatuses,
+    component: Candidates,
     permission: 'definitions',
     children: [
       {
         title: 'sidebar.definitions.candidateStatuses',
         url: 'candidate-statuses',
-        component: CandidateStatuses,
+        component: Candidates,
       },
       {
         title: 'sidebar.definitions.educationLevels',

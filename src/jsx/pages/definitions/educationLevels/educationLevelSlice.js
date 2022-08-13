@@ -1,7 +1,7 @@
 import { createEntityAdapter, createSlice } from '@reduxjs/toolkit';
 import axios from '../../../../services/axios';
 import { showError } from '../../../helpers/notificationHelper';
-import { defaultInitinalState } from '../../../helpers/storeHelper';
+import { defaultInitinalState, openEditModalData, openNewModalData } from '../../../helpers/storeHelper';
 
 export const getEducationLevels = () => (dispatch, getState) => {
   if (getState().definitions.educationLevel.loading) {
@@ -99,18 +99,10 @@ const educationLevelSlice = createSlice({
       state.loading = action.payload;
     },
     openNewEducationLevelModal: (state, action) => {
-      state.modal = {
-        type: 'new',
-        open: true,
-        data: null,
-      };
+      state.modal = openNewModalData;
     },
     openEditEducationLevelModal: (state, action) => {
-      state.modal = {
-        type: 'edit',
-        open: true,
-        data: action.payload,
-      };
+      state.modal = openEditModalData(action.payload);
     },
     closeEducationLevelModal: (state, action) => {
       state.modal = defaultInitinalState.modal;

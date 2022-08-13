@@ -11,7 +11,7 @@ import {
   selectCountries,
   updateCountryRequest,
 } from './countriesSlice';
-import { getCities } from './citiesSlice';
+import { addCityRequest, closeCityModal, getCities, openNewCityModal, updateCityRequest } from './citiesSlice';
 import CitiesTable from './citiesTable';
 import AccordionTable from '../../../components/table/AccordionTable';
 import OnlyDescriptionModal from '../../../components/OnlyDescriptionModal';
@@ -21,7 +21,9 @@ const JobLocations = (props) => {
   const dispatch = useDispatch();
   const data = useSelector(selectCountries);
   const modal = useSelector(({ definitions }) => definitions.jobLocation.country.modal);
+  const modalCity = useSelector(({ definitions }) => definitions.jobLocation.city.modal);
   const isSubmitting = useSelector(({ definitions }) => definitions.jobLocation.country.isSubmitting);
+  const isSubmittingCity = useSelector(({ definitions }) => definitions.jobLocation.city.isSubmitting);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [confirmModalData, setConfirmModalData] = useState('');
 
@@ -94,6 +96,7 @@ const JobLocations = (props) => {
         useFilter
         accordionBody={CitiesTable}
         rightButtons={rightButtons}
+        handleAdd={(data) => dispatch(openNewCityModal(data))}
       />
       <OnlyDescriptionModal
         header="Country"
@@ -102,6 +105,14 @@ const JobLocations = (props) => {
         add={(data) => dispatch(addCountryRequest(data))}
         update={(data) => dispatch(updateCountryRequest(data))}
         closeModal={() => dispatch(closeCountryModal())}
+      />
+      <OnlyDescriptionModal
+        header="City"
+        modal={modalCity}
+        isSubmitting={isSubmittingCity}
+        add={(data) => dispatch(addCityRequest(data))}
+        update={(data) => dispatch(updateCityRequest(data))}
+        closeModal={() => dispatch(closeCityModal())}
       />
       <ConfirmModal
         title="Deleting Country"

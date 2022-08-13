@@ -1,7 +1,8 @@
 import { createEntityAdapter, createSlice } from '@reduxjs/toolkit';
 import axios from '../../../../services/axios';
 import { showError } from '../../../helpers/notificationHelper';
-import { defaultInitinalState } from '../../../helpers/storeHelper';
+import { defaultInitinalState, openEditModalData, openNewModalData } from '../../../helpers/storeHelper';
+import { getCandidateStages } from './candidateStageSlice';
 
 export const getCandidateStatuses = () => (dispatch, getState) => {
   if (getState().definitions.candidateStatus.loading) {
@@ -30,7 +31,8 @@ export const addCandidateStatusRequest = (data) => (dispatch, getState) => {
 
   axios.post('/CandidateStatus', data)
   .then((response) => {
-    dispatch(addCandidateStatus(response.data));
+    // dispatch(addCandidateStatus(response.data));
+    dispatch(getCandidateStages());
     dispatch(setIsCandidateStatusSubmitting(false));
     dispatch(closeCandidateStatusModal());
   })
@@ -49,7 +51,8 @@ export const updateCandidateStatusRequest = (data) => (dispatch, getState) => {
 
   axios.put('/CandidateStatus', data)
   .then((response) => {
-    dispatch(updateCandidateStatus(response.data));
+    // dispatch(updateCandidateStatus(response.data));
+    dispatch(getCandidateStages());
     dispatch(setIsCandidateStatusSubmitting(false));
     dispatch(closeCandidateStatusModal());
   })
@@ -68,7 +71,8 @@ export const removeCandidateStatusRequest = (data) => (dispatch, getState) => {
 
   axios.delete(`/CandidateStatus/${data}`)
   .then((response) => {
-    dispatch(removeCandidateStatus(data));
+    // dispatch(removeCandidateStatus(data));
+    dispatch(getCandidateStages());
     dispatch(setIsCandidateStatusSubmitting(false));
     dispatch(closeCandidateStatusModal());
   })
@@ -107,17 +111,12 @@ const candidateStatusSlice = createSlice({
     },
     openNewCandidateStatusModal: (state, action) => {
       state.modal = {
-        type: 'new',
-        open: true,
-        data: null,
+        ...openNewModalData,
+        stageId: action.payload,
       };
     },
     openEditCandidateStatusModal: (state, action) => {
-      state.modal = {
-        type: 'edit',
-        open: true,
-        data: action.payload,
-      };
+      state.modal = openEditModalData(action.payload);
     },
     closeCandidateStatusModal: (state, action) => {
       state.modal = defaultInitinalState.modal;

@@ -8039,6 +8039,14 @@ fieldset:disabled .btn {
   margin-left: auto !important;
 }
 
+.h-auto {
+  height: auto !important;
+}
+
+.b-0 {
+  border: 0 !important;
+}
+
 .p-0 {
   padding: 0 !important;
 }

@@ -21,6 +21,42 @@ export const getCandidateStages = () => (dispatch, getState) => {
   });
 }
 
+export const updateCandidateStageRequest = (data) => (dispatch, getState) => {
+  if (getState().definitions.candidateStage.loading) {
+    return;
+  }
+
+  dispatch(setCandidateStagesLoading(true));
+
+  axios.put('/CandidateStages', data)
+  .then((response) => {
+    dispatch(updateCandidateStage(response.data));
+    dispatch(setCandidateStagesLoading(false));
+  })
+  .catch((err) => {
+    dispatch(setCandidateStagesLoading(false));
+    showError(err.message);
+  });
+}
+
+export const updateCandidateStageWithStatusRequest = (data) => (dispatch, getState) => {
+  if (getState().definitions.candidateStage.loading) {
+    return;
+  }
+
+  dispatch(setCandidateStagesLoading(true));
+
+  axios.put('/CandidateStages/UpdateWithCandidateStatus', data)
+  .then((response) => {
+    // dispatch(updateCandidateStage(response.data));
+    dispatch(setCandidateStagesLoading(false));
+  })
+  .catch((err) => {
+    dispatch(setCandidateStagesLoading(false));
+    showError(err.message);
+  });
+}
+
 const candidateStagesAdapter = createEntityAdapter({});
 
 export const {

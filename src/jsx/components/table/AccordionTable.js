@@ -131,7 +131,16 @@ const AccordionTable = (props) => {
                           >
                             <td colSpan={columns.length}>
                               <Accordion.Collapse eventKey={`${i}`}>
-                                <AccordionBody row={row.original} />
+                                <AccordionBody 
+                                  row={row.original}
+                                  handleAdd={(data) => {
+                                    if (props.handleAdd) {
+                                      props.handleAdd(data);
+                                    }
+                                  }}
+                                  handleUpdate={(data) => console.log(data)}
+                                  handleRemove={(data) => console.log(data)}
+                                />
                               </Accordion.Collapse>
                             </td>
                           </tr>

@@ -1,23 +1,27 @@
 import { Fragment, useEffect, useMemo, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-
-import { openEditCityModal, removeCityRequest, selectCities } from './citiesSlice';
-import DefaultTable from '../../../components/table/DefaultTable';
+import { useDispatch } from 'react-redux';
 import ConfirmModal from '../../../components/ConfirmModal';
 
-const CitiesTable = (props) => {
+import DragDropTable from '../../../components/table/DragDropTable';
+import { updateCandidateStageWithStatusRequest } from './candidateStageSlice';
+import { 
+  openEditCandidateStatusModal, 
+  openNewCandidateStatusModal,
+  removeCandidateStatusRequest,
+} from './candidateStatusSlice';
+
+const JobCandidatesTable = (props) => {
+  const [jobCandidates, setJobCandidates] = useState([]);
   const dispatch = useDispatch();
-  const allCities = useSelector(selectCities);
-  const [filteredCities, setFilteredCities] = useState([]);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [confirmModalData, setConfirmModalData] = useState('');
 
   useEffect(() => {
-    if (props.row.id) {
-      setFilteredCities(allCities.filter((c) => c.countryId === props.row.id));
+    if (props.row) {  
+      setJobCandidates(props.row.candidateStatuses);
     }
-  }, [allCities, props.row.id]);
-
+  }, [props.row]);
+  
   const columns = useMemo(() => [
     {
       Header: 'Id',
@@ -30,20 +34,26 @@ const CitiesTable = (props) => {
       sortable: true,
     },
     {
+      Header: 'View Order',
+      accessor: 'viewOrder',
+      sortable: false,
+    },
+    {
       Header: 'Actions',
       accessor: '',
       sortable: false,
       Cell: (props) => {
         return (
           <>
+          {/* props.row.original */}
             <button 
-              className="btn btn-primary shadow btn-xs sharp me-1"
-              onClick={() => dispatch(openEditCityModal(props.row.original))}
+              className="btn btn-secondary btn-icon light mr-2 p-2" 
+              onClick={() => dispatch(openEditCandidateStatusModal(props.row.original))}
             >
               <i className="fas fa-pencil-alt"></i>
             </button>
             <button 
-              className="btn btn-danger shadow btn-xs sharp"
+              className="btn btn-danger btn-icon light mr-2 p-2"
               onClick={() => {
                 setConfirmModalData(props.row.original.id);
                 setShowConfirmModal(true);
@@ -58,28 +68,32 @@ const CitiesTable = (props) => {
   ], [dispatch]);
 
   const handleRemove = (data) => {
-    dispatch(removeCityRequest(data));
+    dispatch(removeCandidateStatusRequest(data));
+  }
+
+  const handleCreate = () => {
+    dispatch(openNewCandidateStatusModal(props.row.id));
   }
 
   const rightButtons = (
-    <button className="btn add_button" onClick={() => {
-      if (props.handleAdd) {
-        props.handleAdd(props.row.id);
-      }
-    }}>
-      <i className="bi bi-plus-circle add_icon"></i>
-    </button>
+    <Fragment>
+      <button className="btn add_button" onClick={handleCreate}>
+        <i className="bi bi-plus-circle add_icon"></i>
+      </button>
+    </Fragment>
   )
 
   return (
     <Fragment>
-      <DefaultTable
-        data={filteredCities}
+      <DragDropTable
+        data={jobCandidates}
+        row={props.row}
         columns={columns}
+        onButtonClick={(data) => dispatch(updateCandidateStageWithStatusRequest(data))}
         rightButtons={rightButtons}
       />
       <ConfirmModal
-        title="Deleting City"
+        title="Deleting Candidate Status"
         content="Are you sure about deleting?"
         onConfirm={handleRemove}
         onClose={() => setShowConfirmModal(false)}
@@ -90,4 +104,4 @@ const CitiesTable = (props) => {
   )
 }
 
-export default CitiesTable;
+export default JobCandidatesTable;

@@ -1,7 +1,7 @@
 import { createEntityAdapter, createSlice } from '@reduxjs/toolkit';
 import axios from '../../../../services/axios';
 import { showError } from '../../../helpers/notificationHelper';
-import { defaultInitinalState } from '../../../helpers/storeHelper';
+import { defaultInitinalState, openEditModalData, openNewModalData } from '../../../helpers/storeHelper';
 
 export const getAttachmentTypes = () => (dispatch, getState) => {
   if (getState().definitions.attachmentType.loading) {
@@ -99,18 +99,10 @@ const attachmentTypeSlice = createSlice({
       state.loading = action.payload;
     },
     openNewAttachmentTypeModal: (state, action) => {
-      state.modal = {
-        type: 'new',
-        open: true,
-        data: null,
-      };
+      state.modal = openNewModalData;
     },
     openEditAttachmentTypeModal: (state, action) => {
-      state.modal = {
-        type: 'edit',
-        open: true,
-        data: action.payload,
-      };
+      state.modal = openEditModalData(action.payload);
     },
     closeAttachmentTypeModal: (state, action) => {
       state.modal = defaultInitinalState.modal;

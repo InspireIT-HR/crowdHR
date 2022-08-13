@@ -1,7 +1,7 @@
 import { createEntityAdapter, createSlice } from '@reduxjs/toolkit';
 import axios from '../../../../services/axios';
 import { showError } from '../../../helpers/notificationHelper';
-import { defaultInitinalState } from '../../../helpers/storeHelper';
+import { defaultInitinalState, openEditModalData, openNewModalData } from '../../../helpers/storeHelper';
 
 export const getCities = () => (dispatch, getState) => {
   if (getState().definitions.jobLocation.city.loading) {
@@ -110,19 +110,12 @@ const citiesSlice = createSlice({
     },
     openNewCityModal: (state, action) => {
       state.modal = {
-        type: 'new',
-        open: true,
-        data: null,
+        ...openNewModalData,
         countryId: action.payload || 5,
-      };
+      }
     },
     openEditCityModal: (state, action) => {
-      state.modal = {
-        type: 'edit',
-        open: true,
-        data: action.payload,
-        countryId: action.payload.countryId
-      };
+      state.modal = openEditModalData(action.payload);
     },
     closeCityModal: (state, action) => {
       state.modal = defaultInitinalState.modal;
