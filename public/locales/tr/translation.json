@@ -42,7 +42,8 @@
       "jobSalaryTypes": "Maaş Türleri",
       "candidateStatuses": "Aday Durumları",
       "attachmentTypes": "Ek Türleri",
-      "currencyTypes": "Para Türleri"
+      "currencyTypes": "Para Türleri",
+      "systemParameters": "Sistem Parametreleri"
     },
     "users": {
       "user": "Kullanıcılar",

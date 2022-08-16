@@ -68,8 +68,8 @@ const Customers = (props) => {
   return <AccordionTable
     data={data}
     columns={columns}
-    motherMenu="sidebar.customers.cus"
-    activeMenu="sidebar.customers.customerList"
+    motherMenu="sidebar.companies.companies"
+    activeMenu="sidebar.companies.companyList"
     usePageTitle
     useFilter
     accordionBody={CompanyResponsiblesTable}

@@ -14,6 +14,7 @@ import openJob from "./pages/jobs/jobOpenings/OpenJob";
 import attachmentTypes from "./pages/definitions/attachmentTypes";
 import currencyTypes from "./pages/definitions/currencyTypes";
 import jobCandidates from "./pages/jobCandidates/JobCandidates";
+import SystemParameters from "./pages/definitions/systemParameters";
 
 export const routes = [
   {
@@ -75,7 +76,12 @@ export const routes = [
         title: 'sidebar.definitions.currencyTypes',
         url: 'currency-types',
         component: currencyTypes,
-      }
+      },
+      {
+        title: 'sidebar.definitions.systemParameters',
+        url: 'system-parameters',
+        component: SystemParameters,
+      },
     ]
   },
   {

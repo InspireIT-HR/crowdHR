@@ -14,7 +14,7 @@ const AccordionTable = (props) => {
 
   const { t } = useTranslation();
 
-  const [activeAccordion, setActiveAccordion] = useState(0);
+  const [activeAccordion, setActiveAccordion] = useState(-1);
 
   const tableInstance = useTable({
     columns,
@@ -92,7 +92,13 @@ const AccordionTable = (props) => {
           <div className="table-responsive">
             <div className="dataTables_wrapper">
               <div className="d-flex" style={{ justifyContent: 'space-between' }}>
-                <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} />
+                {props.useFilter && 
+                  <GlobalFilter 
+                    filter={globalFilter} 
+                    setFilter={setGlobalFilter}
+                  />
+                }
+                {props.customFilter}
                 <div style={{ display: 'flex', alignItems: 'flex-end' }}>
                   {props.rightButtons}
                 </div>
@@ -133,6 +139,7 @@ const AccordionTable = (props) => {
                               <Accordion.Collapse eventKey={`${i}`}>
                                 <AccordionBody 
                                   row={row.original}
+                                  open={`${i}` === `${activeAccordion}`}
                                   handleAdd={(data) => {
                                     if (props.handleAdd) {
                                       props.handleAdd(data);

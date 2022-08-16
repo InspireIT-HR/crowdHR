@@ -87,7 +87,7 @@ const AttachmentTypes = (props) => {
         columns={columns}
         motherMenu="sidebar.definitions.def"
         activeMenu="sidebar.definitions.attachmentTypes"
-        usePagetitle
+        usePageTitle
         useFilter
         rightButtons={rightButtons}
       />

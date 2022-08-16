@@ -42,7 +42,8 @@
       "jobSalaryTypes": "Salary Types",
       "candidateStatuses": "Candidate Statuses",
       "attachmentTypes": "Attachment Types",
-      "currencyTypes": "Currency Types"
+      "currencyTypes": "Currency Types",
+      "systemParameters": "System Parameters"
     },
     "users": {
       "user": "Users",

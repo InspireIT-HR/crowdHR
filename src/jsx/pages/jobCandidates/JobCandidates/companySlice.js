@@ -4,7 +4,7 @@ import { showError } from "../../../helpers/notificationHelper";
 import { defaultInitinalState } from "../../../helpers/storeHelper";
 
 export const getCompanies = () => (dispatch, getState) => {
-  if (getState().companies.companyList.loading) {
+  if (getState().candidates.companyList.loading) {
     return;
   }
 
@@ -30,10 +30,10 @@ export const getCompanies = () => (dispatch, getState) => {
 const companiesAdapter = createEntityAdapter({});
 
 export const { selectAll: selectCompanies, selectById: selectCompanyById } =
-  companiesAdapter.getSelectors((state) => state.companies.companyList);
+  companiesAdapter.getSelectors((state) => state.candidates.companyList);
 
 const companyListSlice = createSlice({
-  name: "companies/companyList",
+  name: "candidates/companyList",
   initialState: companiesAdapter.getInitialState(defaultInitinalState),
   reducers: {
     setCompanies: companiesAdapter.setAll,

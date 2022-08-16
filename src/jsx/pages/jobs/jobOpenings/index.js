@@ -3,10 +3,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import withReducer from "../../../../store/withReducer";
 import reducer from "./store";
-import DefaultTable from "../../../components/table/DefaultTable";
-import { getJobOpenings, selectJobOpenings } from "./store/jobOpeningSlice";
+import { getJobOpenings, selectJobOpenings, setFilterField } from "./store/jobOpeningSlice";
 import ReferModal from "./ReferModal";
 import ApplyModal from "./ApplyModal";
+import AccordionTable from "../../../components/table/AccordionTable";
+import ApplicationHistoryTable from "./applicationHistoryTable";
+import { getCandidateStages } from "../../definitions/candidates/candidateStageSlice";
+import Select from 'react-select';
 
 const JobOpenings = (props) => {
   const dispatch = useDispatch();
@@ -14,11 +17,31 @@ const JobOpenings = (props) => {
   const [referModal, setReferModal] = useState(false);
   const [applyModal, setApplyModal] = useState(false);
   const [selectedJobName, setSelectedJobName] = useState('');
+  const filters = useSelector(({ jobOpeningApp }) => jobOpeningApp.jobOpenings.filters);
+  const [filteredData, setFilteredData] = useState([]);
   
 
   useEffect(() => {
     dispatch(getJobOpenings());
+    dispatch(getCandidateStages());
   }, [dispatch]);
+
+  useEffect(() => {
+    const newData = [];
+    data.forEach((d) => {
+      if (filters.jobTypeDesc.selectedValue) {
+        if (d.jobType.description.toLowerCase().indexOf(filters.jobTypeDesc.selectedValue.toLowerCase()) === -1) {
+          console.log(filters.jobTypeDesc.selectedValue);
+          console.log(d.jobType.description)
+          return;
+        }
+      }
+
+      newData.push(d);
+    });
+
+    setFilteredData(newData);
+  }, [data, filters.jobTypeDesc.selectedValue]);
 
   const columns = useMemo(
     () => [
@@ -37,24 +60,56 @@ const JobOpenings = (props) => {
         },
       },
       {
-        Header: "Position",
+        Header: "Job Name",
         accessor: "shortName",
+        sortable: true,
       },
       {
-        Header: "Type",
+        Header: 'Code',
+        accessor: 'referenceCode',
+        sortable: true,
+      },
+      {
+        Header: "Customer",
+        accessor: "customer.name",
+        sortable: true,
+      },
+      {
+        Header: "Job Type",
         accessor: "jobType.description",
+        sortable: true,
       },
       {
-        Header: "Status",
-        accessor: "status.description",
+        Header: 'Status',
+        accessor: 'status.description',
+        sortable: true,
       },
       {
         Header: "Location",
         accessor: "locationCity.description",
+        sortable: true,
+        Cell: (props) => {
+          return (
+            <span>
+              {props.row.original.locationCountry.description}/{props.row.original.locationCity.description}
+            </span>
+          )
+        }
+      },
+      {
+        Header: 'Referral Fee',
+        accessor: 'commissionFee',
+        sortable: true,
+        Cell: (props) => (
+          <span>
+            {props.row.original.commissionFee} {props.row.original.currencyType.description}
+          </span>
+        )
       },
       {
         Header: "Posted Date",
         accessor: "createDate",
+        sortable: true,
         Cell: (props) => {
           return new Date(props.value).toLocaleDateString("tr-TR", {
             year: "numeric",
@@ -66,6 +121,7 @@ const JobOpenings = (props) => {
       {
         Header: "Actions",
         accessor: "",
+        sortable: true,
         Cell: (props) => {
           return (
             <>
@@ -93,6 +149,7 @@ const JobOpenings = (props) => {
       {
         Header: ".",
         accessor: "",
+        sortable: true,
         Cell: (props) => {
           return (
             <>
@@ -121,6 +178,28 @@ const JobOpenings = (props) => {
     ],
     []
   );
+
+  const customFilter = (
+    <div style={{
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center'
+    }}
+    >
+      <div className="mx-4" style={{ minWidth: '200px' }}>
+        <label htmlFor="filter-role">Job Type:</label>
+        <Select
+          defaultValue={''}
+          onChange={(value) => dispatch(setFilterField({ field: 'jobTypeDesc', value: value.description }))}
+          options={filters.jobTypeDesc.values}
+          getOptionLabel={(o) => o.displayValue}
+          getOptionValue={(o) => o.description}
+          value={filters.jobTypeDesc.values.find((r) => r.id === filters.jobTypeDesc.selectedValue)}
+        />
+      </div>
+    </div>
+  )
+
   const rightButtons = (
     <Link to={"/jobs/open-job"} className="btn add_button  mr-2">
       <i className="bi bi-plus-circle add_icon"></i>
@@ -132,14 +211,16 @@ const JobOpenings = (props) => {
       <ReferModal open={referModal} jobName={selectedJobName} closeModal={() => setReferModal(false)}/>
       <ApplyModal open={applyModal} jobName={selectedJobName} closeModal={() => setApplyModal(false)} />
 
-      <DefaultTable
-        data={data}
+      <AccordionTable
+        data={filteredData}
         columns={columns}
         motherMenu="sidebar.jobs.job"
         activeMenu="sidebar.jobs.jobOpenings"
         usePageTitle
         useFilter
+        customFilter={customFilter}
         rightButtons={rightButtons}
+        accordionBody={ApplicationHistoryTable}
       />
     </Fragment>
   );

@@ -3,8 +3,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import withReducer from '../../../../store/withReducer';
 import reducer from './store';
 
-import EditIconSvg from '../../../../svg/edit-icon';
-import TrashIconSvg from '../../../../svg/trash-icon';
 import DefaultTable from '../../../components/table/DefaultTable';
 import { getUsers, selectUsers, setFilterField } from './store/usersSlice';
 import Select from 'react-select';

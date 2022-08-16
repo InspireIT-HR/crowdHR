@@ -1,6 +1,7 @@
 import { createEntityAdapter, createSlice } from '@reduxjs/toolkit';
 import axios from '../../../../../services/axios';
 import { showError } from '../../../../helpers/notificationHelper';
+import { defaultInitinalState } from '../../../../helpers/storeHelper';
 import { getCustomerResponsibles } from './customerResponsiblesSlice';
 
 export const getCustomers = () => (dispatch, getState) => {
@@ -33,13 +34,9 @@ export const {
   (state) => state.customerApp.customers
 );
 
-const initialState = {
-  loading: false,
-};
-
 const customersSlice = createSlice({
   name: 'customerApp/customers',
-  initialState: customersAdapter.getInitialState(initialState),
+  initialState: customersAdapter.getInitialState(defaultInitinalState),
   reducers: {
     setCustomers: customersAdapter.setAll,
     addCustomer: customersAdapter.addOne,
