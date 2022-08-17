@@ -2,10 +2,8 @@ import { createEntityAdapter, createSlice } from "@reduxjs/toolkit";
 import axios from "../../../../services/axios";
 import { showError } from "../../../helpers/notificationHelper";
 import { defaultInitinalState } from "../../../helpers/storeHelper";
-import { useSelector } from "react-redux";
 
 export const getJobCandidates = (jobId) => (dispatch, getState) => {
-  // const user = useSelector(({ auth }) => auth.user);
   if (getState().candidates.jobCandidate.loading) {
     return;
   }
@@ -53,7 +51,11 @@ export const {
 
 const jobCandidateSlice = createSlice({
   name: "candidates/jobCandidates",
-  initialState: jobCandidatesAdapter.getInitialState(defaultInitinalState),
+  initialState: jobCandidatesAdapter.getInitialState({
+    ...defaultInitinalState,
+    applicationHistory: {},
+    applicationHistoryLoading: {},
+  }),
   reducers: {
     setJobCandidates: jobCandidatesAdapter.setAll,
     addJobCandidates: jobCandidatesAdapter.addOne,

@@ -94,13 +94,16 @@ const initialState = {
   filters: {
     jobTypeDesc: {
       values: [],
-      selectedValue: '',
+      selectedValue: 0,
     },
-    statusDesc: {
+    jobStatusDesc: {
       values: [],
-      selectedValue: '',
+      selectedValue: 0,
     },
-
+    jobInternalRecruiterDesc: {
+      values: [],
+      selectedValue: 0,
+    }
   }
 };
 
@@ -110,11 +113,23 @@ const jobOpeningsSlice = createSlice({
   reducers: {
     setJobOpenings: (state, action) => {
       const jobTypes = {};
+      const jobStatuses = {};
+      const jobInternalRecruiters = {};
       action.payload.forEach((jobOpening) => {
         jobTypes[jobOpening.jobType.id] = {
-          ...jobOpening.jobType,
+          id: jobOpening.jobType.id,
           displayValue: jobOpening.jobType.description
-        }
+        };
+        jobStatuses[jobOpening.status.id] = {
+          id: jobOpening.status.id,
+          displayValue: jobOpening.status.description
+        };
+        jobOpening.jobOpeningInternalRecruiters.forEach((recruiter) => {
+          jobInternalRecruiters[recruiter.internalRecruiterId] = {
+            id: recruiter.internalRecruiterId,
+            displayValue: recruiter.internalRecruiter.fullname
+          };
+        });
       });
       state.filters.jobTypeDesc.values = [
         {
@@ -123,6 +138,22 @@ const jobOpeningsSlice = createSlice({
           displayValue: 'All'
         },
         ...Object.values(jobTypes),
+      ];
+      state.filters.jobStatusDesc.values = [
+        {
+          id: 0,
+          description: '',
+          displayValue: 'All'
+        },
+        ...Object.values(jobStatuses),
+      ];
+      state.filters.jobInternalRecruiterDesc.values = [
+        {
+          id: 0,
+          description: '',
+          displayValue: 'All'
+        },
+        ...Object.values(jobInternalRecruiters),
       ];
       jobOpeningsAdapter.setAll(state, action.payload);
     },
@@ -144,6 +175,9 @@ const jobOpeningsSlice = createSlice({
       const fieldName = action.payload.field;
       const fieldValue = action.payload.value;
       state.filters[fieldName].selectedValue = fieldValue;
+    },
+    resetFilters: (state, action) => {
+      state.filters = initialState.filters;
     }
   },
   extraReducers: {},
@@ -158,6 +192,7 @@ export const {
   setApplicationHistory,
   setApplicationHistoryLoading,
   setFilterField,
+  resetFilters,
 } = jobOpeningsSlice.actions;
 
 export default jobOpeningsSlice.reducer;

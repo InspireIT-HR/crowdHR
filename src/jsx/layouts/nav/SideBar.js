@@ -165,7 +165,7 @@ const SideBar = () => {
           </Dropdown.Menu>
         </Dropdown>
         <MM className="metismenu" id="menu">
-          {routes.map((route, i) => (route.permission === '' || permissions[route.permission]) && (
+          {routes.map((route, i) => (route.permission === '' || permissions[route.permission]) && !route.hideSidebar && (
               <li key={i} className={path.startsWith(route.url) ? 'mm-active' : ''}>
                 <Link className={route.children.length > 0 ? 'has-arrow ai-icon' : 'ai-icon'} to={`/${route.url}`}>
                   <i className={route.icon}></i>

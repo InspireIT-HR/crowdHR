@@ -3,13 +3,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import withReducer from "../../../../store/withReducer";
 import reducer from "./store";
-import { getJobOpenings, selectJobOpenings, setFilterField } from "./store/jobOpeningSlice";
+import { getJobOpenings, resetFilters, selectJobOpenings, setFilterField } from "./store/jobOpeningSlice";
 import ReferModal from "./ReferModal";
 import ApplyModal from "./ApplyModal";
-import AccordionTable from "../../../components/table/AccordionTable";
-import ApplicationHistoryTable from "./applicationHistoryTable";
-import { getCandidateStages } from "../../definitions/candidates/candidateStageSlice";
 import Select from 'react-select';
+import DefaultTable from "../../../components/table/DefaultTable";
 
 const JobOpenings = (props) => {
   const dispatch = useDispatch();
@@ -19,20 +17,29 @@ const JobOpenings = (props) => {
   const [selectedJobName, setSelectedJobName] = useState('');
   const filters = useSelector(({ jobOpeningApp }) => jobOpeningApp.jobOpenings.filters);
   const [filteredData, setFilteredData] = useState([]);
-  
 
   useEffect(() => {
+    dispatch(resetFilters());
     dispatch(getJobOpenings());
-    dispatch(getCandidateStages());
   }, [dispatch]);
 
   useEffect(() => {
     const newData = [];
     data.forEach((d) => {
       if (filters.jobTypeDesc.selectedValue) {
-        if (d.jobType.description.toLowerCase().indexOf(filters.jobTypeDesc.selectedValue.toLowerCase()) === -1) {
-          console.log(filters.jobTypeDesc.selectedValue);
-          console.log(d.jobType.description)
+        if (d.jobType.id !== filters.jobTypeDesc.selectedValue) {
+          return;
+        }
+      }
+
+      if (filters.jobStatusDesc.selectedValue) {
+        if (d.status.id !== filters.jobStatusDesc.selectedValue) {
+          return;
+        }
+      }
+      
+      if (filters.jobInternalRecruiterDesc.selectedValue) {
+        if (!d.jobOpeningInternalRecruiters.find((jir) => jir.internalRecruiter.id === filters.jobInternalRecruiterDesc.selectedValue)) {
           return;
         }
       }
@@ -41,7 +48,7 @@ const JobOpenings = (props) => {
     });
 
     setFilteredData(newData);
-  }, [data, filters.jobTypeDesc.selectedValue]);
+  }, [data, filters.jobInternalRecruiterDesc.selectedValue, filters.jobStatusDesc.selectedValue, filters.jobTypeDesc.selectedValue]);
 
   const columns = useMemo(
     () => [
@@ -190,11 +197,33 @@ const JobOpenings = (props) => {
         <label htmlFor="filter-role">Job Type:</label>
         <Select
           defaultValue={''}
-          onChange={(value) => dispatch(setFilterField({ field: 'jobTypeDesc', value: value.description }))}
+          onChange={(value) => dispatch(setFilterField({ field: 'jobTypeDesc', value: value.id }))}
           options={filters.jobTypeDesc.values}
           getOptionLabel={(o) => o.displayValue}
-          getOptionValue={(o) => o.description}
+          getOptionValue={(o) => o.id}
           value={filters.jobTypeDesc.values.find((r) => r.id === filters.jobTypeDesc.selectedValue)}
+        />
+      </div>
+      <div className="mx-4" style={{ minWidth: '200px' }}>
+        <label htmlFor="filter-role">Job Status:</label>
+        <Select
+          defaultValue={''}
+          onChange={(value) => dispatch(setFilterField({ field: 'jobStatusDesc', value: value.id }))}
+          options={filters.jobStatusDesc.values}
+          getOptionLabel={(o) => o.displayValue}
+          getOptionValue={(o) => o.id}
+          value={filters.jobStatusDesc.values.find((r) => r.id === filters.jobStatusDesc.selectedValue)}
+        />
+      </div>
+      <div className="mx-4" style={{ minWidth: '200px' }}>
+        <label htmlFor="filter-role">Internal Recruiter:</label>
+        <Select
+          defaultValue={''}
+          onChange={(value) => dispatch(setFilterField({ field: 'jobInternalRecruiterDesc', value: value.id }))}
+          options={filters.jobInternalRecruiterDesc.values}
+          getOptionLabel={(o) => o.displayValue}
+          getOptionValue={(o) => o.id}
+          value={filters.jobInternalRecruiterDesc.values.find((r) => r.id === filters.jobInternalRecruiterDesc.selectedValue)}
         />
       </div>
     </div>
@@ -211,7 +240,7 @@ const JobOpenings = (props) => {
       <ReferModal open={referModal} jobName={selectedJobName} closeModal={() => setReferModal(false)}/>
       <ApplyModal open={applyModal} jobName={selectedJobName} closeModal={() => setApplyModal(false)} />
 
-      <AccordionTable
+      <DefaultTable
         data={filteredData}
         columns={columns}
         motherMenu="sidebar.jobs.job"
@@ -220,7 +249,6 @@ const JobOpenings = (props) => {
         useFilter
         customFilter={customFilter}
         rightButtons={rightButtons}
-        accordionBody={ApplicationHistoryTable}
       />
     </Fragment>
   );

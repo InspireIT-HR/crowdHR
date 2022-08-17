@@ -15,6 +15,7 @@ import attachmentTypes from "./pages/definitions/attachmentTypes";
 import currencyTypes from "./pages/definitions/currencyTypes";
 import jobCandidates from "./pages/jobCandidates/JobCandidates";
 import SystemParameters from "./pages/definitions/systemParameters";
+import AppProfile from "./components/AppsMenu/AppProfile/AppProfile";
 
 export const routes = [
   {
@@ -22,6 +23,15 @@ export const routes = [
     url: 'dashboard',
     icon: 'flaticon-025-dashboard',
     component: Home,
+    permission: '',
+    children: [],
+  },
+  {
+    title: '',
+    url: 'app-profile',
+    icon: 'flaticon-025-dashboard',
+    component: AppProfile,
+    hideSidebar: true,
     permission: '',
     children: [],
   },

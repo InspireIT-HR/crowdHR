@@ -21,6 +21,60 @@ export const getUsers = () => (dispatch, getState) => {
   });
 }
 
+export const addUserRequest = (data) => (dispatch, getState) => {
+  if (getState().userApp.users.loading) {
+    return;
+  }
+
+  dispatch(setUsersLoading(true));
+
+  axios.post('/Users', data)
+  .then((response) => {
+    dispatch(addUser(response.data));
+    dispatch(setUsersLoading(false));
+  })
+  .catch((err) => {
+    dispatch(setUsersLoading(false));
+    showError(err.message);
+  });
+}
+
+export const updateUserRequest = (data) => (dispatch, getState) => {
+  if (getState().userApp.users.loading) {
+    return;
+  }
+
+  dispatch(setUsersLoading(true));
+
+  axios.put('/Users', data)
+  .then((response) => {
+    dispatch(updateUser(response.data));
+    dispatch(setUsersLoading(false));
+  })
+  .catch((err) => {
+    dispatch(setUsersLoading(false));
+    showError(err.message);
+  });
+}
+
+export const removeUserRequest = (data) => (dispatch, getState) => {
+  if (getState().userApp.users.loading) {
+    return;
+  }
+
+  dispatch(setUsersLoading(true));
+
+  axios.delete(`/Users/${data}`)
+  .then((response) => {
+    dispatch(removeUser(data));
+    dispatch(setUsersLoading(false));
+  })
+  .catch((err) => {
+    dispatch(setUsersLoading(false));
+    showError(err.message);
+  });
+}
+
 const usersAdapter = createEntityAdapter({});
 
 export const {
@@ -82,7 +136,7 @@ export const {
   setUsers,
   addUser,
   updateUser,
-  removeOne,
+  removeUser,
   setUsersLoading,
   setFilterField,
 } = usersSlice.actions;
