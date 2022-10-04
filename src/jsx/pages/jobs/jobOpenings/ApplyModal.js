@@ -134,7 +134,7 @@ const ApplyModal = (props) => {
     >
       <Modal.Header>
         <Modal.Title>
-          Apply to - ${props.jobName} 
+          Apply to - {props.jobName} 
         </Modal.Title>
         <div>
           <Button
