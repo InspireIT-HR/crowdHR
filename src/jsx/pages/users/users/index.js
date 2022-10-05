@@ -4,11 +4,14 @@ import withReducer from "../../../../store/withReducer";
 import reducer from "./store";
 
 import DefaultTable from "../../../components/table/DefaultTable";
-import { getUsers, selectUsers, setFilterField } from "./store/usersSlice";
+import { getUsers, selectUsers, setFilterField,updateUserRequest,removeUserRequest } from "./store/usersSlice";
 import { getCompanies, selectCompanies } from "./store/companiesSlice";
 import Select from "react-select";
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
+import { Formik } from 'formik';
+import * as yup from 'yup';
+import ConfirmModal from '../../../components/ConfirmModal';
 
 const Users = (props) => {
   const dispatch = useDispatch();
@@ -19,8 +22,22 @@ const Users = (props) => {
   const [companyFilter, setCompanyFilter] = useState([]);
   const [selectedCompany, setSelectedCompany] = useState(null);
   const [showEdit, setShowEdit] = useState(false);
+  const [initialValues, setInitialValues] = useState();
   const handleClose = () => setShowEdit(false);
-  const handleShow = (data) => {setShowEdit(true); console.log(data)};
+  const handleShow = (data) => {setShowEdit(true); setInitialValues({
+    firstname:data.firstname,
+    lastname:data.lastname,
+    email:data.email,
+    linkedinPage:data.linkedinPage,
+    description:data.role.description,
+    password:''
+  }) };
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [confirmModalData, setConfirmModalData] = useState('');
+  const schema = yup.object().shape({
+    firstname: yup.string()
+      .required('Please enter a firstname'),
+  });
   useEffect(() => {
     dispatch(getUsers());
     dispatch(getCompanies());
@@ -31,7 +48,7 @@ const Users = (props) => {
     });
     setCompanyFilter(arr);
   }, [dispatch]);
-
+  
   // useEffect(() => {
   //   console.log(selectedCompany);
   // }, [selectedCompany]);
@@ -67,7 +84,9 @@ const Users = (props) => {
     filters.role.selectedValue,
     selectedCompany,
   ]);
-
+  const sendPasswordReset = (data) => {
+    dispatch(updateUserRequest(data))
+}
   const columns = useMemo(
     () => [
       {
@@ -114,12 +133,20 @@ const Users = (props) => {
               </button>
               <button
                 className="btn btn-danger shadow btn-xs sharp"
-                // onClick={() => {
-                //   setConfirmModalData(props.row.original.id);
-                //   setShowConfirmModal(true);
-                // }}
+                onClick={() => {
+                  setConfirmModalData(props.row.original.id);
+                  setShowConfirmModal(true);
+                }}
               >
                 <i className="fa fa-trash"></i>
+              </button>
+              <button
+                className="btn btn-danger shadow btn-xs sharp"
+                onClick={() => {
+                  sendPasswordReset(props.row.original.id)
+                }}
+              >
+                <i className="fa fa-paper-plane"></i>
               </button>
             </>
           );
@@ -128,7 +155,12 @@ const Users = (props) => {
     ],
     []
   );
-
+  const handleOnSubmit = (data) => {
+      dispatch(updateUserRequest(data))
+  }
+  const handleRemove = (data) => {
+    dispatch(removeUserRequest(data));
+  }
   const customFilter = (
     <div
       style={{
@@ -196,16 +228,127 @@ const Users = (props) => {
         <Modal.Header closeButton>
           <Modal.Title>Modal heading</Modal.Title>
         </Modal.Header>
-        <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
+        <Formik
+        initialValues={initialValues}
+        validationSchema={schema}
+        onSubmit={handleOnSubmit}
+        enableReinitialize
+      >
+        {({
+          values,
+          errors,
+          handleChange,
+          handleBlur,
+          handleSubmit,
+          isValid
+        }) => (
+          <form onSubmit={handleSubmit}>
+            <Modal.Body>
+              <div
+                className={`form-group mb-1 ${values.description
+                  ? errors.description
+                    ? 'is-invalid'
+                    : 'is-valid'
+                  : ''
+                  }`}
+              >
+                <label className="text-label">Description</label>
+                <div className="input-group">
+                  <span className="input-group-text">
+                    <i className="fas fa-text-height" />{" "}
+                  </span>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="val-firstname"
+                    name="firstname"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values.firstname}
+                  />
+                  <div
+                    id="val-description-error"
+                    className="invalid-feedback animated fadeInUp"
+                    style={{ display: 'block' }}
+                  >
+                    {errors.firstname && errors.firstname}
+                  </div>
+
+                  <div
+                    id="val-description-error"
+                    className="invalid-feedback animated fadeInUp"
+                    style={{ display: 'block' }}
+                  />
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="val-lastname"
+                    name="lastname"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values.lastname}
+                  />
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="val-email"
+                    name="email"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values.email}
+                  />
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="val-linkedinPage"
+                    name="linkedinPage"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values.linkedinPage}
+                  />
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="val-description"
+                    name="description"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values.description}
+                  />
+                  <input
+                    type="password"
+                    className="form-control"
+                    id="val-password"
+                    name="password"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values.password}
+                  />
+                </div>
+              </div>
+            </Modal.Body>
+
+          </form>
+        )}
+      </Formik>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleClose}>
+          <Button variant="primary" type="submit" onClick={handleClose}>
             Save Changes
           </Button>
         </Modal.Footer>
       </Modal>
+      {/*Confirm model*/}
+      <ConfirmModal
+        title="Deleting User"
+        content="Are you sure about deleting?"
+        onConfirm={handleRemove}
+        onClose={() => setShowConfirmModal(false)}
+        showModal={showConfirmModal}
+        data={confirmModalData}
+      />
     </div>
   );
 };

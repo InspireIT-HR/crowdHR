@@ -75,6 +75,16 @@ export const removeUserRequest = (data) => (dispatch, getState) => {
   });
 }
 
+export const sendResetLink=(data)=>(dispatch)=>{
+  axios.post(`/link/link`)
+  .then(response=>{
+
+  })
+  .catch(err=>{
+    showError(err.message)
+  })
+}
+
 const usersAdapter = createEntityAdapter({});
 
 export const {
